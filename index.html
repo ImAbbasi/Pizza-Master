@@ -120,7 +120,7 @@
 
 <header id="main-header">
     <button class="header-back-btn" onclick="exitToGateway()">← Home</button>
-    <p class="logo">OVEN <span>X</span> <small id="header-table-indicator" style="font-size:10px; opacity:0.7;"></small></p>
+    <p class="logo">Pizza<span>Master</span> <small id="header-table-indicator" style="font-size:10px; opacity:0.7;"></small></p>
     <div style="width:50px;"></div>
 </header>
 
@@ -194,7 +194,7 @@
         "Premium Pizza": [
             {name: "BBQ Pizza", price: {M:1199, L:1699}},
             {name: "Creamy Dreamy", price: {M:1149, L:1749}},
-            {name: "OvenX Special", price: {M:1149, L:1749}},
+            {name: "Master Special", price: {M:1149, L:1749}},
             {name: "Bonfire Pizza", price: {M:1149, L:1749}}
         ],
         "Deep Dish Pizza": [
@@ -285,7 +285,7 @@
         
         // Show QR Scanning Welcome Message immediately after entering
         if(tableNum && orderType === "") {
-            document.getElementById('welcome-msg').innerText = "WELCOME TO OVEN X! \n You are ordering for Table " + tableNum;
+            document.getElementById('welcome-msg').innerText = "WELCOME TO Pizza Master! \n You are ordering for Table " + tableNum;
             renderServiceOptions();
             document.getElementById('welcome-overlay').style.display = 'flex';
         }
