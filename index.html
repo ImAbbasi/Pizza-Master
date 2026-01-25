@@ -457,7 +457,7 @@
         const itemsListText = cart.map(i => i.qty + "x " + i.name + (i.note ? " ["+i.note+"]" : "")).join("\n");
         const waMsg = encodeURIComponent(`*OVEN X - ${orderType.toUpperCase()} ORDER*${tableNum ? '\n*TABLE: ' + tableNum + '*' : ''}\n\n${itemsListText}\n\nSubtotal: Rs ${foodTotal}${sc > 0 ? '\nS.C (7%): Rs ' + sc : ''}${delCharge > 0 ? '\nDelivery Charge: Rs ' + delCharge : ''}\n*Grand Total: Rs ${grand}*\n\n${userAddress ? '*Address:* ' + userAddress : ''}`);
 
-        document.getElementById('checkout-content').innerHTML = `<div class="chat-bubble"><b>ORDER SUMMARY</b></div>${summaryHTML}<div class="chat-bubble">Subtotal: Rs ${foodTotal}${sc > 0 ? '<br>S.C: Rs '+sc : ''}${delCharge > 0 ? '<br>Delivery: Rs '+delCharge : ''}<br><hr>Total: <b>Rs ${grand}</b></div><button onclick="window.open('https://wa.me/923001450301?text=${waMsg}', '_blank')" class="confirm-btn">Confirm Order via WhatsApp</button>`;
+        document.getElementById('checkout-content').innerHTML = `<div class="chat-bubble"><b>ORDER SUMMARY</b></div>${summaryHTML}<div class="chat-bubble">Subtotal: Rs ${foodTotal}${sc > 0 ? '<br>S.C: Rs '+sc : ''}${delCharge > 0 ? '<br>Delivery: Rs '+delCharge : ''}<br><hr>Total: <b>Rs ${grand}</b></div><button onclick="window.open('https://wa.me/923156838383?text=${waMsg}', '_blank')" class="confirm-btn">Confirm Order via WhatsApp</button>`;
     }
 
     function setInitialService(type) { orderType = type; document.getElementById('welcome-overlay').style.display = 'none'; }
