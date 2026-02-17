@@ -1,481 +1,420 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pizza Master Lodhran - Official Order System</title>
-    <style>
-        :root { 
-            --red: #8b0000; 
-            --orange: #f37021; 
-            --gray: #f4f4f4; 
-            --white: #ffffff;
-            --dark: #121212;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Pizza Master | Official Order System</title>
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/ImAbbasi/my-assets/main/logo%203d.png">
 
-        /* FORCE WHITE BACKGROUND FOR SITE */
-        body { 
-            background: var(--white) !important; 
-            color: #333 !important; 
-            font-family: 'Segoe UI', Roboto, sans-serif; 
-            margin: 0; 
-            padding-bottom: 80px; 
-        }
+<style>
+:root { 
+    --red:#800000; /* Deep maroon/red from image */
+    --orange:#f37021; /* Bright orange from image */
+    --bg:#fff9f5; 
+    --white:#ffffff; 
+    --green:#25D366; 
+    --fb-blue:#1877F2; 
+}
 
-        /* DARK GATEWAY SCREEN */
-        #gateway-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 3000; text-align: center; color: white;
-        }
-        .gateway-logo { font-size: 50px; font-weight: 900; margin-bottom: 5px; color: white; }
-        .gateway-logo span { color: var(--orange); }
-        
-        /* NEW QR WELCOME BANNER */
-        #gateway-table-note { 
-            background: var(--orange); 
-            color: white; padding: 12px 25px; 
-            border-radius: 10px; font-size: 16px; 
-            font-weight: bold; margin-bottom: 25px; 
-            display: none; 
-            box-shadow: 0 4px 15px rgba(243, 112, 33, 0.4);
-            animation: slideDown 0.5s ease-out;
-        }
-        @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+* { box-sizing:border-box; -webkit-tap-highlight-color:transparent; outline:none; }
+body { font-family:'Segoe UI',Roboto,sans-serif; background:var(--bg); margin:0; overflow-x:hidden; }
 
-        .gateway-options { display: flex; flex-direction: column; gap: 12px; width: 85%; max-width: 350px; }
-        .gate-btn { padding: 18px; border-radius: 12px; border: none; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .gate-btn:active { transform: scale(0.95); }
-        .btn-red { background: var(--red); color: white; }
-        .btn-orange { background: var(--orange); color: white; }
-        .btn-outline { background: transparent; color: white; border: 2px solid white; }
+/* --- UPDATED HEADER STYLE TO MATCH IMAGE --- */
+header { 
+    background: var(--red); 
+    color: white; 
+    padding: 15px 0; 
+    position: sticky; 
+    top: 0; 
+    z-index: 1002; 
+    display: flex; 
+    justify-content: center; /* Centers the logo like the image */
+    align-items: center;
+    border-bottom: 4px solid var(--orange); /* The orange line under the header */
+}
 
-        /* HEADER & TABS */
-        header { 
-            background: var(--red); color: white; padding: 12px 15px; 
-            text-align: center; border-bottom: 4px solid var(--orange); 
-            position: sticky; top: 0; z-index: 100; 
-            display: none; justify-content: space-between; align-items: center; 
-        }
-        .header-back-btn { background: var(--orange); color: white; border: none; padding: 7px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 11px; text-transform: uppercase; }
-        .logo { font-size: 24px; font-weight: 900; letter-spacing: 1px; margin: 0; text-transform: uppercase; flex-grow: 1;}
-        .logo span { color: var(--orange); }
+.header-logo-text {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: 'Arial Black', sans-serif;
+}
 
-        .tab-bar { display: none; background: var(--white); padding: 10px; display: flex; justify-content: center; gap: 8px; position: sticky; top: 58px; z-index: 90; border-bottom: 1px solid #ddd; }
-        .tab-item { background: var(--white); padding: 10px 15px; border-radius: 10px; font-weight: bold; font-size: 13px; cursor: pointer; border: 1px solid #ddd; flex: 1; text-align: center; max-width: 150px; color: #333; }
-        .tab-item.active { background: var(--red); color: white; border-color: var(--red); }
+.header-logo-text span {
+    color: var(--orange);
+}
 
-        /* DEALS & MENU */
-        .container, .deals-container { max-width: 600px; margin: auto; padding: 15px; background: var(--white); }
-        .deal-card { background: var(--white); border-radius: 15px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #eee; position: relative; color: #333; }
-        .deal-img { width: 100%; height: auto; display: block; background: #f9f9f9; }
-        .deal-content { padding: 15px; }
-        .deal-badge { position: absolute; top: 10px; right: 10px; background: var(--orange); color: white; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: bold; z-index: 5; }
-        .deal-title { font-weight: bold; color: var(--red); font-size: 18px; text-transform: uppercase; }
-        .deal-desc { font-size: 13px; color: #666; margin: 8px 0; white-space: pre-line; line-height: 1.4; }
-        .deal-price { color: var(--orange); font-weight: 900; font-size: 20px; }
+/* --- REST OF THE STYLES --- */
+#gateway { position:fixed; top:0; left:0; width:100%; height:100%; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:2000; text-align:center; color:white; }
+.logo-3d-main { width:220px; margin-bottom:20px; animation:logoFloat 3s ease-in-out infinite; filter:drop-shadow(0 20px 30px rgba(0,0,0,0.5)); }
+@keyframes logoFloat { 0%{transform:translateY(0px);} 50%{transform:translateY(-12px);} 100%{transform:translateY(0px);} }
+.logo-big { font-size:38px; font-weight:900; margin-bottom:30px; }
+.logo-big span { color:var(--orange); }
+.gate-btn { width:85%; max-width:300px; padding:18px; border-radius:50px; border:none; font-weight:800; cursor:pointer; margin-bottom:15px; transition:0.3s; }
 
-        .section-title { font-weight: bold; color: var(--red); border-bottom: 2px solid var(--orange); margin: 25px 0 10px; padding-bottom: 5px; text-transform: uppercase; font-size: 14px; letter-spacing: 1px;}
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn { background: var(--white); color: #333; border: 1px solid #ddd; padding: 12px; border-radius: 12px; text-align: center; cursor: pointer; font-size: 13px; font-weight: 500; display: flex; flex-direction: column; justify-content: center; min-height: 65px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        
-        /* SELECTED VISUALIZATION */
-        .selected-flavor { background: var(--orange) !important; color: white !important; border-color: var(--orange) !important; transform: scale(0.95); }
+#main-app { display:none; }
+.search-container { background:white; padding:10px 15px; position:sticky; top:65px; z-index:1001; border-bottom:1px solid #eee; }
+.search-bar { width:100%; padding:12px 15px; border-radius:12px; border:1px solid #ddd; background:#f9f9f9; font-size:14px; }
+.category-scroll { display:flex; overflow-x:auto; background:white; white-space:nowrap; border-bottom:1px solid #ddd; padding:10px 5px; position:sticky; top:127px; z-index:1000; }
+.cat-tab { padding:8px 18px; margin:0 5px; border-radius:20px; font-size:13px; font-weight:700; color:#666; background:#f0f0f0; cursor:pointer; display:flex; align-items:center; gap:5px; }
+.cat-tab.active { background:var(--red); color:white; }
 
-        /* CART & CHECKOUT */
-        #cart-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--red); color: white; padding: 15px; display: none; justify-content: space-between; align-items: center; z-index: 500; box-sizing: border-box; }
-        .checkout-btn { background: var(--orange); padding: 8px 22px; border-radius: 20px; color: white; cursor:pointer; font-weight: 900; }
-        #overlay-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--white); z-index: 2000; display: none; padding: 20px; box-sizing: border-box; overflow-y: auto; color: #333; }
-        .summary-item { display: flex; justify-content: space-between; align-items: center; background: #fefefe; padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid #eee; }
-        .remove-item-btn { color: #ff4444; font-size: 11px; cursor: pointer; border: 1px solid #ff4444; padding: 4px 8px; border-radius: 6px; font-weight: bold; }
+.container { padding:15px; max-width:600px; margin:auto; padding-bottom:120px; }
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+.card { background:white; border-radius:15px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.05); text-align:center; border:1px solid #eee; display:flex; flex-direction:column; }
+.card-img { width:100%; height:110px; object-fit:cover; background:#eee; }
+.card-info { padding:10px; flex-grow:1; }
+.card-name { font-weight:800; font-size:11px; margin-bottom:5px; color:#333; height:35px; overflow:hidden; line-height:1.2; }
+.card-price { color:var(--orange); font-weight:900; font-size:12px; }
 
-        /* MODALS */
-        #modal-overlay, #welcome-overlay, #flavor-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); display:none; justify-content:center; align-items:center; z-index: 1500; }
-        .modal { background: var(--white); color: #333; padding: 25px; border-radius: 25px; width: 85%; max-width: 380px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-height: 80vh; overflow-y: auto; }
-        .qty-btns { display: flex; justify-content: center; gap: 10px; margin: 15px 0; }
-        .qty-btn { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--red); background: white; font-weight: bold; cursor: pointer; }
-        .qty-btn.active { background: var(--red); color: white; }
-        textarea { width: 100%; border-radius: 12px; border: 1px solid #ddd; padding: 12px; margin-top: 10px; font-family: inherit; box-sizing: border-box; }
-        .next-btn { background: var(--red); color: white; padding: 16px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; width: 100%; margin-bottom: 10px; }
-        .confirm-btn { background: #25D366; color: white; padding: 18px; border-radius: 12px; text-align: center; text-decoration: none; display: block; font-weight: bold; margin-top: 20px; font-size: 18px; border: none; cursor: pointer; width: 100%; }
-        .chat-bubble { background: #f8f8f8; padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 1px solid #eee; line-height: 1.5; font-size: 14px; }
-    </style>
+#cart-bar { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); width:90%; max-width:400px; background:var(--red); color:white; padding:12px 20px; border-radius:50px; display:none; justify-content:space-between; align-items:center; z-index:1100; border: 2px solid var(--orange); }
+.checkout-btn { background:var(--orange); padding:8px 18px; border-radius:20px; font-weight:900; cursor:pointer; }
+.overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:none; justify-content:center; align-items:center; z-index:3000; backdrop-filter:blur(4px); }
+.modal { background:white; padding:25px; border-radius:25px; width:90%; max-width:360px; max-height:85vh; overflow-y:auto; text-align:center; }
+input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:10px; border:1px solid #ddd; }
+.add-btn { width:100%; background:var(--orange); color:white; border:none; padding:15px; border-radius:15px; font-weight:800; cursor:pointer; }
+.remove-btn { background:#ff4d4d; color:white; border:none; padding:2px 8px; border-radius:5px; font-size:10px; font-weight:bold; cursor:pointer; margin-left:10px; }
+.fb-btn { background:var(--fb-blue); color:white; text-decoration:none; padding:12px; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:8px; font-weight:bold; margin-top:15px; font-size:14px; }
+</style>
 </head>
 <body>
 
-<!-- GATEWAY SCREEN -->
-<div id="gateway-screen">
-    <p class="gateway-logo">Pizza <span>Master</span></p>
-    <!-- Welcome message for QR scans -->
-    <div id="gateway-table-note">WELCOME! YOU ARE AT TABLE <span id="gateway-table-id"></span></div>
-    
-    <p id="tagline" style="margin-bottom: 30px; opacity: 0.8;">Freshly Baked, Truly Authentic</p>
-    <div class="gateway-options">
-        <button class="gate-btn btn-orange" onclick="enterApp('deals')">🔥 View Hot Deals</button>
-        <button class="gate-btn btn-red" onclick="enterApp('menu')">📖 Open Full Menu</button>
-        <button class="gate-btn btn-outline" onclick="enterApp('home')">🏠 Enter Website</button>
+<div id="gateway">
+    <img src="https://raw.githubusercontent.com/ImAbbasi/my-assets/main/logo%203d.png" class="logo-3d-main">
+    <div class="logo-big">PIZZA <span>MASTER</span></div>
+    <button class="gate-btn" style="background:var(--red); color:white;" onclick="enterApp('Hot Deals 🔥')">🔥 HOT DEALS</button>
+    <button class="gate-btn" style="background:white; color:black;" onclick="enterApp('Regular Pizza')">BROWSE MENU</button>
+</div>
+
+<div id="main-app">
+    <header>
+        <div class="header-logo-text">PIZZA<span>MASTER</span></div>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="menuSearch" class="search-bar" placeholder="Search menu..." onkeyup="filterItems()">
+    </div>
+
+    <div class="category-scroll" id="cat-tabs"></div>
+
+    <div class="container">
+        <div id="items-grid" class="grid"></div>
+        <div id="no-results" style="display:none; text-align:center; padding:50px; color:#999;">No items found.</div>
+    </div>
+
+    <div id="cart-bar">
+        <div><span id="cart-count">0 Items</span><br><b id="cart-total">Rs 0</b></div>
+        <div class="checkout-btn" onclick="openCheckout()">CHECKOUT →</div>
     </div>
 </div>
 
-<header id="main-header">
-    <button class="header-back-btn" onclick="exitToGateway()">← Home</button>
-    <p class="logo">Pizza<span>Master</span> <small id="header-table-indicator" style="font-size:10px; opacity:0.7;"></small></p>
-    <div style="width:50px;"></div>
-</header>
-
-<div class="tab-bar" id="nav-tabs">
-    <div class="tab-item active" id="tab-menu" onclick="switchTab('menu')">FULL MENU</div>
-    <div class="tab-item" id="tab-deals" onclick="switchTab('deals')">SPECIAL DEALS</div>
+<div id="item-modal" class="overlay">
+    <div class="modal">
+        <h3 id="m-name" style="color:var(--red); margin:0 0 15px 0;"></h3>
+        <div id="size-selector-area"></div>
+        <input type="number" id="m-qty" value="1" min="1">
+        <textarea id="m-note" placeholder="Special instructions..."></textarea>
+        <button class="add-btn" onclick="addToCart()">ADD TO CART</button>
+        <button onclick="closeModals()" style="background:none; border:none; width:100%; margin-top:10px; color:gray;">Cancel</button>
+    </div>
 </div>
 
-<div id="deals-container" class="deals-container"><div id="deals-list"></div></div>
-<div class="container" id="menu-container" style="display:none;"></div>
-
-<div id="cart-bar">
-    <span id="cart-count">Items: 0</span>
-    <span id="cart-total">Rs 0</span>
-    <div class="checkout-btn" onclick="startCheckout()">Checkout</div>
+<div id="checkout-modal" class="overlay">
+    <div class="modal">
+        <h3 style="margin-top:0;">Order Summary</h3>
+        <div id="summary" style="text-align:left; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px; max-height:200px; overflow-y:auto;"></div>
+        <input type="text" id="c-name" placeholder="Full Name">
+        <input type="text" id="c-phone" placeholder="Active Sim Number">
+        <select id="c-type"><option>Delivery</option><option>Takeaway</option><option>Dine-In</option></select>
+        <textarea id="c-loc" placeholder="Complete Address"></textarea>
+        <button class="add-btn" style="background:var(--green);" onclick="sendOrder()">SEND ORDER VIA WHATSAPP</button>
+        
+        <a href="https://www.facebook.com/PizzaMasterLodhran" target="_blank" class="fb-btn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" width="18"> Follow us for Deals
+        </a>
+        
+        <button onclick="closeModals()" style="background:none; border:none; width:100%; margin-top:15px; color:gray;">Back</button>
+    </div>
 </div>
-
-<!-- OVERLAYS -->
-<div id="flavor-overlay"><div class="modal"><h3 id="flavor-title" style="color:var(--red);">Pick Flavor</h3><p id="flavor-step-info" style="font-size: 12px; color:#777;"></p><div class="grid" id="flavor-grid"></div><button onclick="document.getElementById('flavor-overlay').style.display='none'" style="margin-top:20px; border:none; background:none; color:#999;">Cancel</button></div></div>
-<div id="welcome-overlay"><div class="modal"><h2 style="color:var(--red); margin-top:0;">Welcome!</h2><p id="welcome-msg">Order Online</p><div class="input-group" id="service-options-container">
-    <!-- Buttons generated via JS to filter delivery -->
-</div></div></div>
-<div id="modal-overlay"><div class="modal"><h3 id="modal-item-name"></h3><p>Quantity:</p><div class="qty-btns"><button class="qty-btn" onclick="setQty(1)">1</button><button class="qty-btn" onclick="setQty(2)">2</button><button class="qty-btn" onclick="setQty(3)">3</button><button class="qty-btn" onclick="setQty(4)">4</button><button class="qty-btn active" onclick="setQty(5)">5+</button></div><textarea id="special-note" placeholder="Instructions..."></textarea><div style="margin-top:20px; display:flex; gap:10px;"><button onclick="closeModal()" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ddd;">Cancel</button><button onclick="addToCartFinal()" style="flex:1; padding:12px; border-radius:12px; background:var(--orange); color:white; border:none; font-weight:bold;">Add to Cart</button></div></div></div>
-<div id="size-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1100; justify-content:center; align-items:center;"><div class="modal"><h3>Select Size</h3><div class="grid" id="size-grid"></div><button onclick="document.getElementById('size-overlay').style.display='none'" style="margin-top:15px; border:none; background:none; color:gray;">Cancel</button></div></div>
-<div id="overlay-screen"><button class="header-back-btn" id="checkout-back-btn" style="margin-bottom:15px;">← Back</button><div id="checkout-content"></div></div>
 
 <script>
+    // FULL MENU DATA (Truncated for brevity, add your items here)
     const menuData = {
-         "Fried Chicken": [
-            {name: "Oven Baked Wings", price: {5: 400, 10: 750}},
-            {name: "Peri-Peri Wings", price: {5: 400, 10: 750}},
-            {name: "Hot Wings", price: {5: 390, 10: 690}},
-            {name: "Butter Wings", price: {5: 400, 10: 750}},
-            {name: "Hot Shots", price: {5: 320, 10: 600}},
-            {name: "Chicken Strips", price: {5: 400, 10: 750}},
-            {name: "8 Pcs Sweet Chilli Wings", price: 600},
-            {name: "10 Buffalo Wings", price: 750},
-            {name: "AlBaik", price: 690},
-            {name: "Finger Fish", price: 850},
-            {name: "Nuggets", price: {5: 320, 10: 590}}
-        ],
-        "Fries": [
-            {name: "Plain Fries", price: {Reg: 200, Medium: 290, Large: 390}},  
-            {name: "Cheese Loaded Fries", price: 590}, 
-            {name: "Chicken Cheese Fries", price: 690},
-            {name: "Masala Fries", price: 500},
-            {name: "Pizza Fries", price: 750},
-            {name: "Chunky Fries", price: 590},
-        ],
-        "Burger": [
-            {name: "Chicken Patty Burger", price: 320}, 
-            {name: "Zinger Burger", price: 400}, 
-            {name: "Zinger Cheese Burger", price: 480},
-            {name: "Mighty Burger", price: 690}, 
-            {name: "Fish Burger", price: 650},
-            {name: "Grilled Burger", price: 690},
-            {name: "Patty Tower Burger", price: 550},
-            {name: "Tikka Burger", price: 400},
-            {name: "Beef Cheese Burger", price: 500},
-            {name: "Beef Double Decker Burger", price: 850},
-            {name: "Single Beef Lacha Burger", price: 550},
-            {name: "Double Beef Lacha Burger", price: 850},
-            {name: "Zingster Lacha Burger", price: 450},
-            {name: "Tower Burger", price: 650}
-        ],
-        "Paratha Rolls": [
-            {name: "Master Special Roll", price: 450},
-            {name: "BBQ Cheese Roll", price: 450},
-            {name: "Chicken Cheese Roll", price: 450},
-            {name: "Zinger Roll", price: 400},
-            {name: "Zinger Cheese Roll", price: 450},
-            {name: "Arabic Roll", price: 350},
-            {name: "Kebabish Roll", price: 400}
-        ],
-        "Special Pizza": [
-            {name: "Bone Fire", price: {S:700, M:1250, L:1750, XL:2150}}, 
-            {name: "Pepperoni", price: {S:700, M:1250, L:1750, XL:2150}}, 
-            {name: "Malai Boti", price: {S:700, M:1250, L:1750, XL:2150}}, 
-            {name: "Shahi", price: {S:700, M:1250, L:1750, XL:2150}}, 
-            {name: "Behari Kabab", price: {S:700, M:1250, L:1750, XL:2150}}, 
-            {name: "Fish", price: {S:700, M:1250, L:1750, XL:2150}},  
-            {name: "Master Special", price: {S:700, M:1250, L:1750, XL:2150}}, 
-            {name: "Nawabi", price: {S:700, M:1250, L:1750, XL:2150}}, 
-            {name: "Mughlai", price: {S:700, M:1250, L:1750, XL:2150}},
-            {name: "Hot Malai Boti", price: {S:700, M:1250, L:1750, XL:2150}}, 
-            {name: "Creamy Tikka", price: {S:700, M:1250, L:1750, XL:2150}}, 
-            ],
-        "Regular Pizza": [
-            {name: "Chicken Fajita", price: {S:650, M:1150, L:1650, XL:1850}}, 
-            {name: "Hot & Spicy", price: {S:650, M:1150, L:1650, XL:1850}},  
-            {name: "Chicken Tikka", price: {S:650, M:1150, L:1650, XL:1850}},  
-            {name: "Crispy Chicken", price: {S:650, M:1150, L:1650, XL:1850}}, 
-            {name: "Chicken Tandori", price: {S:650, M:1150, L:1650, XL:1850}}, 
-            {name: "Vegitable", price: {S:650, M:1150, L:1650, XL:1850}},   
-            {name: "BBQ", price: {S:650, M:1150, L:1650, XL:1850}},  
-            {name: "Chicken Supreme", price: {S:650, M:1150, L:1650, XL:1850}},  
-            {name: "Kebabish", price: {S:650, M:1150, L:1650, XL:1850}}, 
-        ],
-        "Extreme Premium Pan Pizza": [
-            {name: "Rich Kabab", price: {M:1790, L:2290}},
-            {name: "Peri Peri", price: {M:1790, L:2290}},
-        ],
-        "Deep Dish Pizza": [
-            {name: "Malai Boti", price: {M:1790, L:2290}}, 
-            {name: "Peri Peri", price: {M:1790, L:2290}}
-        ],
-        "Beef Lover": [
-            {name: "Beef Veggie", price: {S:750, M:1450, L:1850, XL:2150}}, 
-            {name: "Beef Cheese", price: {S:750, M:1450, L:1850, XL:2150}}, 
-            {name: "Beef Pepperoni", price: {S:750, M:1450, L:1850, XL:2150}}, 
-        ],
-        "Stuffed Crust": [
-            {name: "Kabab Crust", price: {S:790, M:1490, L:1890, XL:2290}}, 
-            {name: "Crown Crust", price: {S:790, M:1490, L:1890, XL:2290}}, 
-            {name: "Cheese Crust", price: {S:790, M:1490, L:1890, XL:2290}}, 
-            {name: "Chicken Crust", price: {S:790, M:1490, L:1890, XL:2290}}, 
-        ],
-        "Sighnature Box": [
-            {name: "Master Platter", price: 1150},
-            {name: "Wow Box", price: 1250},
-            {name: "Duo Box", price: 1499},
-            {name: "Boneless Box", price: 899},
-            {name: "Hunger Box", price: 1199}
-        ],
-        "Pasta": [
-            {name: "Alfredo Pasta", price: {Reg: 500, Large: 900}}, 
-            {name: "Special Pasta", price: {Reg: 450, Large: 800}}, 
-            {name: "Flaming Pasta", price: {Reg: 450, Large: 800}}, 
-            {name: "Creamy Pasta", price: {Reg: 450, Large: 800}}, 
-            {name: "Crunchy Pasta", price: {Reg: 450, Large: 800}}, 
-        ],
-        "Wraps ": [
-            {name: "Maxican Wrap", price: 350}, 
-            {name: "Bihari Wrap", price: 450},
-            {name: "Spin Wrap", price: 550},
-            {name: "Wrapta Strip Wrap", price: 500},
-            {name: "Arabic Wrap", price: 350}, 
-            {name: "Kebabish Wrap", price: 350},
-        ],
-        "Bar Menu (Beverages)": [
-            {name: "345ml Buddy", price: 80}, 
-            {name: "Next Buddy", price: 70}, 
-            {name: "Coke 500ml", price: 120},
-            {name: "Coke 1 Liter", price: 170},
-            {name: "Sprite 1 Liter", price: 170},
-            {name: "Next Cola 1 Liter", price: 130},
-            {name: "Coke 1.5L", price: 220}, 
-            {name: "Sprite 1.5L", price: 220},
-            {name: "Water Small", price: 60},
-            {name: "Water Large", price: 100}
-        ]
+        "Hot Deals 🔥": { icon: "🔥", items: [
+            { id: 1, name: "Deal No.1 (Special Burger + Fries + Drink)", price: 590, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d1.png" },
+            { id: 2, name: "Deal No.2 (Zinger + Fries + Drink)", price: 550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d2.png" },
+            { id: 3, name: "Deal No.3 (Patty Burger + Fries + Drink)", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d3.png" },
+            { id: 4, name: "Deal No.4 (Zinger + Drink)", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d4.png" },
+            { id: 5, name: "Deal No.5 (Zinger Burger + Zinger Roll + 2 Drink)", price: 900, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d5.png" },
+            { id: 6, name: "Deal No.6 (10 Hot Wings + Drink)", price: 720, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d6.png" },
+            { id: 7, name: "Deal No.7 (10 Hot Wings + 2 Zingers + 1 Ltr)", price: 1550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d7.png" },
+            { id: 8, name: "Deal No.8 (Small Pizza + 2 Zingers + 1 Ltr)", price: 1550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d11.png" },
+            { id: 9, name: "Deal No.9 (10 Hot Wings + 10 Nuggets + 1 Ltr)", price: 1350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d9.png" },
+            { id: 10, name: "Deal No.10 (Small Pizza + 10 Hot Wing + 1 Ltr)", price: 1350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d10.png" },
+            { id: 11, name: "Deal No.11 (Small Pizza + Zinger + 1 Ltr)", price: 1130, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d8.png" }, 
+            { id: 12, name: "Deal No.12 (Small Pizza + Zinger + 5 Wings + 1 Ltr)", price: 1500, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d12.png" },
+            { id: 13, name: "Deal No.13 (Large Pizza + 1.5 Ltr Drink)", price: 1750, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d13.png" }, 
+            { id: 14, name: "Deal No.14 (Medium Pizza + 1 Ltr Drink)", price: 1190, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d13.png" }, 
+            { id: 15, name: "Deal No.15 (2 Small Pizza + 1 Ltr Drink)", price: 1300, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" }, 
+            { id: 16, name: "Deal No.16 (2 Medium Pizza + 1.5 Ltr Drink)", price: 2290, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" }, 
+            { id: 17, name: "Deal No.17 (2 Large Pizza + 1.5 Ltr Drink)", price: 3250, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" }, 
+            { id: 18, name: "Deal No.18 (1 Large + 1 Medium + 1.5 Ltr)", price: 2790, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" }, 
+            { id: 19, name: "Deal No.19 (2 Small + 10 Wings + 5 Nuggets + 1.5 Ltr)", price: 2390, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d19.png" },
+            { id: 20, name: "Deal No.20 (1 Large + 2 Zingers + Fries + 1.5 Ltr)", price: 2490, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d20.png" },
+            { id: 21, name: "Deal No.21 (4 Zingers + 1.5 Ltr Drink)", price: 1690, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d21.png" },
+        ]},
+        "Fried Chicken": { icon: "🍗", items: [
+            { name: "Oven Baked Wings", price: {5: 400, 10: 750}, img: "https://i.postimg.cc/Y98rXDYD/Chat-GPT-Image-Feb-13-2026-03-23-13-AM.png" },
+            { name: "Peri-Peri Wings", price: {5: 400, 10: 750}, img: "https://i.postimg.cc/Dz2RCv6n/Chat-GPT-Image-Feb-13-2026-03-27-44-AM.png" },
+            { name: "Hot Wings", price: {5: 390, 10: 690}, img: "https://i.postimg.cc/fRBhQSJX/Chat-GPT-Image-Feb-13-2026-03-31-45-AM.png" },
+            { name: "Butter Wings", price: {5: 400, 10: 750}, img: "https://i.postimg.cc/T3P4m73n/Chat-GPT-Image-Feb-13-2026-03-35-32-AM.png" },
+            { name: "Hot Shots", price: {5: 320, 10: 600}, img: "https://i.postimg.cc/kMfN8n62/Chat-GPT-Image-Feb-13-2026-03-39-36-AM.png" },
+            { name: "Chicken Strips", price: {5: 400, 10: 750}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Strip.png" },
+            { name: "8 Pcs Sweet Chilli Wings", price: 600, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/sweet.png" },
+            { name: "10 Buffalo Wings", price: 750, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/buffalo.png" },
+            { name: "AlBaik Broast", price: 690, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/albaik.png" },
+            { name: "Finger Fish", price: 850, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/fish.png" },
+            { name: "Nuggets", price: {5: 320, 10: 590}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/nuggets.png" },
+            { name: "Al Baik Nuggets", price: {5: 450, 10: 800}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/albaik%20nuggets.png" }
+        ]},
+        "Fries": { icon: "🍟", items: [
+            { name: "Plain Fries", price: {Reg: 200, Medium: 290, Large: 390}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/fries.png" },  
+            { name: "Cheese Loaded Fries", price: 590, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/loaded%20fries.png" }, 
+            { name: "Chicken Cheese Fries", price: 690, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/chicken%20cheese%20fries.png" },
+            { name: "Masala Fries", price: 500, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/masla%20fries.png" },
+            { name: "Pizza Fries", price: 750, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/pizza%20fries.png" },
+            { name: "Chunky Fries", price: 590, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/chunky%20fries.png" },
+        ]},
+        "Burger": { icon: "🍔", items: [
+            { name: "Chicken Patty Burger", price: 320, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/patty%20burger.png" },
+            { name: "Zinger Burger", price: 400, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/zinger%20burger.png" },
+            { name: "Zinger Cheese Burger", price: 480, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/zinger%20cheese.png" },
+            { name: "Mighty Burger", price: 690, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/mighty%20burger.png" },
+            { name: "Fish Burger", price: 650, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/fish%20burger.png" },
+            { name: "Grilled Burger", price: 690, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/grilled%20burger.png" },
+            { name: "Patty Tower Burger", price: 550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/patty%20tower.png" },
+            { name: "Tikka Burger", price: 400, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tikka%20burger.png" },
+            { name: "Beef Cheese Burger", price: 500, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/beef%20cheese%20burger.png" },
+            { name: "Beef Double Decker Burger", price: 850, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Beef%20Double%20Decker.png" },
+            { name: "Single Beef Lacha Burger", price: 550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/single%20beef%20smash.png" },
+            { name: "Double Beef Lacha Burger", price: 850, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/double%20Beef%20Lacha%20Burger.png" },
+            { name: "Zingster Lacha Burger", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/zingster.png" },
+            { name: "Tower Burger", price: 650, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tower%20burger.png" }
+        ]},
+        "Paratha Rolls": { icon: "🌯", items: [
+            { name: "Master Special Roll", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/special%20roll.png" },
+            { name: "BBQ Cheese Roll", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/bbq%20cheese%20roll.png" },
+            { name: "Chicken Cheese Roll", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/chicken%20cheese%20roll.png" },
+            { name: "Zinger Roll", price: 400, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/zinger%20roll.png" },
+            { name: "Zinger Cheese Roll", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/zinger%20cheese%20roll.png" },
+            { name: "Arabic Roll", price: 350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/arabic%20roll.png" },
+            { name: "Kebabish Roll", price: 400, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/kebabish%20roll.png" }
+        ]},
+        "Special Pizza": { icon: "👑", items: [
+            { name: "Bone Fire", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/bonfire.png" },
+            { name: "Pepperoni", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/pepproni%20pizza.png" },
+            { name: "Malai Boti", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/malaiboti3.png" },
+            { name: "Shahi", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/shahi.png" },
+            { name: "Behari Kabab", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/bihari%20kebab%202.png" },
+            { name: "Fish", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/fish%20pizza.png" },
+            { name: "Master Special", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/special.png" },
+            { name: "Nawabi", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/nawabi.png" },
+            { name: "Mughlai", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/mughlai.png" },
+            { name: "Hot Malai Boti", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/redhot.png" },
+            { name: "Creamy Tikka", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/creamy%20tikka.png" }
+        ]},
+        "Regular Pizza": { icon: "🍕", items: [
+            { name: "Chicken Fajita", price: {S:650, M:1150, L:1650, XL:1850}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/fajita.png" },
+            { name: "Hot & Spicy", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/hot%20and%20spicy.png" },
+            { name: "Chicken Tikka", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tikka%20pizza.png" },
+            { name: "Crispy Chicken", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crispy%20chicken.png" },
+            { name: "Chicken Tandori", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tandori.png" },
+            { name: "Vegetable Pizza", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/vegitable.png" },
+            { name: "BBQ", price: {S:650, M:1150, L:1650, XL:1850}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tikka%20pizza.png" },
+            { name: "Chicken Supreme", price: {S:650, M:1150, L:1650, XL:1850}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/supreme.png" },
+            { name: "Kebabish", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/kebabish%20pizza.png" },
+        ]},
+        "Extreme Premium Pan": { icon: "💎", items: [
+            { name: "Rich Kabab", price: { M: 1790, L: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/rich%20kebab.png" },
+            { name: "Peri Peri", price: { M: 1790, L: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/peri%20peri%20premium.png" },
+        ]},
+        "Deep Dish": { icon: "🥘", items: [
+            {name: "Malai Boti", price: {M:1790, L:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Deep%20Dish.png"}, 
+            {name: "Peri Peri", price: {M:1790, L:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Deep%20Dish.png"}
+        ]},
+        "Beef Lover": { icon: "🥩", items: [
+            { name: "Beef Veggie", price: { S: 750, M: 1450, L: 1850, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/beef%20vigge.png" },
+            { name: "Beef Cheese", price: { S: 750, M: 1450, L: 1850, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/beef%20cheese.png" },
+            { name: "Beef Pepperoni", price: { S: 750, M: 1450, L: 1850, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/beef%20pepperoni.png" }
+        ]},
+        "Stuffed Crust": { icon: "🥨", items: [
+            { name: "Kabab Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
+            { name: "Crown Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crown%20crust.png" },
+            { name: "Cheese Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
+            { name: "Chicken Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
+        ]},
+        "Sighnature Box": { icon: "🎁", items: [
+            { name: "Master Platter (6 Oven Baked Wings + 4 Spin Wrap + Fries + Dip + 345ml)", price: 1150, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/platter.png" },
+            { name: "Duo Box (2 Zinger + 2 Pcs Albaik + Fries + 2 Dip)", price: 1499, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Duo%20Box.png" },
+            { name: "Wow Box (4 Pcs Albaik + Fries + 1 Bun + 2 Dip)", price: 1250, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/wow%20box.png" },
+            { name: "Boneless Box (5 Strips + 5 Hotshot + Fries + Dip)", price: 899, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/boneless.png" },
+            { name: "Hunger Box (Crown Small + 5 Hotshot + Fries + Dip)", price: 1199, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/hunger.png" },
+        ]},
+        "Pasta": { icon: "🍝", items: [
+            {name: "Alfredo Pasta", price: {Half: 500, Full: 900}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/alferdo.png" },
+            {name: "Special Pasta", price: {Half: 450, Full: 800}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/special%20pasta.png" },
+            {name: "Flaming Pasta", price: {Half: 450, Full: 800}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/flaming.png" },
+            {name: "Creamy Pasta", price: {Half: 450, Full: 800}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/creamy.png" },
+            {name: "Crunchy Pasta", price: {Half: 450, Full: 800}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crunchy.png" },
+        ]},
+        "Wraps": { icon: "🌯", items: [
+            {name: "Maxican Wrap", price: 350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/arabic%20roll.png"}, 
+            {name: "Bihari Wrap", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/special%20roll.png"},
+            {name: "Spin Wrap", price: 550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/bbq%20cheese%20roll.png"},
+            {name: "Wrapta Strip Wrap", price: 500, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/zinger%20roll.png"},
+            {name: "Arabic Wrap", price: 350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/arabic%20roll.png"}, 
+            {name: "Kebabish Wrap", price: 350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/kebabish%20roll.png"},
+        ]},
+        "Bar Menu (Beverages)": { icon: "🥤", items: [
+            { name: "345ml Buddy", price: 80, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/345ml.png" },
+            { name: "Next Buddy", price: 70, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/345ml%20nxt.png" },
+            { name: "Coke 500ml", price: 120, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/500ml.png" },
+            { name: "Coke 1 Liter", price: 170, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/1.5l.png" },
+            { name: "Sprite 1 Liter", price: 170, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/sprite1.png" },
+            { name: "Next Cola 1 Liter", price: 130, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/next1.png" },
+            { name: "Coke 1.5L", price: 220, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/1.5l.png" },
+            { name: "Sprite 1.5L", price: 220, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/sprite1.png" },
+            { name: "Next Cola 1.5L Liter", price: 170, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/next1.png" },
+            { name: "Water Small", price: 60, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/small%20water.png" },
+            { name: "Water Large", price: 100, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/large%20water.png" }
+        ]}
     };
 
-    const dealsData = [
-        { name: "Midnight Deal 1", desc: "2x Med Extreme Pizzas + 1.5L Drink", price: 2699, badge: "HOT DEAL", img: "deal1.jpg", flavorsNeeded: [{label: "Pizza 1", cat: "Extreme Pizza"}, {label: "Pizza 2", cat: "Extreme Pizza"}], fixedItems: ["1.5L Soft Drink"] },
-        { name: "Midnight Deal 2", desc: "1x Large wings + 2x Large Pan Pizzas + 1.5L Drink", price: 3249, badge: "SAVER", img: "deal2.jpg", flavorsNeeded: [{label: "Pizza 1", cat: "Pan Pizza"}, {label: "Pizza 2", cat: "Pan Pizza"}], fixedItems: ["1x Large Hot Wings", "1.5L Soft Drink"] },
-        { name: "Midnight Deal 3", desc: "1x Large wings + 2x Large Premium Pizzas + 1.5L Drink", price: 3649, badge: "PREMIUM", img: "deal3.jpg", flavorsNeeded: [{label: "Pizza 1", cat: "Premium Pizza"}, {label: "Pizza 2", cat: "Premium Pizza"}], fixedItems: ["1x Large Hot Wings", "1.5L Soft Drink"] },
-        { name: "Midnight Deal 4", desc: "1x Med Extreme Pizza + 1x Large Extreme Pizza + 1.5L Drink", price: 3149, badge: "MIX DEAL", img: "deal4.jpg", flavorsNeeded: [{label: "Medium Pizza", cat: "Extreme Pizza"}, {label: "Large Pizza", cat: "Extreme Pizza"}], fixedItems: ["1.5L Soft Drink"] },
-        { name: "Family Feast", desc: "2 Med Pizzas + 2 Zingers + 1L Drink + 6 Wings", price: 2299, badge: "FAMILY", img: "deal6.jpg", flavorsNeeded: [{label: "Pizza 1", cat: "Pan/Premium"}, {label: "Pizza 2", cat: "Pan/Premium"}], fixedItems: ["2x Zinger Burgers", "1L Drink", "6x Wings"] },
-        { name: "Extreme Buddy", desc: "1 Medium Extreme Pizza + Free 1L Drink", price: 1449, badge: "BEST SELLER", img: "dealbuddy.jpg", flavorsNeeded: [{label: "Pizza Flavor", cat: "Extreme Pizza"}], fixedItems: ["1L Drink"] },
-        { name: "Burger Deal 1", desc: "2 Zingers + 1 Reg Fries + 2 Drinks", price: 999, badge: "DELIVERY", img: "delburger1.jpg", fixedItems: ["2x Zinger Burgers", "1x Regular Fries", "2x Drinks"] },
-        { name: "Burger Deal 2", desc: "1 Zinger + 1 Reg Fries + 1 345ml Drink + 2 Wings", price: 990, badge: "DELIVERY", img: "delburger2.jpg", fixedItems: ["1x Zinger Burger", "1x Regular Fries", "1x 345ml Buddy Drink", "2x Pcs Wings"] },
-        { name: "Burger Deal 3", desc: "4 Classic Zingers + 2 Reg Fries + 1L Drink + 6 Wings", price: 1990, badge: "DELIVERY", img: "delburger3.jpg", fixedItems: ["4x Classic Zinger Burgers", "2x Regular Fries", "1x 1 Liter Drink", "6x Pcs Wings"] },
-        { name: "01 PIZZA DEAL", desc: "1 Large Pizza (Pan) + 1L Drink", price: 1299, badge: "DELIVERY", img: "deldeal1.jpg", flavorsNeeded: [{label: "Pizza", cat: "Pan Pizza"}], fixedItems: ["1L Drink"] },
-        { name: "02 PIZZA DEAL", desc: "1 Large Pizza (Premium) + 1L Drink", price: 1499, badge: "DELIVERY", img: "deldeal2.jpg", flavorsNeeded: [{label: "Pizza", cat: "Premium Pizza"}], fixedItems: ["1L Drink"] },
-        { name: "03 PIZZA DEAL", desc: "1 Large Crown Pizza + 1L Drink", price: 1599, badge: "DELIVERY", img: "deldeal3.jpg", flavorsNeeded: [{label: "Crown Flavor", cat: "Craft My Own Pizza"}], fixedItems: ["1L Drink"] },
-        { name: "04 PIZZA DEAL", desc: "1 Large Extreme Pizza + 1L Drink", price: 1999, badge: "DELIVERY", img: "deldeal4.jpg", flavorsNeeded: [{label: "Extreme Flavor", cat: "Extreme Pizza"}], fixedItems: ["1L Drink"] }
-        
-    ];
+    let cart = [];
+    let selectedItem = null;
+    let currentCategory = "Hot Deals 🔥";
 
-    let cart = [], selectedItem = null, selectedQty = 1, orderType = "", tableNum = "", userAddress = "", delCharge = 0;
-    let chkStep = 1, dealChoices = [], currentFlavorStep = 0;
-
-    // --- INITIALIZATION ---
-    const urlParams = new URLSearchParams(window.location.search);
-    if(urlParams.has('table')) {
-        tableNum = urlParams.get('table').toUpperCase();
-        // Set Welcome Banner on Gateway
-        document.getElementById('gateway-table-id').innerText = tableNum;
-        document.getElementById('gateway-table-note').style.display = 'block';
-        document.getElementById('tagline').style.display = 'none'; // Hide tagline to make room
-        document.getElementById('header-table-indicator').innerText = "(TABLE " + tableNum + ")";
+    function enterApp(cat) {
+        document.getElementById('gateway').style.display = 'none';
+        document.getElementById('main-app').style.display = 'block';
+        renderTabs();
+        switchCategory(cat);
     }
 
-    function enterApp(target) {
-        document.getElementById('gateway-screen').style.display = 'none';
-        document.getElementById('main-header').style.display = 'flex';
-        document.getElementById('nav-tabs').style.display = 'flex';
-        document.getElementById('cart-bar').style.display = 'flex';
-        
-        // Show QR Scanning Welcome Message immediately after entering
-        if(tableNum && orderType === "") {
-            document.getElementById('welcome-msg').innerText = "WELCOME TO Pizza Master! \n You are ordering for Table " + tableNum;
-            renderServiceOptions();
-            document.getElementById('welcome-overlay').style.display = 'flex';
-        }
-        if(target === 'deals') switchTab('deals'); else switchTab('menu');
+    function renderTabs() {
+        const tabs = document.getElementById('cat-tabs');
+        tabs.innerHTML = Object.keys(menuData).map(cat => 
+            `<div class="cat-tab" id="tab-${cat.replace(/[^\w]/g, '')}" onclick="switchCategory('${cat}')">
+                <span>${menuData[cat].icon}</span> ${cat}
+            </div>`
+        ).join('');
     }
 
-    function renderServiceOptions() {
-        const container = document.getElementById('service-options-container');
-        // Hide Delivery if QR Scanned (tableNum present)
-        let html = `<button class="next-btn" onclick="setInitialService('Dine-In')" style="background:#007bff;">🍽️ Dine-In (7% SC)</button>
-                    <button class="next-btn" onclick="setInitialService('Takeaway')" style="background:#6c757d;">🥡 Takeaway</button>`;
-        
-        if (!tableNum) {
-            html += `<button class="next-btn" style="background:var(--red)" onclick="setInitialService('Delivery')">🚚 Delivery</button>`;
-        }
-        container.innerHTML = html;
+    function switchCategory(cat) {
+        currentCategory = cat;
+        document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+        const tabEl = document.getElementById(`tab-${cat.replace(/[^\w]/g, '')}`);
+        if(tabEl) tabEl.classList.add('active');
+        const grid = document.getElementById('items-grid');
+        grid.innerHTML = menuData[cat].items.map((item, index) => renderItemHTML(item, cat, index)).join('');
     }
 
-    function exitToGateway() { document.getElementById('gateway-screen').style.display = 'flex'; document.getElementById('main-header').style.display = 'none'; document.getElementById('nav-tabs').style.display = 'none'; document.getElementById('cart-bar').style.display = 'none'; }
-
-    function switchTab(tab) {
-        if(tab === 'menu') {
-            document.getElementById('menu-container').style.display = 'block';
-            document.getElementById('deals-container').style.display = 'none';
-            document.getElementById('tab-menu').classList.add('active');
-            document.getElementById('tab-deals').classList.remove('active');
-        } else {
-            document.getElementById('menu-container').style.display = 'none';
-            document.getElementById('deals-container').style.display = 'block';
-            document.getElementById('tab-deals').classList.add('active');
-            document.getElementById('tab-menu').classList.remove('active');
-            renderDeals();
-        }
+    function renderItemHTML(item, cat, index) {
+        let p = typeof item.price === 'object' ? `From Rs ${Object.values(item.price)[0]}` : `Rs ${item.price}`;
+        return `<div class="card" onclick="openItem('${cat}', ${index})">
+            <img src="${item.img}" class="card-img">
+            <div class="card-info"><div class="card-name">${item.name}</div><div class="card-price">${p}</div></div>
+        </div>`;
     }
 
-    function renderDeals() {
-        const list = document.getElementById('deals-list'); list.innerHTML = '';
-        dealsData.forEach(deal => {
-            const card = document.createElement('div'); card.className = 'deal-card';
-            card.innerHTML = `<div class="deal-badge">${deal.badge}</div><img src="${deal.img}" class="deal-img"><div class="deal-content"><div class="deal-title">${deal.name}</div><p class="deal-desc">${deal.desc}</p><div class="deal-price">Rs ${deal.price}</div><button class="next-btn" style="margin-top:10px; background:var(--orange)" onclick='openOrderFlow(${JSON.stringify(deal)})'>Add Deal</button></div>`;
-            list.appendChild(card);
+    function filterItems() {
+        const query = document.getElementById('menuSearch').value.toLowerCase();
+        const grid = document.getElementById('items-grid');
+        if(!query) { switchCategory(currentCategory); return; }
+        let html = ""; let found = false;
+        Object.keys(menuData).forEach(cat => {
+            menuData[cat].items.forEach((item, index) => {
+                if(item.name.toLowerCase().includes(query)) {
+                    html += renderItemHTML(item, cat, index);
+                    found = true;
+                }
+            });
         });
+        grid.innerHTML = html;
+        document.getElementById('no-results').style.display = found ? 'none' : 'block';
     }
 
-    function openOrderFlow(item) {
-        selectedItem = JSON.parse(JSON.stringify(item));
-        dealChoices = []; currentFlavorStep = 0;
-        if (selectedItem.flavorsNeeded) { startFlavorSelection(); } 
-        else if (item.price && typeof item.price === 'object') {
-            const sizeGrid = document.getElementById('size-grid'); sizeGrid.innerHTML = '';
-            for (let s in item.price) {
-                let sBtn = document.createElement('div'); sBtn.className = 'btn';
-                sBtn.innerHTML = `<div>${s}</div><div class="price-tag">Rs ${item.price[s]}</div>`;
-                sBtn.onclick = () => { selectedItem.name += " (" + s + ")"; selectedItem.price = item.price[s]; document.getElementById('size-overlay').style.display = 'none'; openQtyModal(); };
-                sizeGrid.appendChild(sBtn);
-            }
-            document.getElementById('size-overlay').style.display = 'flex';
-        } else { openQtyModal(); }
+    function openItem(cat, index) {
+        selectedItem = menuData[cat].items[index];
+        document.getElementById('m-name').innerText = selectedItem.name;
+        const area = document.getElementById('size-selector-area');
+        area.innerHTML = (typeof selectedItem.price === 'object') ? 
+            `<select id="m-size">${Object.entries(selectedItem.price).map(([s,p]) => `<option value="${p}">${s} - Rs ${p}</option>`).join('')}</select>` : '';
+        document.getElementById('item-modal').style.display = 'flex';
     }
 
-    function startFlavorSelection() {
-        const step = selectedItem.flavorsNeeded[currentFlavorStep];
-        document.getElementById('flavor-title').innerText = "Pick " + step.label;
-        document.getElementById('flavor-step-info').innerText = `Choice ${currentFlavorStep + 1} of ${selectedItem.flavorsNeeded.length}`;
-        const grid = document.getElementById('flavor-grid'); grid.innerHTML = '';
-        let flavors = [];
-        if (step.cat === "Pan/Premium") flavors = [...menuData["Pan Pizza"], ...menuData["Premium Pizza"]];
-        else flavors = menuData[step.cat];
-        flavors.forEach(f => {
-            const b = document.createElement('div'); b.className = 'btn'; b.innerText = f.name;
-            b.onclick = function() { selectFlavor(f.name, this); }; grid.appendChild(b);
+    function addToCart() {
+        let price = (typeof selectedItem.price === 'object') ? parseInt(document.getElementById('m-size').value) : selectedItem.price;
+        let name = selectedItem.name;
+        if(document.getElementById('m-size')) name += ` (${document.getElementById('m-size').options[document.getElementById('m-size').selectedIndex].text.split(' -')[0]})`;
+        cart.push({name, price, qty: parseInt(document.getElementById('m-qty').value), note: document.getElementById('m-note').value});
+        updateCart(); closeModals();
+    }
+
+    function updateCart() {
+        const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+        document.getElementById('cart-count').innerText = `${cart.length} Items`;
+        document.getElementById('cart-total').innerText = `Rs ${total}`;
+        document.getElementById('cart-bar').style.display = cart.length > 0 ? 'flex' : 'none';
+    }
+
+    function openCheckout() { renderSummary(); document.getElementById('checkout-modal').style.display = 'flex'; }
+
+    function renderSummary() {
+        document.getElementById('summary').innerHTML = cart.map((i, idx) => `
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <div style="font-size:13px;">${i.qty}x ${i.name}<br><small style="color:var(--orange)">Rs ${i.price * i.qty}</small></div>
+                <button class="remove-btn" onclick="removeItem(${idx})">✕</button>
+            </div>`).join('');
+    }
+
+    function removeItem(index) { cart.splice(index, 1); updateCart(); renderSummary(); if(cart.length === 0) closeModals(); }
+    function closeModals() { document.querySelectorAll('.overlay').forEach(o => o.style.display = 'none'); }
+
+    function sendOrder() {
+        const n = document.getElementById('c-name').value;
+        const l = document.getElementById('c-loc').value;
+        const p = document.getElementById('c-phone').value;
+        const type = document.getElementById('c-type').value;
+        const total = document.getElementById('cart-total').innerText;
+        if(!n || !l || !p) return alert("Fill all details!");
+
+        let typeIcon = type === "Delivery" ? "🚚" : (type === "Takeaway" ? "🛍️" : "🍽️");
+
+        let msg = "🍕 *PIZZA MASTER | NEW ORDER*\n";
+        msg += "--------------------------\n";
+        msg += "👤 *CUSTOMER DETAILS*\n";
+        msg += "*Name:* " + n + "\n";
+        msg += "*Phone:* " + p + "\n";
+        msg += "*Type:* " + typeIcon + " " + type + "\n";
+        msg += "*Address:* " + l + "\n\n";
+        
+        msg += "🛒 *ORDER ITEMS*\n";
+        msg += "--------------------------\n";
+        cart.forEach(i => {
+            msg += "• " + i.qty + "x " + i.name + " = Rs " + (i.price * i.qty) + "\n";
+            if(i.note) msg += "  (Note: " + i.note + ")\n";
         });
-        document.getElementById('flavor-overlay').style.display = 'flex';
-    }
 
-    function selectFlavor(name, el) {
-        el.classList.add('selected-flavor');
-        setTimeout(() => {
-            dealChoices.push(`${selectedItem.flavorsNeeded[currentFlavorStep].label}: ${name}`);
-            currentFlavorStep++;
-            if (currentFlavorStep < selectedItem.flavorsNeeded.length) startFlavorSelection();
-            else { document.getElementById('flavor-overlay').style.display = 'none'; selectedItem.flavorNotes = dealChoices.join(", "); openQtyModal(); }
-        }, 300);
-    }
+        msg += "--------------------------\n";
+        msg += "💰 *BILL TOTAL: " + total + "*\n";
+        msg += "--------------------------\n\n";
+        msg += "👨‍🍳 *Your Pizza Master favorites are being prepared with care! Thank you for choosing us.*\n";
+        msg += "🔗 *Follow for Deals:* facebook.com/PizzaMasterLodhran";
 
-    function openQtyModal() { document.getElementById('modal-item-name').innerText = selectedItem.name; document.getElementById('special-note').value = ''; setQty(1); document.getElementById('modal-overlay').style.display = 'flex'; }
-    function setQty(q) { selectedQty = q; document.querySelectorAll('.qty-btn').forEach((b, i) => { b.classList.remove('active'); if (i === q-1) b.classList.add('active'); }); }
-    function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
-
-    function addToCartFinal() { 
-        const note = document.getElementById('special-note').value;
-        let finalDetail = "";
-        if(selectedItem.flavorNotes) finalDetail += selectedItem.flavorNotes;
-        if(selectedItem.fixedItems) finalDetail += (finalDetail ? "\n" : "") + "Includes: " + selectedItem.fixedItems.join(", ");
-        if(note) finalDetail += (finalDetail ? "\nNote: " : "") + note;
-        cart.push({ ...selectedItem, qty: selectedQty, note: finalDetail }); 
-        updateCartBar(); closeModal(); 
-    }
-
-    function updateCartBar() {
-        const totalItems = cart.reduce((s, i) => s + i.qty, 0);
-        const totalPrice = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-        document.getElementById('cart-count').innerText = `Items: ${totalItems}`;
-        document.getElementById('cart-total').innerText = `Rs ${totalPrice}`;
-        document.getElementById('cart-bar').style.display = totalItems > 0 ? 'flex' : 'none';
-    }
-
-    function removeItem(idx) { cart.splice(idx, 1); updateCartBar(); if(cart.length === 0) document.getElementById('overlay-screen').style.display = 'none'; else renderFinalSummary(delCharge); }
-
-    function startCheckout() { document.getElementById('overlay-screen').style.display = 'block'; renderServiceTypeStep(); }
-    
-    function renderServiceTypeStep() { 
-        chkStep = 1; 
-        document.getElementById('checkout-content').innerHTML = `<div class="chat-bubble">Select Service Type:</div><div class="input-group" id="checkout-options-buttons"></div>`;
-        renderCheckoutServiceButtons();
-    }
-
-    function renderCheckoutServiceButtons() {
-        const container = document.getElementById('checkout-options-buttons');
-        let html = `<button class="next-btn" style="background:#007bff" onclick="selectService('Dine-In')">🍽️ Dine-In (7% SC)</button>
-                    <button class="next-btn" style="background:#6c757d" onclick="selectService('Takeaway')">🥡 Takeaway</button>`;
-        // Only show Delivery if NOT scanned via QR
-        if (!tableNum) {
-            html += `<button class="next-btn" style="background:var(--red)" onclick="selectService('Delivery')">🚚 Delivery</button>`;
-        }
-        container.innerHTML = html;
-    }
-
-    function selectService(type) { orderType = type; if(type === 'Dine-In') { if(tableNum) renderFinalSummary(0); else renderTableStep(); } else if(type === 'Takeaway') renderFinalSummary(0); else renderAddressStep(); }
-    function renderTableStep() { chkStep = 2; document.getElementById('checkout-content').innerHTML = `<div class="chat-bubble">Enter <b>Table ID</b>:</div><div class="input-group"><input type="text" id="manualTable" placeholder="Table ID (e.g. A1)"><button class="next-btn" onclick="tableNum=document.getElementById('manualTable').value.toUpperCase(); renderFinalSummary(0)">Next</button></div>`; }
-    function renderAddressStep() { chkStep = 2; document.getElementById('checkout-content').innerHTML = `<div class="chat-bubble">🚚 Calculate delivery charges first.</div><div style="background:#fff3e0; border:2px dashed var(--orange); padding:20px; border-radius:15px; text-align:center; cursor:pointer;" onclick="loadDeliverySystem()">📍 CLICK HERE TO CALCULATE</div>`; }
-    function loadDeliverySystem() { document.getElementById('checkout-content').innerHTML = `<iframe src="https://oven-x-deliverer--ovenxoperations.replit.app/ovenxdeliverycalculator?view=customer" style="width:100%; height:450px; border:none; border-radius:15px;" allow="geolocation"></iframe><button class="next-btn" onclick="manualFinish()" style="background:var(--orange); margin-top:10px;">CONTINUE →</button>`; }
-    function manualFinish() { const fee = prompt("Enter Charges:"); if(fee===null) return; const addr = prompt("Enter Address:"); if(!addr) return; userAddress = addr; delCharge = fee; renderFinalSummary(fee); }
-
-    function renderFinalSummary(fee) {
-        chkStep = 3; delCharge = parseFloat(fee) || 0;
-        const foodTotal = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-        let sc = (orderType === "Dine-In") ? Math.round(foodTotal * 0.07) : 0;
-        const grand = foodTotal + delCharge + sc;
-
-        const summaryHTML = cart.map((i, idx) => `<div class="summary-item"><div style="width:75%;"><b>${i.qty}x ${i.name}</b><br><small style="color:#666; white-space:pre-line;">${i.note || ''}</small></div><div class="remove-item-btn" onclick="removeItem(${idx})">🗑️ Remove</div></div>`).join('');
-
-        const itemsListText = cart.map(i => i.qty + "x " + i.name + (i.note ? " ["+i.note+"]" : "")).join("\n");
-        const waMsg = encodeURIComponent(`*OVEN X - ${orderType.toUpperCase()} ORDER*${tableNum ? '\n*TABLE: ' + tableNum + '*' : ''}\n\n${itemsListText}\n\nSubtotal: Rs ${foodTotal}${sc > 0 ? '\nS.C (7%): Rs ' + sc : ''}${delCharge > 0 ? '\nDelivery Charge: Rs ' + delCharge : ''}\n*Grand Total: Rs ${grand}*\n\n${userAddress ? '*Address:* ' + userAddress : ''}`);
-
-        document.getElementById('checkout-content').innerHTML = `<div class="chat-bubble"><b>ORDER SUMMARY</b></div>${summaryHTML}<div class="chat-bubble">Subtotal: Rs ${foodTotal}${sc > 0 ? '<br>S.C: Rs '+sc : ''}${delCharge > 0 ? '<br>Delivery: Rs '+delCharge : ''}<br><hr>Total: <b>Rs ${grand}</b></div><button onclick="window.open('https://wa.me/923156838383?text=${waMsg}', '_blank')" class="confirm-btn">Confirm Order via WhatsApp</button>`;
-    }
-
-    function setInitialService(type) { orderType = type; document.getElementById('welcome-overlay').style.display = 'none'; }
-    document.getElementById('checkout-back-btn').onclick = function() { if(chkStep === 1) document.getElementById('overlay-screen').style.display = 'none'; else renderServiceTypeStep(); };
-
-    // --- RENDER MENU ---
-    const mContainer = document.getElementById('menu-container');
-    for (let cat in menuData) {
-        let title = document.createElement('div'); title.className = 'section-title'; title.innerText = cat; mContainer.appendChild(title);
-        let grid = document.createElement('div'); grid.className = 'grid';
-        menuData[cat].forEach(item => {
-            let btn = document.createElement('div'); btn.className = 'btn';
-            btn.innerHTML = `<div>${item.name}</div><div class="price-tag">${typeof item.price === 'object' ? 'Select Size' : 'Rs '+item.price}</div>`;
-            btn.onclick = () => openOrderFlow(item); grid.appendChild(btn);
-        });
-        mContainer.appendChild(grid);
+        window.open("https://wa.me/923156838383?text=" + encodeURIComponent(msg), '_blank');
+        cart = []; updateCart(); closeModals();
     }
 </script>
 </body>
