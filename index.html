@@ -8,8 +8,8 @@
 
 <style>
 :root { 
-    --red:#800000; /* Deep maroon/red from image */
-    --orange:#f37021; /* Bright orange from image */
+    --red:#800000; 
+    --orange:#f37021; 
     --bg:#fff9f5; 
     --white:#ffffff; 
     --green:#25D366; 
@@ -19,7 +19,6 @@
 * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; outline:none; }
 body { font-family:'Segoe UI',Roboto,sans-serif; background:var(--bg); margin:0; overflow-x:hidden; }
 
-/* --- UPDATED HEADER STYLE TO MATCH IMAGE --- */
 header { 
     background: var(--red); 
     color: white; 
@@ -28,9 +27,9 @@ header {
     top: 0; 
     z-index: 1002; 
     display: flex; 
-    justify-content: center; /* Centers the logo like the image */
+    justify-content: center; 
     align-items: center;
-    border-bottom: 4px solid var(--orange); /* The orange line under the header */
+    border-bottom: 4px solid var(--orange); 
 }
 
 .header-logo-text {
@@ -41,11 +40,8 @@ header {
     font-family: 'Arial Black', sans-serif;
 }
 
-.header-logo-text span {
-    color: var(--orange);
-}
+.header-logo-text span { color: var(--orange); }
 
-/* --- REST OF THE STYLES --- */
 #gateway { position:fixed; top:0; left:0; width:100%; height:100%; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:2000; text-align:center; color:white; }
 .logo-3d-main { width:220px; margin-bottom:20px; animation:logoFloat 3s ease-in-out infinite; filter:drop-shadow(0 20px 30px rgba(0,0,0,0.5)); }
 @keyframes logoFloat { 0%{transform:translateY(0px);} 50%{transform:translateY(-12px);} 100%{transform:translateY(0px);} }
@@ -126,22 +122,25 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         <div id="summary" style="text-align:left; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px; max-height:200px; overflow-y:auto;"></div>
         <input type="text" id="c-name" placeholder="Full Name">
         <input type="text" id="c-phone" placeholder="Active Sim Number">
-        <select id="c-type"><option>Delivery</option><option>Takeaway</option><option>Dine-In</option></select>
-        <textarea id="c-loc" placeholder="Complete Address"></textarea>
+        <select id="c-type" onchange="toggleAddressField()">
+            <option value="Delivery">Delivery</option>
+            <option value="Takeaway">Takeaway</option>
+            <option value="Dine-In">Dine-In</option>
+        </select>
+        <div id="address-wrapper">
+            <textarea id="c-loc" placeholder="Complete Address"></textarea>
+        </div>
         <button class="add-btn" style="background:var(--green);" onclick="sendOrder()">SEND ORDER VIA WHATSAPP</button>
-        
         <a href="https://www.facebook.com/PizzaMasterLodhran" target="_blank" class="fb-btn">
             <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" width="18"> Follow us for Deals
         </a>
-        
         <button onclick="closeModals()" style="background:none; border:none; width:100%; margin-top:15px; color:gray;">Back</button>
     </div>
 </div>
 
 <script>
-    // FULL MENU DATA (Truncated for brevity, add your items here)
     const menuData = {
-        "Hot Deals 🔥": { icon: "🔥", items: [
+         "Hot Deals 🔥": { icon: "🔥", items: [
             { id: 1, name: "Deal No.1 (Special Burger + Fries + Drink)", price: 590, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d1.png" },
             { id: 2, name: "Deal No.2 (Zinger + Fries + Drink)", price: 550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d2.png" },
             { id: 3, name: "Deal No.3 (Patty Burger + Fries + Drink)", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d3.png" },
@@ -290,7 +289,6 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
             { name: "Water Large", price: 100, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/large%20water.png" }
         ]}
     };
-
     let cart = [];
     let selectedItem = null;
     let currentCategory = "Hot Deals 🔥";
@@ -345,12 +343,11 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         document.getElementById('no-results').style.display = found ? 'none' : 'block';
     }
 
-    // --- FIX 1: CLEAR NOTE WHEN OPENING ---
     function openItem(cat, index) {
         selectedItem = menuData[cat].items[index];
         document.getElementById('m-name').innerText = selectedItem.name;
-        document.getElementById('m-qty').value = 1; 
-        document.getElementById('m-note').value = ""; // Clear instructions box
+        document.getElementById('m-qty').value = 1;
+        document.getElementById('m-note').value = ""; // Fix: Clear previous note
         
         const area = document.getElementById('size-selector-area');
         area.innerHTML = (typeof selectedItem.price === 'object') ? 
@@ -358,22 +355,15 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         document.getElementById('item-modal').style.display = 'flex';
     }
 
-    // --- FIX 2: CLEAR NOTE AFTER ADDING ---
     function addToCart() {
         let price = (typeof selectedItem.price === 'object') ? parseInt(document.getElementById('m-size').value) : selectedItem.price;
         let name = selectedItem.name;
         if(document.getElementById('m-size')) name += ` (${document.getElementById('m-size').options[document.getElementById('m-size').selectedIndex].text.split(' -')[0]})`;
         
         let itemNote = document.getElementById('m-note').value;
-
-        cart.push({
-            name: name, 
-            price: price, 
-            qty: parseInt(document.getElementById('m-qty').value), 
-            note: itemNote
-        });
-
-        document.getElementById('m-note').value = ""; // Reset box for next time
+        cart.push({name, price, qty: parseInt(document.getElementById('m-qty').value), note: itemNote});
+        
+        document.getElementById('m-note').value = ""; // Fix: Reset note box
         updateCart(); 
         closeModals();
     }
@@ -389,12 +379,10 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
 
     function renderSummary() {
         document.getElementById('summary').innerHTML = cart.map((i, idx) => `
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px dashed #eee; padding-bottom:5px;">
-                <div style="font-size:13px;">
-                    <b>${i.qty}x ${i.name}</b><br>
-                    ${i.note ? `<small style="color:var(--red)">Note: ${i.note}</small><br>` : ''}
-                    <small style="color:var(--orange)">Rs ${i.price * i.qty}</small>
-                </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <div style="font-size:13px;"><b>${i.qty}x ${i.name}</b><br>
+                ${i.note ? `<small style="color:red">Note: ${i.note}</small><br>` : ''}
+                <small style="color:var(--orange)">Rs ${i.price * i.qty}</small></div>
                 <button class="remove-btn" onclick="removeItem(${idx})">✕</button>
             </div>`).join('');
     }
@@ -402,7 +390,12 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
     function removeItem(index) { cart.splice(index, 1); updateCart(); renderSummary(); if(cart.length === 0) closeModals(); }
     function closeModals() { document.querySelectorAll('.overlay').forEach(o => o.style.display = 'none'); }
 
-    // --- FIX 3: COMPLETE SEND ORDER LOGIC ---
+    function toggleAddressField() {
+        const type = document.getElementById('c-type').value;
+        const wrap = document.getElementById('address-wrapper');
+        wrap.style.display = (type === "Delivery") ? "block" : "none";
+    }
+
     function sendOrder() {
         const n = document.getElementById('c-name').value;
         const l = document.getElementById('c-loc').value;
@@ -410,34 +403,20 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         const type = document.getElementById('c-type').value;
         const total = document.getElementById('cart-total').innerText;
 
-        if(!n || !l || !p) return alert("Please fill in all details!");
+        if(!n || !p || (type === "Delivery" && !l)) return alert("Please fill all details!");
 
         let typeIcon = type === "Delivery" ? "🚚" : (type === "Takeaway" ? "🛍️" : "🍽️");
+        let msg = "🍕 *PIZZA MASTER | NEW ORDER*\n--------------------------\n";
+        msg += "👤 *CUSTOMER DETAILS*\n*Name:* " + n + "\n*Phone:* " + p + "\n*Type:* " + typeIcon + " " + type + "\n";
+        if(type === "Delivery") msg += "*Address:* " + l + "\n";
+        msg += "\n🛒 *ORDER ITEMS*\n--------------------------\n";
 
-        let msg = "🍕 *PIZZA MASTER | NEW ORDER*\n";
-        msg += "--------------------------\n";
-        msg += "👤 *CUSTOMER DETAILS*\n";
-        msg += "*Name:* " + n + "\n";
-        msg += "*Phone:* " + p + "\n";
-        msg += "*Type:* " + typeIcon + " " + type + "\n";
-        msg += "*Address:* " + l + "\n\n";
-        
-        msg += "🛒 *ORDER ITEMS*\n";
-        msg += "--------------------------\n";
-
-        cart.forEach((i) => {
+        cart.forEach(i => {
             msg += "• " + i.qty + "x " + i.name + " = Rs " + (i.price * i.qty) + "\n";
-            if (i.note && i.note.trim() !== "") {
-                msg += "  └ _Note: " + i.note.trim() + "_\n";
-            }
+            if(i.note) msg += "  └ _Note: " + i.note + "_\n";
         });
 
-        msg += "--------------------------\n";
-        msg += "💰 *BILL TOTAL: " + total + "*\n";
-        msg += "--------------------------\n\n";
-         msg += "👨‍🍳 *Thanks for being part of the Pizza Master family!*\n";
-        msg += "🔗 *Follow for Deals:* facebook.com/PizzaMasterLodhran";
-
+        msg += "--------------------------\n💰 *BILL TOTAL: " + total + "*\n--------------------------\n\n👨‍🍳 Prepared with care by Pizza Master!";
         window.open("https://wa.me/923156838383?text=" + encodeURIComponent(msg), '_blank');
         cart = []; updateCart(); closeModals();
     }
