@@ -345,21 +345,37 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         document.getElementById('no-results').style.display = found ? 'none' : 'block';
     }
 
+    // --- FIX 1: CLEAR NOTE WHEN OPENING ---
     function openItem(cat, index) {
         selectedItem = menuData[cat].items[index];
         document.getElementById('m-name').innerText = selectedItem.name;
+        document.getElementById('m-qty').value = 1; 
+        document.getElementById('m-note').value = ""; // Clear instructions box
+        
         const area = document.getElementById('size-selector-area');
         area.innerHTML = (typeof selectedItem.price === 'object') ? 
             `<select id="m-size">${Object.entries(selectedItem.price).map(([s,p]) => `<option value="${p}">${s} - Rs ${p}</option>`).join('')}</select>` : '';
         document.getElementById('item-modal').style.display = 'flex';
     }
 
+    // --- FIX 2: CLEAR NOTE AFTER ADDING ---
     function addToCart() {
         let price = (typeof selectedItem.price === 'object') ? parseInt(document.getElementById('m-size').value) : selectedItem.price;
         let name = selectedItem.name;
         if(document.getElementById('m-size')) name += ` (${document.getElementById('m-size').options[document.getElementById('m-size').selectedIndex].text.split(' -')[0]})`;
-        cart.push({name, price, qty: parseInt(document.getElementById('m-qty').value), note: document.getElementById('m-note').value});
-        updateCart(); closeModals();
+        
+        let itemNote = document.getElementById('m-note').value;
+
+        cart.push({
+            name: name, 
+            price: price, 
+            qty: parseInt(document.getElementById('m-qty').value), 
+            note: itemNote
+        });
+
+        document.getElementById('m-note').value = ""; // Reset box for next time
+        updateCart(); 
+        closeModals();
     }
 
     function updateCart() {
@@ -373,8 +389,12 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
 
     function renderSummary() {
         document.getElementById('summary').innerHTML = cart.map((i, idx) => `
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                <div style="font-size:13px;">${i.qty}x ${i.name}<br><small style="color:var(--orange)">Rs ${i.price * i.qty}</small></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px dashed #eee; padding-bottom:5px;">
+                <div style="font-size:13px;">
+                    <b>${i.qty}x ${i.name}</b><br>
+                    ${i.note ? `<small style="color:var(--red)">Note: ${i.note}</small><br>` : ''}
+                    <small style="color:var(--orange)">Rs ${i.price * i.qty}</small>
+                </div>
                 <button class="remove-btn" onclick="removeItem(${idx})">✕</button>
             </div>`).join('');
     }
@@ -382,13 +402,15 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
     function removeItem(index) { cart.splice(index, 1); updateCart(); renderSummary(); if(cart.length === 0) closeModals(); }
     function closeModals() { document.querySelectorAll('.overlay').forEach(o => o.style.display = 'none'); }
 
+    // --- FIX 3: COMPLETE SEND ORDER LOGIC ---
     function sendOrder() {
         const n = document.getElementById('c-name').value;
         const l = document.getElementById('c-loc').value;
         const p = document.getElementById('c-phone').value;
         const type = document.getElementById('c-type').value;
         const total = document.getElementById('cart-total').innerText;
-        if(!n || !l || !p) return alert("Fill all details!");
+
+        if(!n || !l || !p) return alert("Please fill in all details!");
 
         let typeIcon = type === "Delivery" ? "🚚" : (type === "Takeaway" ? "🛍️" : "🍽️");
 
@@ -402,15 +424,18 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         
         msg += "🛒 *ORDER ITEMS*\n";
         msg += "--------------------------\n";
-        cart.forEach(i => {
+
+        cart.forEach((i) => {
             msg += "• " + i.qty + "x " + i.name + " = Rs " + (i.price * i.qty) + "\n";
-            if(i.note) msg += "  (Note: " + i.note + ")\n";
+            if (i.note && i.note.trim() !== "") {
+                msg += "  └ _Note: " + i.note.trim() + "_\n";
+            }
         });
 
         msg += "--------------------------\n";
         msg += "💰 *BILL TOTAL: " + total + "*\n";
         msg += "--------------------------\n\n";
-        msg += "👨‍🍳 *Your Pizza Master favorites are being prepared with care! Thank you for choosing us.*\n";
+         msg += "👨‍🍳 *Thanks for being part of the Pizza Master family!*\n";
         msg += "🔗 *Follow for Deals:* facebook.com/PizzaMasterLodhran";
 
         window.open("https://wa.me/923156838383?text=" + encodeURIComponent(msg), '_blank');
