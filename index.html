@@ -138,8 +138,17 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
     </div>
 </div>
 
+<div id="success-modal" class="overlay">
+    <div class="modal" style="border-top: 5px solid var(--green);">
+        <div style="font-size: 60px;">✅</div>
+        <h2 style="color: var(--green); margin: 10px 0;">Order Sent!</h2>
+        <p style="color: #666; font-size: 14px;">Your order has been forwarded to WhatsApp. Our team will contact you shortly to confirm.</p>
+        <button class="add-btn" style="background:var(--red);" onclick="location.reload()">OK, THANKS!</button>
+    </div>
+</div>
+
 <script>
-    const menuData = {
+     const menuData = {
          "Hot Deals 🔥": { icon: "🔥", items: [
             { id: 1, name: "Deal No.1 (Special Burger + Fries + Drink)", price: 590, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d1.png" },
             { id: 2, name: "Deal No.2 (Zinger + Fries + Drink)", price: 550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d2.png" },
@@ -347,7 +356,7 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         selectedItem = menuData[cat].items[index];
         document.getElementById('m-name').innerText = selectedItem.name;
         document.getElementById('m-qty').value = 1;
-        document.getElementById('m-note').value = ""; // Fix: Clear previous note
+        document.getElementById('m-note').value = "";
         
         const area = document.getElementById('size-selector-area');
         area.innerHTML = (typeof selectedItem.price === 'object') ? 
@@ -363,7 +372,6 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         let itemNote = document.getElementById('m-note').value;
         cart.push({name, price, qty: parseInt(document.getElementById('m-qty').value), note: itemNote});
         
-        document.getElementById('m-note').value = ""; // Fix: Reset note box
         updateCart(); 
         closeModals();
     }
@@ -388,7 +396,11 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
     }
 
     function removeItem(index) { cart.splice(index, 1); updateCart(); renderSummary(); if(cart.length === 0) closeModals(); }
-    function closeModals() { document.querySelectorAll('.overlay').forEach(o => o.style.display = 'none'); }
+    
+    function closeModals() { 
+        document.getElementById('item-modal').style.display = 'none';
+        document.getElementById('checkout-modal').style.display = 'none';
+    }
 
     function toggleAddressField() {
         const type = document.getElementById('c-type').value;
@@ -405,20 +417,24 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
 
         if(!n || !p || (type === "Delivery" && !l)) return alert("Please fill all details!");
 
-        let typeIcon = type === "Delivery" ? "🚚" : (type === "Takeaway" ? "🛍️" : "🍽️");
-        let msg = "🍕 *PIZZA MASTER | NEW ORDER*\n--------------------------\n";
-        msg += "👤 *CUSTOMER DETAILS*\n*Name:* " + n + "\n*Phone:* " + p + "\n*Type:* " + typeIcon + " " + type + "\n";
-        if(type === "Delivery") msg += "*Address:* " + l + "\n";
-        msg += "\n🛒 *ORDER ITEMS*\n--------------------------\n";
+        let itemsText = cart.map(i => `• ${i.qty} x ${i.name}${i.note ? ' (Note: ' + i.note + ')' : ''}`).join('\n');
+        
+        let msg = `*NEW ORDER - PIZZA MASTER*\n\n`;
+        msg += `*Customer:* ${n}\n`;
+        msg += `*Phone:* ${p}\n`;
+        msg += `*Type:* ${type}\n`;
+        if(type === "Delivery") msg += `*Address:* ${l}\n`;
+        msg += `\n*Items:*\n${itemsText}\n\n`;
+        msg += `*Total Amount: ${total}*`;
 
-        cart.forEach(i => {
-            msg += "• " + i.qty + "x " + i.name + " = Rs " + (i.price * i.qty) + "\n";
-            if(i.note) msg += "  └ _Note: " + i.note + "_\n";
-        });
-
-        msg += "--------------------------\n💰 *BILL TOTAL: " + total + "*\n--------------------------\n\n👨‍🍳 Prepared with care by Pizza Master!";
+        // 1. Open WhatsApp
         window.open("https://wa.me/923156838383?text=" + encodeURIComponent(msg), '_blank');
-        cart = []; updateCart(); closeModals();
+        
+        // 2. Reset Cart & Show Success
+        cart = []; 
+        updateCart(); 
+        document.getElementById('checkout-modal').style.display = 'none';
+        document.getElementById('success-modal').style.display = 'flex';
     }
 </script>
 </body>
