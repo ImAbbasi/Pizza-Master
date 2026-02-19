@@ -148,8 +148,8 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
 </div>
 
 <script>
-     const menuData = {
-         "Hot Deals 🔥": { icon: "🔥", items: [
+    const menuData = {
+        "Hot Deals 🔥": { icon: "🔥", items: [
             { id: 1, name: "Deal No.1 (Special Burger + Fries + Drink)", price: 590, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d1.png" },
             { id: 2, name: "Deal No.2 (Zinger + Fries + Drink)", price: 550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d2.png" },
             { id: 3, name: "Deal No.3 (Patty Burger + Fries + Drink)", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d3.png" },
@@ -298,6 +298,7 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
             { name: "Water Large", price: 100, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/large%20water.png" }
         ]}
     };
+
     let cart = [];
     let selectedItem = null;
     let currentCategory = "Hot Deals 🔥";
@@ -377,65 +378,117 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
     }
 
     function updateCart() {
-        const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-        document.getElementById('cart-count').innerText = `${cart.length} Items`;
-        document.getElementById('cart-total').innerText = `Rs ${total}`;
+        const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+        const totalAmount = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+
+        document.getElementById('cart-count').innerText = `${totalQty} Item${totalQty !== 1 ? 's' : ''}`;
+        document.getElementById('cart-total').innerText = `Rs ${totalAmount}`;
         document.getElementById('cart-bar').style.display = cart.length > 0 ? 'flex' : 'none';
     }
 
-    function openCheckout() { renderSummary(); document.getElementById('checkout-modal').style.display = 'flex'; }
-
-    function renderSummary() {
-        document.getElementById('summary').innerHTML = cart.map((i, idx) => `
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                <div style="font-size:13px;"><b>${i.qty}x ${i.name}</b><br>
-                ${i.note ? `<small style="color:red">Note: ${i.note}</small><br>` : ''}
-                <small style="color:var(--orange)">Rs ${i.price * i.qty}</small></div>
-                <button class="remove-btn" onclick="removeItem(${idx})">✕</button>
-            </div>`).join('');
+    function openCheckout() {
+        renderSummary();
+        document.getElementById('checkout-modal').style.display = 'flex';
     }
 
-    function removeItem(index) { cart.splice(index, 1); updateCart(); renderSummary(); if(cart.length === 0) closeModals(); }
-    
-    function closeModals() { 
-        document.getElementById('item-modal').style.display = 'none';
-        document.getElementById('checkout-modal').style.display = 'none';
+    function renderSummary() {
+        const summaryEl = document.getElementById('summary');
+        if (cart.length === 0) {
+            summaryEl.innerHTML = "Your cart is empty.";
+            return;
+        }
+
+        summaryEl.innerHTML = cart.map((item, idx) => `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid #f5f5f5; padding-bottom:8px;">
+                <div style="flex-grow:1;">
+                    <div style="font-size:14px; font-weight:bold; color:#333;">${item.name}</div>
+                    <div style="color:var(--orange); font-weight:bold; font-size:13px;">Rs ${item.price * item.qty}</div>
+                    ${item.note ? `<small style="color:#800000; display:block;">Note: ${item.note}</small>` : ''}
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="display:flex; align-items:center; background:#eee; border-radius:8px;">
+                        <button onclick="changeQty(${idx}, -1)" style="border:none; padding:5px 10px; cursor:pointer;">-</button>
+                        <span style="font-weight:bold; width:20px; text-align:center;">${item.qty}</span>
+                        <button onclick="changeQty(${idx}, 1)" style="border:none; padding:5px 10px; cursor:pointer;">+</button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function changeQty(index, delta) {
+        if (cart[index].qty + delta > 0) {
+            cart[index].qty += delta;
+        } else {
+            cart.splice(index, 1);
+        }
+        updateCart();
+        renderSummary();
+        if (cart.length === 0) closeModals();
     }
 
     function toggleAddressField() {
         const type = document.getElementById('c-type').value;
-        const wrap = document.getElementById('address-wrapper');
-        wrap.style.display = (type === "Delivery") ? "block" : "none";
+        document.getElementById('address-wrapper').style.display = (type === 'Delivery') ? 'block' : 'none';
     }
 
-    function sendOrder() {
-        const n = document.getElementById('c-name').value;
-        const l = document.getElementById('c-loc').value;
-        const p = document.getElementById('c-phone').value;
-        const type = document.getElementById('c-type').value;
-        const total = document.getElementById('cart-total').innerText;
-
-        if(!n || !p || (type === "Delivery" && !l)) return alert("Please fill all details!");
-
-        let itemsText = cart.map(i => `• ${i.qty} x ${i.name}${i.note ? ' (Note: ' + i.note + ')' : ''}`).join('\n');
-        
-        let msg = `*NEW ORDER - PIZZA MASTER*\n\n`;
-        msg += `*Customer:* ${n}\n`;
-        msg += `*Phone:* ${p}\n`;
-        msg += `*Type:* ${type}\n`;
-        if(type === "Delivery") msg += `*Address:* ${l}\n`;
-        msg += `\n*Items:*\n${itemsText}\n\n`;
-        msg += `*Total Amount: ${total}*`;
-
-        // 1. Open WhatsApp
-        window.open("https://wa.me/923156838383?text=" + encodeURIComponent(msg), '_blank');
-        
-        // 2. Reset Cart & Show Success
-        cart = []; 
-        updateCart(); 
-        document.getElementById('checkout-modal').style.display = 'none';
-        document.getElementById('success-modal').style.display = 'flex';
+    function closeModals() {
+        document.querySelectorAll('.overlay').forEach(o => o.style.display = 'none');
     }
+
+   function sendOrder() {
+    const n = document.getElementById('c-name').value;
+    const l = document.getElementById('c-loc').value;
+    const p = document.getElementById('c-phone').value;
+    const type = document.getElementById('c-type').value;
+    const total = document.getElementById('cart-total').innerText;
+
+    // Validation
+    if(!n || !p || (type === "Delivery" && !l)) return alert("Please fill all details!");
+
+    // Build WhatsApp Message
+    let typeIcon = type === "Delivery" ? "🚚" : (type === "Takeaway" ? "🛍️" : "🍽️");
+    let msg = "🍕 *PIZZA MASTER | NEW ORDER*\n--------------------------\n";
+    msg += "👤 *CUSTOMER DETAILS*\n*Name:* " + n + "\n*Phone:* " + p + "\n*Type:* " + typeIcon + " " + type + "\n";
+    if(type === "Delivery") msg += "*Address:* " + l + "\n";
+    msg += "\n🛒 *ORDER ITEMS*\n--------------------------\n";
+
+    cart.forEach(i => {
+        msg += "• " + i.qty + "x " + i.name + " = Rs " + (i.price * i.qty) + "\n";
+        if(i.note) msg += "  └ _Note: " + i.note + "_\n";
+    });
+
+    msg += "--------------------------\n💰 *BILL TOTAL: " + total + "*\n--------------------------\n\n👨‍🍳 *Thanks for being part of the Pizza Master family!*";
+
+    // UI Feedback: Change button state
+    const orderBtn = document.querySelector('#checkout-modal .add-btn');
+    orderBtn.innerText = "Sending...";
+    orderBtn.disabled = true;
+
+    // Open WhatsApp in a new tab
+    window.open("https://wa.me/923156838383?text=" + encodeURIComponent(msg), '_blank');
+
+    // --- SUCCESS LOGIC ---
+    cart = [];             // 1. Clear the cart array
+    updateCart();          // 2. Update the UI bar (it will hide because cart is empty)
+    
+    // 3. Hide the checkout modal specifically
+    document.getElementById('checkout-modal').style.display = 'none';
+    
+    // 4. Show the success modal
+    document.getElementById('success-modal').style.display = 'flex';
+}
+
+// Ensure you also have a generic close function for the "Back/Cancel" buttons
+function closeModals() {
+    document.getElementById('item-modal').style.display = 'none';
+    document.getElementById('checkout-modal').style.display = 'none';
+}
+
+function toggleAddressField() {
+    const type = document.getElementById('c-type').value;
+    document.getElementById('address-wrapper').style.display = (type === "Delivery") ? "block" : "none";
+}
 </script>
 </body>
 </html>
