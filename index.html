@@ -4,10 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Pizza Master | Official Order System</title>
-
 <meta name="description" content="Order the best pizzas, burgers, and deals in Lodhran. Fast delivery and fresh taste!">
 <meta name="theme-color" content="#800000">
-
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://imabbasi.github.io/Pizza-Master/">
 <meta property="og:title" content="🍕 Pizza Master | Order Online">
@@ -15,38 +13,33 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/ImAbbasi/my-assets/main/logo%203d.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Pizza Master | Official Order System">
 <meta name="twitter:description" content="Order the best pizzas, burgers, and deals in Lodhran.">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/ImAbbasi/my-assets/main/logo%203d.png">
-
 <style>
-:root { 
-    --red:#800000; 
-    --orange:#f37021; 
-    --bg:#fff9f5; 
-    --white:#ffffff; 
-    --green:#25D366; 
-    --fb-blue:#1877F2; 
+:root {
+    --red:#800000;
+    --orange:#f37021;
+    --bg:#fff9f5;
+    --white:#ffffff;
+    --green:#25D366;
+    --fb-blue:#1877F2;
 }
-
 * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; outline:none; }
 body { font-family:'Segoe UI',Roboto,sans-serif; background:var(--bg); margin:0; overflow-x:hidden; }
-
-header { 
-    background: var(--red); 
-    color: white; 
-    padding: 15px 0; 
-    position: sticky; 
-    top: 0; 
-    z-index: 1002; 
-    display: flex; 
-    justify-content: center; 
+header {
+    background: var(--red);
+    color: white;
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1002;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    border-bottom: 4px solid var(--orange); 
+    border-bottom: 4px solid var(--orange);
 }
-
 .header-logo-text {
     font-size: 24px;
     font-weight: 900;
@@ -54,23 +47,19 @@ header {
     text-transform: uppercase;
     font-family: 'Arial Black', sans-serif;
 }
-
 .header-logo-text span { color: var(--orange); }
-
 #gateway { position:fixed; top:0; left:0; width:100%; height:100%; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:2000; text-align:center; color:white; }
 .logo-3d-main { width:220px; margin-bottom:20px; animation:logoFloat 3s ease-in-out infinite; filter:drop-shadow(0 20px 30px rgba(0,0,0,0.5)); }
 @keyframes logoFloat { 0%{transform:translateY(0px);} 50%{transform:translateY(-12px);} 100%{transform:translateY(0px);} }
 .logo-big { font-size:38px; font-weight:900; margin-bottom:30px; }
 .logo-big span { color:var(--orange); }
 .gate-btn { width:85%; max-width:300px; padding:18px; border-radius:50px; border:none; font-weight:800; cursor:pointer; margin-bottom:15px; transition:0.3s; }
-
 #main-app { display:none; }
 .search-container { background:white; padding:10px 15px; position:sticky; top:65px; z-index:1001; border-bottom:1px solid #eee; }
 .search-bar { width:100%; padding:12px 15px; border-radius:12px; border:1px solid #ddd; background:#f9f9f9; font-size:14px; }
 .category-scroll { display:flex; overflow-x:auto; background:white; white-space:nowrap; border-bottom:1px solid #ddd; padding:10px 5px; position:sticky; top:127px; z-index:1000; }
 .cat-tab { padding:8px 18px; margin:0 5px; border-radius:20px; font-size:13px; font-weight:700; color:#666; background:#f0f0f0; cursor:pointer; display:flex; align-items:center; gap:5px; }
 .cat-tab.active { background:var(--red); color:white; }
-
 .container { padding:15px; max-width:600px; margin:auto; padding-bottom:120px; }
 .grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
 .card { background:white; border-radius:15px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.05); text-align:center; border:1px solid #eee; display:flex; flex-direction:column; }
@@ -78,7 +67,6 @@ header {
 .card-info { padding:10px; flex-grow:1; }
 .card-name { font-weight:800; font-size:11px; margin-bottom:5px; color:#333; height:35px; overflow:hidden; line-height:1.2; }
 .card-price { color:var(--orange); font-weight:900; font-size:12px; }
-
 #cart-bar { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); width:90%; max-width:400px; background:var(--red); color:white; padding:12px 20px; border-radius:50px; display:none; justify-content:space-between; align-items:center; z-index:1100; border: 2px solid var(--orange); }
 .checkout-btn { background:var(--orange); padding:8px 18px; border-radius:20px; font-weight:900; cursor:pointer; }
 .overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:none; justify-content:center; align-items:center; z-index:3000; backdrop-filter:blur(4px); }
@@ -90,36 +78,29 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
 </style>
 </head>
 <body>
-
 <div id="gateway">
     <img src="https://raw.githubusercontent.com/ImAbbasi/my-assets/main/logo%203d.png" class="logo-3d-main">
     <div class="logo-big">PIZZA <span>MASTER</span></div>
     <button class="gate-btn" style="background:var(--red); color:white;" onclick="enterApp('Hot Deals 🔥')">🔥 HOT DEALS</button>
     <button class="gate-btn" style="background:white; color:black;" onclick="enterApp('Special Pizza')">BROWSE MENU</button>
 </div>
-
 <div id="main-app">
     <header>
         <div class="header-logo-text">PIZZA<span>MASTER</span></div>
     </header>
-
     <div class="search-container">
         <input type="text" id="menuSearch" class="search-bar" placeholder="Search menu..." onkeyup="filterItems()">
     </div>
-
     <div class="category-scroll" id="cat-tabs"></div>
-
     <div class="container">
         <div id="items-grid" class="grid"></div>
         <div id="no-results" style="display:none; text-align:center; padding:50px; color:#999;">No items found.</div>
     </div>
-
     <div id="cart-bar">
         <div><span id="cart-count">0 Items</span><br><b id="cart-total">Rs 0</b></div>
         <div class="checkout-btn" onclick="openCheckout()">CHECKOUT →</div>
     </div>
 </div>
-
 <div id="item-modal" class="overlay">
     <div class="modal">
         <h3 id="m-name" style="color:var(--red); margin:0 0 15px 0;"></h3>
@@ -130,7 +111,6 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         <button onclick="closeModals()" style="background:none; border:none; width:100%; margin-top:10px; color:gray;">Cancel</button>
     </div>
 </div>
-
 <div id="checkout-modal" class="overlay">
     <div class="modal">
         <h3 style="margin-top:0;">Order Summary</h3>
@@ -152,19 +132,18 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         <button onclick="closeModals()" style="background:none; border:none; width:100%; margin-top:15px; color:gray;">Back</button>
     </div>
 </div>
-
 <div id="success-modal" class="overlay">
     <div class="modal" style="border-top: 5px solid var(--green);">
         <div style="font-size: 60px;">✅</div>
         <h2 style="color: var(--green); margin: 10px 0;">Order Sent!</h2>
         <p style="color: #666; font-size: 14px;">Your order has been forwarded to WhatsApp. Our team will contact you shortly to confirm.</p>
-        <button class="add-btn" style="background:var(--red);" onclick="location.reload()">OK, THANKS!</button>
+        <button class="add-btn" style="background:var(--red);" onclick="confirmAndReload()">OK, THANKS!</button>
     </div>
 </div>
 
 <script>
     const menuData = {
-        "Hot Deals 🔥": { icon: "🔥", items: [
+         "Hot Deals 🔥": { icon: "🔥", items: [
             { id: 1, name: "Deal No.1 (Special Burger + Fries + Drink)", price: 590, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d1.png" },
             { id: 2, name: "Deal No.2 (Zinger + Fries + Drink)", price: 550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d2.png" },
             { id: 3, name: "Deal No.3 (Patty Burger + Fries + Drink)", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d3.png" },
@@ -318,6 +297,80 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
     let selectedItem = null;
     let currentCategory = "Hot Deals 🔥";
 
+    // ────────────────────────────────
+    // AUTO-FILL + HISTORY
+    // ────────────────────────────────
+
+    window.addEventListener('load', () => {
+        const saved = JSON.parse(localStorage.getItem('pizzaMasterCustomerInfo') || '{}');
+        if (saved.name) document.getElementById('c-name').value = saved.name;
+        if (saved.phone) document.getElementById('c-phone').value = saved.phone;
+        if (saved.address) document.getElementById('c-loc').value = saved.address;
+
+        updateCart();
+    });
+
+    let orderHistory = JSON.parse(localStorage.getItem('pizzaMasterOrderHistory')) || [];
+
+    function confirmAndReload() {
+        if (window.lastOrderData) {
+            orderHistory.push(window.lastOrderData);
+            localStorage.setItem('pizzaMasterOrderHistory', JSON.stringify(orderHistory));
+            window.lastOrderData = null;
+        }
+        location.reload();
+    }
+
+    function openHistory() {
+        const overlay = document.createElement('div');
+        overlay.className = 'overlay';
+        overlay.innerHTML = `
+            <div class="modal">
+                <h3 style="color:var(--red); margin-top:0;">Order History</h3>
+                <div style="max-height:320px; overflow-y:auto; text-align:left; font-size:13px;">
+                    ${orderHistory.length === 0 ?
+                        '<p style="text-align:center; color:#999; padding:40px 0;">No previous orders found.</p>' :
+                        orderHistory.map(order => `
+                            <div style="border-bottom:1px solid #eee; padding:10px 0; margin-bottom:10px;">
+                                <div style="font-weight:bold; color:var(--red);">${order.date}</div>
+                                <div><b>Name:</b> ${order.name}</div>
+                                <div><b>Phone:</b> ${order.phone}</div>
+                                ${order.address ? `<div><b>Address:</b> ${order.address}</div>` : ''}
+                                <div style="margin:8px 0;">
+                                    ${order.items.map(i => `• ${i.qty}x ${i.name}${i.note ? ' (' + i.note + ')' : ''}`).join('<br>')}
+                                </div>
+                                <div style="font-weight:bold; color:var(--orange); text-align:right;">Total: Rs ${order.total}</div>
+                            </div>
+                        `).join('')}
+                </div>
+                <button onclick="this.closest('.overlay').remove()" style="margin-top:15px; background:var(--orange); color:white; border:none; padding:12px; border-radius:12px; font-weight:bold; width:100%;">Close</button>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        overlay.style.display = 'flex';
+    }
+
+    function updateCart() {
+        const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+        const totalAmount = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+        document.getElementById('cart-count').innerText = `${totalQty} Item${totalQty !== 1 ? 's' : ''}`;
+        document.getElementById('cart-total').innerText = `Rs ${totalAmount}`;
+        document.getElementById('cart-bar').style.display = cart.length > 0 ? 'flex' : 'none';
+
+        if (orderHistory.length > 0 && !document.getElementById('history-btn')) {
+            const btn = document.createElement('button');
+            btn.id = 'history-btn';
+            btn.innerText = 'History';
+            btn.style.cssText = 'background:rgba(255,255,255,0.2); border:1px solid white; color:white; padding:6px 14px; border-radius:30px; font-size:13px; cursor:pointer;';
+            btn.onclick = openHistory;
+            document.getElementById('cart-bar').insertBefore(btn, document.getElementById('cart-bar').firstChild);
+        }
+    }
+
+    // ────────────────────────────────────────────────
+    // YOUR ORIGINAL FUNCTIONS (added back — do NOT change them)
+    // ────────────────────────────────────────────────
+
     function enterApp(cat) {
         document.getElementById('gateway').style.display = 'none';
         document.getElementById('main-app').style.display = 'block';
@@ -327,7 +380,7 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
 
     function renderTabs() {
         const tabs = document.getElementById('cat-tabs');
-        tabs.innerHTML = Object.keys(menuData).map(cat => 
+        tabs.innerHTML = Object.keys(menuData).map(cat =>
             `<div class="cat-tab" id="tab-${cat.replace(/[^\w]/g, '')}" onclick="switchCategory('${cat}')">
                 <span>${menuData[cat].icon}</span> ${cat}
             </div>`
@@ -373,9 +426,9 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         document.getElementById('m-name').innerText = selectedItem.name;
         document.getElementById('m-qty').value = 1;
         document.getElementById('m-note').value = "";
-        
+       
         const area = document.getElementById('size-selector-area');
-        area.innerHTML = (typeof selectedItem.price === 'object') ? 
+        area.innerHTML = (typeof selectedItem.price === 'object') ?
             `<select id="m-size">${Object.entries(selectedItem.price).map(([s,p]) => `<option value="${p}">${s} - Rs ${p}</option>`).join('')}</select>` : '';
         document.getElementById('item-modal').style.display = 'flex';
     }
@@ -384,25 +437,23 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         let price = (typeof selectedItem.price === 'object') ? parseInt(document.getElementById('m-size').value) : selectedItem.price;
         let name = selectedItem.name;
         if(document.getElementById('m-size')) name += ` (${document.getElementById('m-size').options[document.getElementById('m-size').selectedIndex].text.split(' -')[0]})`;
-        
+       
         let itemNote = document.getElementById('m-note').value;
         cart.push({name, price, qty: parseInt(document.getElementById('m-qty').value), note: itemNote});
-        
-        updateCart(); 
+       
+        updateCart();
         closeModals();
-    }
-
-    function updateCart() {
-        const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-        const totalAmount = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-
-        document.getElementById('cart-count').innerText = `${totalQty} Item${totalQty !== 1 ? 's' : ''}`;
-        document.getElementById('cart-total').innerText = `Rs ${totalAmount}`;
-        document.getElementById('cart-bar').style.display = cart.length > 0 ? 'flex' : 'none';
     }
 
     function openCheckout() {
         renderSummary();
+
+        const saved = JSON.parse(localStorage.getItem('pizzaMasterCustomerInfo') || '{}');
+        if (saved.name) document.getElementById('c-name').value = saved.name;
+        if (saved.phone) document.getElementById('c-phone').value = saved.phone;
+        if (saved.address) document.getElementById('c-loc').value = saved.address;
+
+        toggleAddressField();
         document.getElementById('checkout-modal').style.display = 'flex';
     }
 
@@ -412,7 +463,6 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
             summaryEl.innerHTML = "Your cart is empty.";
             return;
         }
-
         summaryEl.innerHTML = cart.map((item, idx) => `
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid #f5f5f5; padding-bottom:8px;">
                 <div style="flex-grow:1;">
@@ -451,59 +501,54 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         document.querySelectorAll('.overlay').forEach(o => o.style.display = 'none');
     }
 
-   function sendOrder() {
-    const n = document.getElementById('c-name').value;
-    const l = document.getElementById('c-loc').value;
-    const p = document.getElementById('c-phone').value;
-    const type = document.getElementById('c-type').value;
-    const total = document.getElementById('cart-total').innerText;
+    function sendOrder() {
+        const n = document.getElementById('c-name').value.trim();
+        const l = document.getElementById('c-loc').value.trim();
+        const p = document.getElementById('c-phone').value.trim();
+        const type = document.getElementById('c-type').value;
 
-    // Validation
-    if(!n || !p || (type === "Delivery" && !l)) return alert("Please fill all details!");
+        if(!n || !p || (type === "Delivery" && !l)) return alert("Please fill all details!");
 
-    // Build WhatsApp Message
-    let typeIcon = type === "Delivery" ? "🚚" : (type === "Takeaway" ? "🛍️" : "🍽️");
-    let msg = "🍕 *PIZZA MASTER | NEW ORDER*\n--------------------------\n";
-    msg += "👤 *CUSTOMER DETAILS*\n*Name:* " + n + "\n*Phone:* " + p + "\n*Type:* " + typeIcon + " " + type + "\n";
-    if(type === "Delivery") msg += "*Address:* " + l + "\n";
-    msg += "\n🛒 *ORDER ITEMS*\n--------------------------\n";
+        localStorage.setItem('pizzaMasterCustomerInfo', JSON.stringify({
+            name: n,
+            phone: p,
+            address: type === "Delivery" ? l : ''
+        }));
 
-    cart.forEach(i => {
-        msg += "• " + i.qty + "x " + i.name + " = Rs " + (i.price * i.qty) + "\n";
-        if(i.note) msg += "  └ _Note: " + i.note + "_\n";
-    });
+        let typeIcon = type === "Delivery" ? "🚚" : (type === "Takeaway" ? "🛍️" : "🍽️");
+        let msg = "🍕 *PIZZA MASTER | NEW ORDER*\n--------------------------\n";
+        msg += "👤 *CUSTOMER DETAILS*\n*Name:* " + n + "\n*Phone:* " + p + "\n*Type:* " + typeIcon + " " + type + "\n";
+        if(type === "Delivery") msg += "*Address:* " + l + "\n";
+        msg += "\n🛒 *ORDER ITEMS*\n--------------------------\n";
+        cart.forEach(i => {
+            msg += "• " + i.qty + "x " + i.name + " = Rs " + (i.price * i.qty) + "\n";
+            if(i.note) msg += " └ _Note: " + i.note + "_\n";
+        });
+        msg += "--------------------------\n💰 *BILL TOTAL: " + document.getElementById('cart-total').innerText + "*\n--------------------------\n\n👨‍🍳 *Thanks for being part of the Pizza Master family!*";
 
-    msg += "--------------------------\n💰 *BILL TOTAL: " + total + "*\n--------------------------\n\n👨‍🍳 *Thanks for being part of the Pizza Master family!*";
+        const orderBtn = document.querySelector('#checkout-modal .add-btn');
+        orderBtn.innerText = "Sending...";
+        orderBtn.disabled = true;
 
-    // UI Feedback: Change button state
-    const orderBtn = document.querySelector('#checkout-modal .add-btn');
-    orderBtn.innerText = "Sending...";
-    orderBtn.disabled = true;
+        window.open("https://wa.me/923156838383?text=" + encodeURIComponent(msg), '_blank');
 
-    // Open WhatsApp in a new tab
-    window.open("https://wa.me/923156838383?text=" + encodeURIComponent(msg), '_blank');
+        window.lastOrderData = {
+            date: new Date().toLocaleString('en-PK', { dateStyle: 'medium', timeStyle: 'short' }),
+            name: n,
+            phone: p,
+            type: type,
+            address: type === "Delivery" ? l : null,
+            items: cart.map(item => ({...item})),
+            total: document.getElementById('cart-total').innerText.replace('Rs ', '')
+        };
 
-    // --- SUCCESS LOGIC ---
-    cart = [];             // 1. Clear the cart array
-    updateCart();          // 2. Update the UI bar (it will hide because cart is empty)
-    
-    // 3. Hide the checkout modal specifically
-    document.getElementById('checkout-modal').style.display = 'none';
-    
-    // 4. Show the success modal
-    document.getElementById('success-modal').style.display = 'flex';
-}
+        cart = [];
+        updateCart();
+        document.getElementById('checkout-modal').style.display = 'none';
+        document.getElementById('success-modal').style.display = 'flex';
+    }
 
-// Ensure you also have a generic close function for the "Back/Cancel" buttons
-function closeModals() {
-    document.getElementById('item-modal').style.display = 'none';
-    document.getElementById('checkout-modal').style.display = 'none';
-}
-
-function toggleAddressField() {
-    const type = document.getElementById('c-type').value;
-    document.getElementById('address-wrapper').style.display = (type === "Delivery") ? "block" : "none";
-}
+    updateCart();
 </script>
 </body>
 </html>
