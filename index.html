@@ -322,33 +322,61 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
     }
 
     function openHistory() {
-        const overlay = document.createElement('div');
-        overlay.className = 'overlay';
-        overlay.innerHTML = `
-            <div class="modal">
-                <h3 style="color:var(--red); margin-top:0;">Order History</h3>
-                <div style="max-height:320px; overflow-y:auto; text-align:left; font-size:13px;">
-                    ${orderHistory.length === 0 ?
-                        '<p style="text-align:center; color:#999; padding:40px 0;">No previous orders found.</p>' :
-                        orderHistory.map(order => `
-                            <div style="border-bottom:1px solid #eee; padding:10px 0; margin-bottom:10px;">
-                                <div style="font-weight:bold; color:var(--red);">${order.date}</div>
-                                <div><b>Name:</b> ${order.name}</div>
-                                <div><b>Phone:</b> ${order.phone}</div>
-                                ${order.address ? `<div><b>Address:</b> ${order.address}</div>` : ''}
-                                <div style="margin:8px 0;">
-                                    ${order.items.map(i => `• ${i.qty}x ${i.name}${i.note ? ' (' + i.note + ')' : ''}`).join('<br>')}
-                                </div>
-                                <div style="font-weight:bold; color:var(--orange); text-align:right;">Total: Rs ${order.total}</div>
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
+    overlay.innerHTML = `
+        <div class="modal">
+            <h3 style="color:var(--red); margin-top:0;">Order History</h3>
+            <div style="max-height:320px; overflow-y:auto; text-align:left; font-size:13px;">
+                ${orderHistory.length === 0 ?
+                    '<p style="text-align:center; color:#999; padding:40px 0;">No previous orders found.</p>' :
+                    orderHistory.map((order, index) => `
+                        <div style="border-bottom:1px solid #eee; padding:10px 0; margin-bottom:10px;">
+                            <div style="font-weight:bold; color:var(--red);">${order.date}</div>
+                            <div><b>Name:</b> ${order.name}</div>
+                            <div><b>Phone:</b> ${order.phone}</div>
+                            ${order.address ? `<div><b>Address:</b> ${order.address}</div>` : ''}
+                            <div style="margin:8px 0;">
+                                ${order.items.map(i => 
+                                    `• ${i.qty}x ${i.name}${i.note ? ' (' + i.note + ')' : ''}`
+                                ).join('<br>')}
                             </div>
-                        `).join('')}
-                </div>
-                <button onclick="this.closest('.overlay').remove()" style="margin-top:15px; background:var(--orange); color:white; border:none; padding:12px; border-radius:12px; font-weight:bold; width:100%;">Close</button>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+                                <div style="font-weight:bold; color:var(--orange);">
+                                    Total: Rs ${order.total}
+                                </div>
+                                <button onclick="reorderPastOrder(${index})"
+                                        style="background:var(--red); color:white; border:none; padding:6px 12px; border-radius:8px; font-size:12px; cursor:pointer;">
+                                    Re-Order
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
             </div>
-        `;
-        document.body.appendChild(overlay);
-        overlay.style.display = 'flex';
-    }
+            <button onclick="this.closest('.overlay').remove()" 
+                    style="margin-top:15px; background:var(--orange); color:white; border:none; padding:12px; border-radius:12px; font-weight:bold; width:100%;">
+                Close
+            </button>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    overlay.style.display = 'flex';
+}
+
+function reorderPastOrder(index) {
+    const order = orderHistory[index];
+    if (!order?.items) return;
+
+    // Copy items back to current cart
+    cart = order.items.map(item => ({ ...item }));
+
+    // Update UI
+    updateCart();
+    closeModals(); // close history modal
+
+    // Optional small feedback (you can remove this line if you don't want alert)
+    alert("Items added back to cart!");
+}
 
     function updateCart() {
         const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
