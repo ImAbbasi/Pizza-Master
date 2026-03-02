@@ -4,19 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Pizza Master | Official Order System</title>
-<meta name="description" content="Order the best pizzas, burgers, and deals in Lodhran. Fast delivery and fresh taste!">
 <meta name="theme-color" content="#800000">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://imabbasi.github.io/Pizza-Master/">
-<meta property="og:title" content="🍕 Pizza Master | Order Online">
-<meta property="og:description" content="Craving something delicious? Check out our menu and order the best deals in Lodhran via WhatsApp!">
-<meta property="og:image" content="https://raw.githubusercontent.com/ImAbbasi/my-assets/main/logo%203d.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Pizza Master | Official Order System">
-<meta name="twitter:description" content="Order the best pizzas, burgers, and deals in Lodhran.">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/ImAbbasi/my-assets/main/logo%203d.png">
 <style>
 :root {
     --red:#800000;
@@ -31,41 +19,35 @@ body { font-family:'Segoe UI',Roboto,sans-serif; background:var(--bg); margin:0;
 header {
     background: var(--red);
     color: white;
-    padding: 15px 0;
+    padding: 15px;
     position: sticky;
     top: 0;
     z-index: 1002;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     border-bottom: 4px solid var(--orange);
 }
-.header-logo-text {
-    font-size: 24px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-family: 'Arial Black', sans-serif;
-}
+.header-logo-text { font-size: 24px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; font-family: 'Arial Black', sans-serif; }
 .header-logo-text span { color: var(--orange); }
 #gateway { position:fixed; top:0; left:0; width:100%; height:100%; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:2000; text-align:center; color:white; }
-.logo-3d-main { width:220px; margin-bottom:20px; animation:logoFloat 3s ease-in-out infinite; filter:drop-shadow(0 20px 30px rgba(0,0,0,0.5)); }
+.logo-3d-main { width:220px; margin-bottom:20px; animation:logoFloat 3s ease-in-out infinite; }
 @keyframes logoFloat { 0%{transform:translateY(0px);} 50%{transform:translateY(-12px);} 100%{transform:translateY(0px);} }
 .logo-big { font-size:38px; font-weight:900; margin-bottom:30px; }
 .logo-big span { color:var(--orange); }
 .gate-btn { width:85%; max-width:300px; padding:18px; border-radius:50px; border:none; font-weight:800; cursor:pointer; margin-bottom:15px; transition:0.3s; }
 #main-app { display:none; }
-.search-container { background:white; padding:10px 15px; position:sticky; top:65px; z-index:1001; border-bottom:1px solid #eee; }
-.search-bar { width:100%; padding:12px 15px; border-radius:12px; border:1px solid #ddd; background:#f9f9f9; font-size:14px; }
+.search-container { background:white; padding:10px 15px; position:sticky; top:65px; z-index:1001; border-bottom:1px solid #eee; display: flex; gap: 10px;}
+.search-bar { flex-grow: 1; padding:12px 15px; border-radius:12px; border:1px solid #ddd; background:#f9f9f9; font-size:14px; }
 .category-scroll { display:flex; overflow-x:auto; background:white; white-space:nowrap; border-bottom:1px solid #ddd; padding:10px 5px; position:sticky; top:127px; z-index:1000; }
-.cat-tab { padding:8px 18px; margin:0 5px; border-radius:20px; font-size:13px; font-weight:700; color:#666; background:#f0f0f0; cursor:pointer; display:flex; align-items:center; gap:5px; }
+.cat-tab { padding:8px 18px; margin:0 5px; border-radius:20px; font-size:13px; font-weight:700; color:#666; background:#f0f0f0; cursor:pointer; }
 .cat-tab.active { background:var(--red); color:white; }
 .container { padding:15px; max-width:600px; margin:auto; padding-bottom:120px; }
 .grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
 .card { background:white; border-radius:15px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.05); text-align:center; border:1px solid #eee; display:flex; flex-direction:column; }
-.card-img { width:100%; height:110px; object-fit:cover; background:#eee; }
+.card-img { width:100%; height:110px; object-fit:cover; }
 .card-info { padding:10px; flex-grow:1; }
-.card-name { font-weight:800; font-size:11px; margin-bottom:5px; color:#333; height:35px; overflow:hidden; line-height:1.2; }
+.card-name { font-weight:800; font-size:11px; margin-bottom:5px; color:#333; height:35px; overflow:hidden; }
 .card-price { color:var(--orange); font-weight:900; font-size:12px; }
 #cart-bar { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); width:90%; max-width:400px; background:var(--red); color:white; padding:12px 20px; border-radius:50px; display:none; justify-content:space-between; align-items:center; z-index:1100; border: 2px solid var(--orange); }
 .checkout-btn { background:var(--orange); padding:8px 18px; border-radius:20px; font-weight:900; cursor:pointer; }
@@ -73,20 +55,22 @@ header {
 .modal { background:white; padding:25px; border-radius:25px; width:90%; max-width:360px; max-height:85vh; overflow-y:auto; text-align:center; }
 input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:10px; border:1px solid #ddd; }
 .add-btn { width:100%; background:var(--orange); color:white; border:none; padding:15px; border-radius:15px; font-weight:800; cursor:pointer; }
-.remove-btn { background:#ff4d4d; color:white; border:none; padding:2px 8px; border-radius:5px; font-size:10px; font-weight:bold; cursor:pointer; margin-left:10px; }
 .fb-btn { background:var(--fb-blue); color:white; text-decoration:none; padding:12px; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:8px; font-weight:bold; margin-top:15px; font-size:14px; }
 </style>
 </head>
 <body>
+
 <div id="gateway">
     <img src="https://raw.githubusercontent.com/ImAbbasi/my-assets/main/logo%203d.png" class="logo-3d-main">
     <div class="logo-big">PIZZA <span>MASTER</span></div>
     <button class="gate-btn" style="background:var(--red); color:white;" onclick="enterApp('Hot Deals 🔥')">🔥 HOT DEALS</button>
     <button class="gate-btn" style="background:white; color:black;" onclick="enterApp('Special Pizza')">BROWSE MENU</button>
 </div>
+
 <div id="main-app">
     <header>
         <div class="header-logo-text">PIZZA<span>MASTER</span></div>
+        <button onclick="openHistory()" style="background:var(--orange); color:white; border:none; padding:8px 12px; border-radius:20px; font-size:12px; font-weight:bold; cursor:pointer;">📜 HISTORY</button>
     </header>
     <div class="search-container">
         <input type="text" id="menuSearch" class="search-bar" placeholder="Search menu..." onkeyup="filterItems()">
@@ -101,20 +85,27 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         <div class="checkout-btn" onclick="openCheckout()">CHECKOUT →</div>
     </div>
 </div>
+
 <div id="item-modal" class="overlay">
     <div class="modal">
-        <h3 id="m-name" style="color:var(--red); margin:0 0 15px 0;"></h3>
+        <h3 id="m-name" style="color:var(--red); margin:0 0 5px 0;"></h3>
+        <p id="m-price-preview" style="color:var(--orange); font-weight:bold; margin-bottom:15px;"></p>
         <div id="size-selector-area"></div>
-        <input type="number" id="m-qty" value="1" min="1">
+        <div style="display: flex; align-items: center; justify-content: center; background: #f0f0f0; border-radius: 8px; width: fit-content; margin: 10px auto;">
+            <button onclick="changeModalQty(-1)" style="border:none; padding:10px 15px; font-weight:bold;">-</button>
+            <span id="m-qty-val" style="padding:0 15px; font-weight:bold;">1</span>
+            <button onclick="changeModalQty(1)" style="border:none; padding:10px 15px; font-weight:bold;">+</button>
+        </div>
         <textarea id="m-note" placeholder="Special instructions..."></textarea>
         <button class="add-btn" onclick="addToCart()">ADD TO CART</button>
         <button onclick="closeModals()" style="background:none; border:none; width:100%; margin-top:10px; color:gray;">Cancel</button>
     </div>
 </div>
+
 <div id="checkout-modal" class="overlay">
     <div class="modal">
         <h3 style="margin-top:0;">Order Summary</h3>
-        <div id="summary" style="text-align:left; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px; max-height:200px; overflow-y:auto;"></div>
+        <div id="summary" style="text-align:left; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px; max-height:250px; overflow-y:auto;"></div>
         <input type="text" id="c-name" placeholder="Full Name">
         <input type="text" id="c-phone" placeholder="Active Sim Number">
         <select id="c-type" onchange="toggleAddressField()">
@@ -126,23 +117,26 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
             <textarea id="c-loc" placeholder="Complete Address"></textarea>
         </div>
         <button class="add-btn" style="background:var(--green);" onclick="sendOrder()">SEND ORDER VIA WHATSAPP</button>
+        
         <a href="https://www.facebook.com/PizzaMasterLodhran" target="_blank" class="fb-btn">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" width="18"> Follow us for Deals
+            Follow us on Facebook
         </a>
+        
         <button onclick="closeModals()" style="background:none; border:none; width:100%; margin-top:15px; color:gray;">Back</button>
     </div>
 </div>
+
 <div id="success-modal" class="overlay">
-    <div class="modal" style="border-top: 5px solid var(--green);">
-        <div style="font-size: 60px;">✅</div>
-        <h2 style="color: var(--green); margin: 10px 0;">Order Sent!</h2>
-        <p style="color: #666; font-size: 14px;">Your order has been forwarded to WhatsApp. Our team will contact you shortly to confirm.</p>
-        <button class="add-btn" style="background:var(--red);" onclick="confirmAndReload()">OK, THANKS!</button>
+    <div class="modal">
+        <div style="font-size: 50px;">✅</div>
+        <h2>Order Sent!</h2>
+        <p>Opening WhatsApp...</p>
+        <button class="add-btn" onclick="location.reload()">OK</button>
     </div>
 </div>
 
 <script>
-    const menuData = {
+   const menuData = {
          "Hot Deals 🔥": { icon: "🔥", items: [
             { id: 1, name: "Deal No.1 (Special Burger + Fries + Drink)", price: 590, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d1.png" },
             { id: 2, name: "Deal No.2 (Zinger + Fries + Drink)", price: 550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d2.png" },
@@ -295,202 +289,106 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
 
     let cart = [];
     let selectedItem = null;
-    let currentCategory = "Hot Deals 🔥";
+    let currentModalQty = 1;
 
-    // ────────────────────────────────
-    // AUTO-FILL + HISTORY
-    // ────────────────────────────────
-
-    window.addEventListener('load', () => {
+    // RUNS AUTOMATICALLY ON LOAD TO REMEMBER DETAILS
+    window.onload = () => {
         const saved = JSON.parse(localStorage.getItem('pizzaMasterCustomerInfo') || '{}');
         if (saved.name) document.getElementById('c-name').value = saved.name;
         if (saved.phone) document.getElementById('c-phone').value = saved.phone;
         if (saved.address) document.getElementById('c-loc').value = saved.address;
+    };
 
-        updateCart();
-    });
+    window.onscroll = () => {
+        let sections = document.querySelectorAll('h2[id^="section-"]');
+        sections.forEach(section => {
+            if (window.pageYOffset >= section.offsetTop - 150) {
+                const id = section.id.replace('section-', '');
+                document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+                const tab = document.getElementById(`tab-${id}`);
+                if(tab) tab.classList.add('active');
+            }
+        });
+    };
 
-    let orderHistory = JSON.parse(localStorage.getItem('pizzaMasterOrderHistory')) || [];
-
-    function confirmAndReload() {
-        if (window.lastOrderData) {
-            orderHistory.push(window.lastOrderData);
-            localStorage.setItem('pizzaMasterOrderHistory', JSON.stringify(orderHistory));
-            window.lastOrderData = null;
-        }
-        location.reload();
-    }
-
-    function openHistory() {
-    const overlay = document.createElement('div');
-    overlay.className = 'overlay';
-    overlay.innerHTML = `
-        <div class="modal">
-            <h3 style="color:var(--red); margin-top:0;">Order History</h3>
-            <div style="max-height:320px; overflow-y:auto; text-align:left; font-size:13px;">
-                ${orderHistory.length === 0 ?
-                    '<p style="text-align:center; color:#999; padding:40px 0;">No previous orders found.</p>' :
-                    orderHistory.map((order, index) => `
-                        <div style="border-bottom:1px solid #eee; padding:10px 0; margin-bottom:10px;">
-                            <div style="font-weight:bold; color:var(--red);">${order.date}</div>
-                            <div><b>Name:</b> ${order.name}</div>
-                            <div><b>Phone:</b> ${order.phone}</div>
-                            ${order.address ? `<div><b>Address:</b> ${order.address}</div>` : ''}
-                            <div style="margin:8px 0;">
-                                ${order.items.map(i => 
-                                    `• ${i.qty}x ${i.name}${i.note ? ' (' + i.note + ')' : ''}`
-                                ).join('<br>')}
-                            </div>
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-                                <div style="font-weight:bold; color:var(--orange);">
-                                    Total: Rs ${order.total}
-                                </div>
-                                <button onclick="reorderPastOrder(${index})"
-                                        style="background:var(--red); color:white; border:none; padding:6px 12px; border-radius:8px; font-size:12px; cursor:pointer;">
-                                    Re-Order
-                                </button>
-                            </div>
-                        </div>
-                    `).join('')}
-            </div>
-            <button onclick="this.closest('.overlay').remove()" 
-                    style="margin-top:15px; background:var(--orange); color:white; border:none; padding:12px; border-radius:12px; font-weight:bold; width:100%;">
-                Close
-            </button>
-        </div>
-    `;
-    document.body.appendChild(overlay);
-    overlay.style.display = 'flex';
-}
-
-function reorderPastOrder(index) {
-    const order = orderHistory[index];
-    if (!order?.items) return;
-
-    // Copy items back to current cart
-    cart = order.items.map(item => ({ ...item }));
-
-    // Update UI
-    updateCart();
-    closeModals(); // close history modal
-
-    // Optional small feedback (you can remove this line if you don't want alert)
-    alert("Items added back to cart!");
-}
-
-    function updateCart() {
-        const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-        const totalAmount = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-        document.getElementById('cart-count').innerText = `${totalQty} Item${totalQty !== 1 ? 's' : ''}`;
-        document.getElementById('cart-total').innerText = `Rs ${totalAmount}`;
-        document.getElementById('cart-bar').style.display = cart.length > 0 ? 'flex' : 'none';
-
-        if (orderHistory.length > 0 && !document.getElementById('history-btn')) {
-            const btn = document.createElement('button');
-            btn.id = 'history-btn';
-            btn.innerText = 'History';
-            btn.style.cssText = 'background:rgba(255,255,255,0.2); border:1px solid white; color:white; padding:6px 14px; border-radius:30px; font-size:13px; cursor:pointer;';
-            btn.onclick = openHistory;
-            document.getElementById('cart-bar').insertBefore(btn, document.getElementById('cart-bar').firstChild);
-        }
-    }
-
-    // ────────────────────────────────────────────────
-    // YOUR ORIGINAL FUNCTIONS (added back — do NOT change them)
-    // ────────────────────────────────────────────────
-
-    function enterApp(cat) {
+    function enterApp(category) {
         document.getElementById('gateway').style.display = 'none';
         document.getElementById('main-app').style.display = 'block';
-        renderTabs();
-        switchCategory(cat);
+        renderItems();
+        setTimeout(() => {
+            const target = document.getElementById(`section-${category}`);
+            if (target) window.scrollTo({ top: target.offsetTop - 140, behavior: 'smooth' });
+        }, 100);
     }
 
-    function renderTabs() {
+    function renderItems() {
+        const grid = document.getElementById('items-grid');
         const tabs = document.getElementById('cat-tabs');
-        tabs.innerHTML = Object.keys(menuData).map(cat =>
-            `<div class="cat-tab" id="tab-${cat.replace(/[^\w]/g, '')}" onclick="switchCategory('${cat}')">
-                <span>${menuData[cat].icon}</span> ${cat}
-            </div>`
-        ).join('');
-    }
-
-    function switchCategory(cat) {
-        currentCategory = cat;
-        document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
-        const tabEl = document.getElementById(`tab-${cat.replace(/[^\w]/g, '')}`);
-        if(tabEl) tabEl.classList.add('active');
-        const grid = document.getElementById('items-grid');
-        grid.innerHTML = menuData[cat].items.map((item, index) => renderItemHTML(item, cat, index)).join('');
-    }
-
-    function renderItemHTML(item, cat, index) {
-        let p = typeof item.price === 'object' ? `From Rs ${Object.values(item.price)[0]}` : `Rs ${item.price}`;
-        return `<div class="card" onclick="openItem('${cat}', ${index})">
-            <img src="${item.img}" class="card-img">
-            <div class="card-info"><div class="card-name">${item.name}</div><div class="card-price">${p}</div></div>
-        </div>`;
-    }
-
-    function filterItems() {
-        const query = document.getElementById('menuSearch').value.toLowerCase();
-        const grid = document.getElementById('items-grid');
-        if(!query) { switchCategory(currentCategory); return; }
-        let html = ""; let found = false;
+        grid.innerHTML = ''; tabs.innerHTML = '';
         Object.keys(menuData).forEach(cat => {
-            menuData[cat].items.forEach((item, index) => {
-                if(item.name.toLowerCase().includes(query)) {
-                    html += renderItemHTML(item, cat, index);
-                    found = true;
-                }
+            const tab = document.createElement('div');
+            tab.className = 'cat-tab';
+            tab.id = `tab-${cat}`;
+            tab.innerHTML = cat;
+            tab.onclick = () => window.scrollTo({ top: document.getElementById(`section-${cat}`).offsetTop - 140, behavior: 'smooth' });
+            tabs.appendChild(tab);
+            const heading = document.createElement('h2');
+            heading.id = `section-${cat}`;
+            heading.style = "grid-column: 1 / -1; margin: 20px 0; color: var(--red); border-left: 5px solid var(--orange); padding-left:10px;";
+            heading.innerText = cat;
+            grid.appendChild(heading);
+            menuData[cat].items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `<img src="${item.img}" class="card-img"><div class="card-info"><b>${item.name}</b><br><span class="card-price">Rs ${typeof item.price === 'object' ? Object.values(item.price)[0] : item.price}</span><br><button class="add-btn" style="padding:5px; margin-top:5px;" onclick='openItem(${JSON.stringify(item)})'>ADD</button></div>`;
+                grid.appendChild(card);
             });
         });
-        grid.innerHTML = html;
-        document.getElementById('no-results').style.display = found ? 'none' : 'block';
     }
 
-    function openItem(cat, index) {
-        selectedItem = menuData[cat].items[index];
-        document.getElementById('m-name').innerText = selectedItem.name;
-        document.getElementById('m-qty').value = 1;
-        document.getElementById('m-note').value = "";
-       
+    function openItem(item) {
+        selectedItem = item; currentModalQty = 1;
+        document.getElementById('m-name').innerText = item.name;
+        document.getElementById('m-qty-val').innerText = currentModalQty;
         const area = document.getElementById('size-selector-area');
-        area.innerHTML = (typeof selectedItem.price === 'object') ?
-            `<select id="m-size">${Object.entries(selectedItem.price).map(([s,p]) => `<option value="${p}">${s} - Rs ${p}</option>`).join('')}</select>` : '';
+        area.innerHTML = '';
+        if (typeof item.price === 'object') {
+            Object.entries(item.price).forEach(([s, p], i) => {
+                area.innerHTML += `<label><input type="radio" name="msize" value="${s}" data-p="${p}" ${i==0?'checked':''} onchange="updateModalPrice()"> ${s} - Rs ${p}</label><br>`;
+            });
+        }
+        updateModalPrice();
         document.getElementById('item-modal').style.display = 'flex';
     }
 
-    function addToCart() {
-        let price = (typeof selectedItem.price === 'object') ? parseInt(document.getElementById('m-size').value) : selectedItem.price;
-        let name = selectedItem.name;
-        if(document.getElementById('m-size')) name += ` (${document.getElementById('m-size').options[document.getElementById('m-size').selectedIndex].text.split(' -')[0]})`;
-       
-        let itemNote = document.getElementById('m-note').value;
-        cart.push({name, price, qty: parseInt(document.getElementById('m-qty').value), note: itemNote});
-       
-        updateCart();
-        closeModals();
+    function updateModalPrice() {
+        let p = typeof selectedItem.price === 'object' ? parseInt(document.querySelector('input[name="msize"]:checked').getAttribute('data-p')) : selectedItem.price;
+        document.getElementById('m-price-preview').innerText = `Rs ${p * currentModalQty}`;
     }
 
-    function openCheckout() {
-        renderSummary();
+    function changeModalQty(a) { currentModalQty = Math.max(1, currentModalQty + a); document.getElementById('m-qty-val').innerText = currentModalQty; updateModalPrice(); }
 
-        const saved = JSON.parse(localStorage.getItem('pizzaMasterCustomerInfo') || '{}');
-        if (saved.name) document.getElementById('c-name').value = saved.name;
-        if (saved.phone) document.getElementById('c-phone').value = saved.phone;
-        if (saved.address) document.getElementById('c-loc').value = saved.address;
+    function addToCart() {
+        let p = 0, sz = "";
+        if (typeof selectedItem.price === 'object') {
+            const sel = document.querySelector('input[name="msize"]:checked');
+            p = parseInt(sel.getAttribute('data-p')); sz = " ("+sel.value+")";
+        } else { p = selectedItem.price; }
+        cart.push({ name: selectedItem.name + sz, price: p, qty: currentModalQty, note: document.getElementById('m-note').value, total: p * currentModalQty });
+        closeModals(); updateCart();
+    }
 
-        toggleAddressField();
-        document.getElementById('checkout-modal').style.display = 'flex';
+    function updateCart() {
+        const count = cart.reduce((s, i) => s + i.qty, 0);
+        const total = cart.reduce((s, i) => s + i.total, 0);
+        document.getElementById('cart-bar').style.display = count > 0 ? 'flex' : 'none';
+        document.getElementById('cart-count').innerText = count + " Items";
+        document.getElementById('cart-total').innerText = "Rs " + total;
     }
 
     function renderSummary() {
         const summaryEl = document.getElementById('summary');
-        if (cart.length === 0) {
-            summaryEl.innerHTML = "Your cart is empty.";
-            return;
-        }
+        if (cart.length === 0) { summaryEl.innerHTML = "Your cart is empty."; return; }
         summaryEl.innerHTML = cart.map((item, idx) => `
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid #f5f5f5; padding-bottom:8px;">
                 <div style="flex-grow:1;">
@@ -509,24 +407,18 @@ function reorderPastOrder(index) {
         `).join('');
     }
 
-    function changeQty(index, delta) {
-        if (cart[index].qty + delta > 0) {
-            cart[index].qty += delta;
-        } else {
-            cart.splice(index, 1);
-        }
-        updateCart();
-        renderSummary();
+    function changeQty(idx, delta) {
+        cart[idx].qty += delta;
+        if (cart[idx].qty <= 0) cart.splice(idx, 1);
+        else cart[idx].total = cart[idx].price * cart[idx].qty;
+        updateCart(); renderSummary();
         if (cart.length === 0) closeModals();
     }
 
-    function toggleAddressField() {
-        const type = document.getElementById('c-type').value;
-        document.getElementById('address-wrapper').style.display = (type === 'Delivery') ? 'block' : 'none';
-    }
+    function openCheckout() { renderSummary(); document.getElementById('checkout-modal').style.display = 'flex'; }
 
-    function closeModals() {
-        document.querySelectorAll('.overlay').forEach(o => o.style.display = 'none');
+    function toggleAddressField() {
+        document.getElementById('address-wrapper').style.display = document.getElementById('c-type').value === 'Delivery' ? 'block' : 'none';
     }
 
     function sendOrder() {
@@ -537,11 +429,7 @@ function reorderPastOrder(index) {
 
         if(!n || !p || (type === "Delivery" && !l)) return alert("Please fill all details!");
 
-        localStorage.setItem('pizzaMasterCustomerInfo', JSON.stringify({
-            name: n,
-            phone: p,
-            address: type === "Delivery" ? l : ''
-        }));
+        localStorage.setItem('pizzaMasterCustomerInfo', JSON.stringify({ name: n, phone: p, address: l }));
 
         let typeIcon = type === "Delivery" ? "🚚" : (type === "Takeaway" ? "🛍️" : "🍽️");
         let msg = "🍕 *PIZZA MASTER | NEW ORDER*\n--------------------------\n";
@@ -554,29 +442,31 @@ function reorderPastOrder(index) {
         });
         msg += "--------------------------\n💰 *BILL TOTAL: " + document.getElementById('cart-total').innerText + "*\n--------------------------\n\n👨‍🍳 *Thanks for being part of the Pizza Master family!*";
 
-        const orderBtn = document.querySelector('#checkout-modal .add-btn');
-        orderBtn.innerText = "Sending...";
-        orderBtn.disabled = true;
+        // Save to History before clearing
+        const hist = JSON.parse(localStorage.getItem('pizzaMasterHistory') || '[]');
+        hist.push({ date: new Date().toLocaleString(), total: document.getElementById('cart-total').innerText });
+        localStorage.setItem('pizzaMasterHistory', JSON.stringify(hist.slice(-5)));
 
         window.open("https://wa.me/923156838383?text=" + encodeURIComponent(msg), '_blank');
-
-        window.lastOrderData = {
-            date: new Date().toLocaleString('en-PK', { dateStyle: 'medium', timeStyle: 'short' }),
-            name: n,
-            phone: p,
-            type: type,
-            address: type === "Delivery" ? l : null,
-            items: cart.map(item => ({...item})),
-            total: document.getElementById('cart-total').innerText.replace('Rs ', '')
-        };
-
-        cart = [];
-        updateCart();
+        cart = []; updateCart();
         document.getElementById('checkout-modal').style.display = 'none';
         document.getElementById('success-modal').style.display = 'flex';
     }
 
-    updateCart();
+    function openHistory() {
+        const hist = JSON.parse(localStorage.getItem('pizzaMasterHistory') || '[]');
+        if(hist.length === 0) return alert("No order history found.");
+        alert("Last Orders:\n" + hist.map(h => h.date + " - " + h.total).join("\n"));
+    }
+
+    function filterItems() {
+        const q = document.getElementById('menuSearch').value.toLowerCase();
+        document.querySelectorAll('.card').forEach(c => {
+            c.style.display = c.innerText.toLowerCase().includes(q) ? 'flex' : 'none';
+        });
+    }
+
+    function closeModals() { document.querySelectorAll('.overlay').forEach(o => o.style.display = 'none'); }
 </script>
 </body>
 </html>
