@@ -497,44 +497,70 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
     }
 
     function sendOrder() {
-        const name = document.getElementById('c-name').value;
-        const phone = document.getElementById('c-phone').value;
-        const type = document.getElementById('c-type').value;
-        const loc = document.getElementById('c-loc').value;
+    const n = document.getElementById('c-name').value.trim();
+    const l = document.getElementById('c-loc').value.trim();
+    const p = document.getElementById('c-phone').value.trim();
+    const type = document.getElementById('c-type').value;
 
-        if (!name || !phone || (type === 'Delivery' && !loc)) {
-            alert("Please fill all required details");
-            return;
-        }
-
-        // Save for next time
-        localStorage.setItem('pizzaMasterCustomerInfo', JSON.stringify({ name, phone, address: loc }));
-
-        let bill = `*NEW ORDER - PIZZA MASTER*\n`;
-        bill += `--------------------------\n`;
-        bill += `*Customer:* ${name}\n`;
-        bill += `*Phone:* ${phone}\n`;
-        bill += `*Type:* ${type}\n`;
-        if(type === 'Delivery') bill += `*Loc:* ${loc}\n`;
-        bill += `--------------------------\n`;
-        
-        cart.forEach(i => {
-            bill += `• ${i.qty}x ${i.name} = Rs ${i.total}\n`;
-            if(i.note) bill += `  _Note: ${i.note}_\n`;
-        });
-
-        const total = cart.reduce((s, i) => s + i.total, 0);
-        bill += `--------------------------\n`;
-        bill += `*TOTAL BILL: Rs ${total}*\n`;
-        
-        // Save to history
-        let history = JSON.parse(localStorage.getItem('orderHistory') || '[]');
-        history.unshift({ date: new Date().toLocaleString(), total: total, items: cart.length });
-        localStorage.setItem('orderHistory', JSON.stringify(history.slice(0, 10))); // Keep last 10
-
-        window.open(`https://wa.me/923156838383?text=${encodeURIComponent(bill)}`);
-        document.getElementById('success-modal').style.display = 'flex';
+    // 1. Validation
+    if(!n || !p || (type === "Delivery" && !l)) {
+        return alert("Please fill all details!");
     }
+
+    // 2. Save Customer Info for next time
+    localStorage.setItem('pizzaMasterCustomerInfo', JSON.stringify({
+        name: n,
+        phone: p,
+        address: type === "Delivery" ? l : ''
+    }));
+
+    // 3. Build WhatsApp Message
+    let typeIcon = type === "Delivery" ? "🚚" : (type === "Takeaway" ? "🛍️" : "🍽️");
+    let msg = "🍕 *PIZZA MASTER | NEW ORDER*\n--------------------------\n";
+    msg += "👤 *CUSTOMER DETAILS*\n*Name:* " + n + "\n*Phone:* " + p + "\n*Type:* " + typeIcon + " " + type + "\n";
+    if(type === "Delivery") msg += "*Address:* " + l + "\n";
+    msg += "\n🛒 *ORDER ITEMS*\n--------------------------\n";
+    
+    cart.forEach(i => {
+        msg += "• " + i.qty + "x " + i.name + " = Rs " + (i.price * i.qty) + "\n";
+        if(i.note) msg += " └ _Note: " + i.note + "_\n";
+    });
+    
+    msg += "--------------------------\n💰 *BILL TOTAL: " + document.getElementById('cart-total').innerText + "*\n--------------------------\n\n👨‍🍳 *Thanks for being part of the Pizza Master family!*";
+
+    // 4. Visual Feedback
+    const orderBtn = document.querySelector('#checkout-modal .add-btn');
+    const originalBtnText = orderBtn.innerText;
+    orderBtn.innerText = "Processing...";
+    orderBtn.disabled = true;
+
+    // 5. Save to Order History
+    const newOrder = {
+        id: Date.now(),
+        date: new Date().toLocaleString('en-PK', { dateStyle: 'medium', timeStyle: 'short' }),
+        name: n,
+        type: type,
+        total: document.getElementById('cart-total').innerText,
+        items: cart.map(item => ({ name: item.name, qty: item.qty }))
+    };
+
+    let history = JSON.parse(localStorage.getItem('pizzaMasterHistory') || '[]');
+    history.unshift(newOrder); // Add new order to top of list
+    localStorage.setItem('pizzaMasterHistory', JSON.stringify(history.slice(0, 10))); // Keep last 10 orders
+
+    // 6. Launch WhatsApp & Reset
+    setTimeout(() => {
+        window.open("https://wa.me/923156838383?text=" + encodeURIComponent(msg), '_blank');
+        
+        // Show success modal
+        closeModals();
+        document.getElementById('success-modal').style.display = 'flex';
+        
+        // Reset button for UI consistency
+        orderBtn.innerText = originalBtnText;
+        orderBtn.disabled = false;
+    }, 800);
+}
 
     function openHistory() {
         const history = JSON.parse(localStorage.getItem('orderHistory') || '[]');
