@@ -109,7 +109,7 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
     <img src="https://raw.githubusercontent.com/ImAbbasi/my-assets/main/logo%203d.png" class="logo-3d-main">
     <div class="logo-big">PIZZA <span>MASTER</span></div>
     
-    <button class="gate-btn" style="background:white; color:black;" onclick="enterApp('Special Pizza')">BROWSE MENU</button>
+    <button class="gate-btn" style="background:white; color:black;" onclick="enterApp('Stuffed Crust')">BROWSE MENU</button>
     <button class="gate-btn" style="background:var(--red); color:white;" onclick="enterApp('Hot Deals 🔥')">🔥 HOT DEALS</button>
     
     
@@ -184,7 +184,21 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
 
 <script>
    const menuData = {
-       "Special Pizza": { icon: "👑", items: [
+	"Stuffed Crust": { icon: "🥨", items: [
+            { name: "Kabab Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
+            { name: "Crown Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crown%20crust.png" },
+            { name: "Cheese Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
+            { name: "Chicken Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
+        ]},
+	 "Deep Dish": { icon: "🥘", items: [
+            {name: "Malai Boti", price: {M:1790, L:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Deep%20Dish.png"}, 
+            {name: "Peri Peri", price: {M:1790, L:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Deep%20Dish.png"}
+        ]},
+	"Extreme Premium Pan": { icon: "💎", items: [
+            { name: "Rich Kabab", price: { M: 1790, L: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/rich%20kebab.png" },
+            { name: "Peri Peri", price: { M: 1790, L: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/peri%20peri%20premium.png" },
+        ]},	
+	"Special Pizza": { icon: "👑", items: [
             { name: "Bone Fire", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/bonfire.png" },
             { name: "Pepperoni", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/pepproni%20pizza.png" },
             { name: "Malai Boti", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/malaiboti3.png" },
@@ -197,7 +211,7 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
             { name: "Hot Malai Boti", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/redhot.png" },
             { name: "Creamy Tikka", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/creamy%20tikka.png" }
         ]},
-        "Regular Pizza": { icon: "🍕", items: [
+	 "Regular Pizza": { icon: "🍕", items: [
             { name: "Chicken Fajita", price: {S:650, M:1150, L:1650, XL:1850}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/fajita.png" },
             { name: "Hot & Spicy", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/hot%20and%20spicy.png" },
             { name: "Chicken Tikka", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tikka%20pizza.png" },
@@ -207,25 +221,11 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
             { name: "BBQ", price: {S:650, M:1150, L:1650, XL:1850}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tikka%20pizza.png" },
             { name: "Chicken Supreme", price: {S:650, M:1150, L:1650, XL:1850}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/supreme.png" },
             { name: "Kebabish", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/kebabish%20pizza.png" },
-        ]},
-	"Extreme Premium Pan": { icon: "💎", items: [
-            { name: "Rich Kabab", price: { M: 1790, L: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/rich%20kebab.png" },
-            { name: "Peri Peri", price: { M: 1790, L: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/peri%20peri%20premium.png" },
-        ]},
-        "Deep Dish": { icon: "🥘", items: [
-            {name: "Malai Boti", price: {M:1790, L:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Deep%20Dish.png"}, 
-            {name: "Peri Peri", price: {M:1790, L:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Deep%20Dish.png"}
-        ]},
+	 ]},
         "Beef Lover": { icon: "🥩", items: [
             { name: "Beef Veggie", price: { S: 750, M: 1450, L: 1850, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/beef%20vigge.png" },
             { name: "Beef Cheese", price: { S: 750, M: 1450, L: 1850, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/beef%20cheese.png" },
             { name: "Beef Pepperoni", price: { S: 750, M: 1450, L: 1850, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/beef%20pepperoni.png" }
-        ]},
-        "Stuffed Crust": { icon: "🥨", items: [
-            { name: "Kabab Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
-            { name: "Crown Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crown%20crust.png" },
-            { name: "Cheese Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
-            { name: "Chicken Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
         ]},
         "Fried Chicken": { icon: "🍗", items: [
             { name: "Chicken Strips", price: {5: 400, 10: 750}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Strip.png" },
