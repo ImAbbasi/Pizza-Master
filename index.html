@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Pizza Master | Official Order System</title>
+<meta name="description" content="Order the best pizzas, burgers, and deals in Lodhran. Fast delivery and fresh taste!">
 <meta name="theme-color" content="#800000">
 <style>
 :root {
@@ -16,13 +17,15 @@
 }
 * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; outline:none; }
 body { font-family:'Segoe UI',Roboto,sans-serif; background:var(--bg); margin:0; overflow-x:hidden; }
+
+/* HEADER STICKY */
 header {
     background: var(--red);
     color: white;
     padding: 15px;
     position: sticky;
     top: 0;
-    z-index: 1002;
+    z-index: 1005;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -30,6 +33,50 @@ header {
 }
 .header-logo-text { font-size: 24px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; font-family: 'Arial Black', sans-serif; }
 .header-logo-text span { color: var(--orange); }
+
+/* SEARCH STICKY */
+.search-container { 
+    background:white; 
+    padding:10px 15px; 
+    position:sticky; 
+    top:62px; /* Adjusted to sit under header */
+    z-index: 1004; 
+    border-bottom:1px solid #eee; 
+    display: flex; 
+    gap: 10px;
+}
+.search-bar { flex-grow: 1; padding:12px 15px; border-radius:12px; border:1px solid #ddd; background:#f9f9f9; font-size:14px; }
+
+/* CATEGORY SWIMLANE STICKY */
+.category-scroll { 
+    display:flex; 
+    overflow-x:auto; 
+    background:white; 
+    white-space:nowrap; 
+    border-bottom:1px solid #ddd; 
+    padding:12px 5px; 
+    position:sticky; 
+    top:125px; /* Adjusted to sit under search */
+    z-index:1003; 
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+}
+.category-scroll::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome/Safari */
+
+.cat-tab { 
+    padding:8px 20px; 
+    margin:0 5px; 
+    border-radius:20px; 
+    font-size:13px; 
+    font-weight:700; 
+    color:#666; 
+    background:#f0f0f0; 
+    cursor:pointer; 
+    transition: 0.3s;
+    flex: 0 0 auto;
+}
+.cat-tab.active { background:var(--red); color:white; transform: scale(1.05); }
+
+/* GATEWAY & GRID */
 #gateway { position:fixed; top:0; left:0; width:100%; height:100%; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:2000; text-align:center; color:white; }
 .logo-3d-main { width:220px; margin-bottom:20px; animation:logoFloat 3s ease-in-out infinite; }
 @keyframes logoFloat { 0%{transform:translateY(0px);} 50%{transform:translateY(-12px);} 100%{transform:translateY(0px);} }
@@ -37,11 +84,7 @@ header {
 .logo-big span { color:var(--orange); }
 .gate-btn { width:85%; max-width:300px; padding:18px; border-radius:50px; border:none; font-weight:800; cursor:pointer; margin-bottom:15px; transition:0.3s; }
 #main-app { display:none; }
-.search-container { background:white; padding:10px 15px; position:sticky; top:65px; z-index:1001; border-bottom:1px solid #eee; display: flex; gap: 10px;}
-.search-bar { flex-grow: 1; padding:12px 15px; border-radius:12px; border:1px solid #ddd; background:#f9f9f9; font-size:14px; }
-.category-scroll { display:flex; overflow-x:auto; background:white; white-space:nowrap; border-bottom:1px solid #ddd; padding:10px 5px; position:sticky; top:127px; z-index:1000; }
-.cat-tab { padding:8px 18px; margin:0 5px; border-radius:20px; font-size:13px; font-weight:700; color:#666; background:#f0f0f0; cursor:pointer; }
-.cat-tab.active { background:var(--red); color:white; }
+
 .container { padding:15px; max-width:600px; margin:auto; padding-bottom:120px; }
 .grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
 .card { background:white; border-radius:15px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.05); text-align:center; border:1px solid #eee; display:flex; flex-direction:column; }
@@ -49,6 +92,8 @@ header {
 .card-info { padding:10px; flex-grow:1; }
 .card-name { font-weight:800; font-size:11px; margin-bottom:5px; color:#333; height:35px; overflow:hidden; }
 .card-price { color:var(--orange); font-weight:900; font-size:12px; }
+
+/* CART & MODALS */
 #cart-bar { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); width:90%; max-width:400px; background:var(--red); color:white; padding:12px 20px; border-radius:50px; display:none; justify-content:space-between; align-items:center; z-index:1100; border: 2px solid var(--orange); }
 .checkout-btn { background:var(--orange); padding:8px 18px; border-radius:20px; font-weight:900; cursor:pointer; }
 .overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:none; justify-content:center; align-items:center; z-index:3000; backdrop-filter:blur(4px); }
@@ -63,8 +108,13 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
 <div id="gateway">
     <img src="https://raw.githubusercontent.com/ImAbbasi/my-assets/main/logo%203d.png" class="logo-3d-main">
     <div class="logo-big">PIZZA <span>MASTER</span></div>
+    
     <button class="gate-btn" style="background:var(--red); color:white;" onclick="enterApp('Hot Deals 🔥')">🔥 HOT DEALS</button>
     <button class="gate-btn" style="background:white; color:black;" onclick="enterApp('Special Pizza')">BROWSE MENU</button>
+    
+    <a href="https://www.facebook.com/PizzaMasterLodhran" target="_blank" class="fb-btn" style="width:85%; max-width:300px; border-radius:50px; margin-top:10px;">
+        Follow us on Facebook
+    </a>
 </div>
 
 <div id="main-app">
@@ -73,7 +123,7 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         <button onclick="openHistory()" style="background:var(--orange); color:white; border:none; padding:8px 12px; border-radius:20px; font-size:12px; font-weight:bold; cursor:pointer;">📜 HISTORY</button>
     </header>
     <div class="search-container">
-        <input type="text" id="menuSearch" class="search-bar" placeholder="Search menu..." onkeyup="filterItems()">
+        <input type="text" id="menuSearch" class="search-bar" placeholder="Search item..." onkeyup="filterItems()">
     </div>
     <div class="category-scroll" id="cat-tabs"></div>
     <div class="container">
@@ -117,11 +167,7 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
             <textarea id="c-loc" placeholder="Complete Address"></textarea>
         </div>
         <button class="add-btn" style="background:var(--green);" onclick="sendOrder()">SEND ORDER VIA WHATSAPP</button>
-        
-        <a href="https://www.facebook.com/PizzaMasterLodhran" target="_blank" class="fb-btn">
-            Follow us on Facebook
-        </a>
-        
+        <a href="https://www.facebook.com/PizzaMasterLodhran" target="_blank" class="fb-btn">Follow us on Facebook</a>
         <button onclick="closeModals()" style="background:none; border:none; width:100%; margin-top:15px; color:gray;">Back</button>
     </div>
 </div>
@@ -137,35 +183,50 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
 
 <script>
    const menuData = {
-         "Hot Deals 🔥": { icon: "🔥", items: [
-            { id: 1, name: "Deal No.1 (Special Burger + Fries + Drink)", price: 590, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d1.png" },
-            { id: 2, name: "Deal No.2 (Zinger + Fries + Drink)", price: 550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d2.png" },
-            { id: 3, name: "Deal No.3 (Patty Burger + Fries + Drink)", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d3.png" },
-            { id: 4, name: "Deal No.4 (Zinger + Drink)", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d4.png" },
-            { id: 5, name: "Deal No.5 (Zinger Burger + Zinger Roll + 2 Drink)", price: 900, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d5.png" },
-            { id: 6, name: "Deal No.6 (10 Hot Wings + Drink)", price: 720, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d6.png" },
-            { id: 7, name: "Deal No.7 (10 Hot Wings + 2 Zingers + 1 Ltr)", price: 1550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d7.png" },
-            { id: 8, name: "Deal No.8 (Small Pizza + 2 Zingers + 1 Ltr)", price: 1550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d11.png" },
-            { id: 9, name: "Deal No.9 (10 Hot Wings + 10 Nuggets + 1 Ltr)", price: 1350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d9.png" },
-            { id: 10, name: "Deal No.10 (Small Pizza + 10 Hot Wing + 1 Ltr)", price: 1350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d10.png" },
-            { id: 11, name: "Deal No.11 (Small Pizza + Zinger + 1 Ltr)", price: 1130, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d8.png" }, 
-            { id: 12, name: "Deal No.12 (Small Pizza + Zinger + 5 Wings + 1 Ltr)", price: 1500, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d12.png" },
-            { id: 13, name: "Deal No.13 (Large Pizza + 1.5 Ltr Drink)", price: 1750, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d13.png" }, 
-            { id: 14, name: "Deal No.14 (Medium Pizza + 1 Ltr Drink)", price: 1190, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d13.png" }, 
-            { id: 15, name: "Deal No.15 (2 Small Pizza + 1 Ltr Drink)", price: 1300, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" }, 
-            { id: 16, name: "Deal No.16 (2 Medium Pizza + 1.5 Ltr Drink)", price: 2290, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" }, 
-            { id: 17, name: "Deal No.17 (2 Large Pizza + 1.5 Ltr Drink)", price: 3250, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" }, 
-            { id: 18, name: "Deal No.18 (1 Large + 1 Medium + 1.5 Ltr)", price: 2790, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" }, 
-            { id: 19, name: "Deal No.19 (2 Small + 10 Wings + 5 Nuggets + 1.5 Ltr)", price: 2390, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d19.png" },
-            { id: 20, name: "Deal No.20 (1 Large + 2 Zingers + Fries + 1.5 Ltr)", price: 2490, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d20.png" },
-            { id: 21, name: "Deal No.21 (4 Zingers + 1.5 Ltr Drink)", price: 1690, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d21.png" },
+       "Special Pizza": { icon: "👑", items: [
+            { name: "Bone Fire", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/bonfire.png" },
+            { name: "Pepperoni", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/pepproni%20pizza.png" },
+            { name: "Malai Boti", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/malaiboti3.png" },
+            { name: "Shahi", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/shahi.png" },
+            { name: "Behari Kabab", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/bihari%20kebab%202.png" },
+            { name: "Fish", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/fish%20pizza.png" },
+            { name: "Master Special", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/special.png" },
+            { name: "Nawabi", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/nawabi.png" },
+            { name: "Mughlai", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/mughlai.png" },
+            { name: "Hot Malai Boti", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/redhot.png" },
+            { name: "Creamy Tikka", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/creamy%20tikka.png" }
+        ]},
+        "Regular Pizza": { icon: "🍕", items: [
+            { name: "Chicken Fajita", price: {S:650, M:1150, L:1650, XL:1850}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/fajita.png" },
+            { name: "Hot & Spicy", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/hot%20and%20spicy.png" },
+            { name: "Chicken Tikka", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tikka%20pizza.png" },
+            { name: "Crispy Chicken", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crispy%20chicken.png" },
+            { name: "Chicken Tandori", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tandori.png" },
+            { name: "Vegetable Pizza", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/vegitable.png" },
+            { name: "BBQ", price: {S:650, M:1150, L:1650, XL:1850}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tikka%20pizza.png" },
+            { name: "Chicken Supreme", price: {S:650, M:1150, L:1650, XL:1850}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/supreme.png" },
+            { name: "Kebabish", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/kebabish%20pizza.png" },
+        ]},
+	"Extreme Premium Pan": { icon: "💎", items: [
+            { name: "Rich Kabab", price: { M: 1790, L: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/rich%20kebab.png" },
+            { name: "Peri Peri", price: { M: 1790, L: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/peri%20peri%20premium.png" },
+        ]},
+        "Deep Dish": { icon: "🥘", items: [
+            {name: "Malai Boti", price: {M:1790, L:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Deep%20Dish.png"}, 
+            {name: "Peri Peri", price: {M:1790, L:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Deep%20Dish.png"}
+        ]},
+        "Beef Lover": { icon: "🥩", items: [
+            { name: "Beef Veggie", price: { S: 750, M: 1450, L: 1850, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/beef%20vigge.png" },
+            { name: "Beef Cheese", price: { S: 750, M: 1450, L: 1850, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/beef%20cheese.png" },
+            { name: "Beef Pepperoni", price: { S: 750, M: 1450, L: 1850, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/beef%20pepperoni.png" }
+        ]},
+        "Stuffed Crust": { icon: "🥨", items: [
+            { name: "Kabab Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
+            { name: "Crown Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crown%20crust.png" },
+            { name: "Cheese Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
+            { name: "Chicken Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
         ]},
         "Fried Chicken": { icon: "🍗", items: [
-            { name: "Oven Baked Wings", price: {5: 400, 10: 750}, img: "https://i.postimg.cc/Y98rXDYD/Chat-GPT-Image-Feb-13-2026-03-23-13-AM.png" },
-            { name: "Peri-Peri Wings", price: {5: 400, 10: 750}, img: "https://i.postimg.cc/Dz2RCv6n/Chat-GPT-Image-Feb-13-2026-03-27-44-AM.png" },
-            { name: "Hot Wings", price: {5: 390, 10: 690}, img: "https://i.postimg.cc/fRBhQSJX/Chat-GPT-Image-Feb-13-2026-03-31-45-AM.png" },
-            { name: "Butter Wings", price: {5: 400, 10: 750}, img: "https://i.postimg.cc/T3P4m73n/Chat-GPT-Image-Feb-13-2026-03-35-32-AM.png" },
-            { name: "Hot Shots", price: {5: 320, 10: 600}, img: "https://i.postimg.cc/kMfN8n62/Chat-GPT-Image-Feb-13-2026-03-39-36-AM.png" },
             { name: "Chicken Strips", price: {5: 400, 10: 750}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Strip.png" },
             { name: "8 Pcs Sweet Chilli Wings", price: 600, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/sweet.png" },
             { name: "10 Buffalo Wings", price: 750, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/buffalo.png" },
@@ -207,55 +268,35 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
             { name: "Arabic Roll", price: 350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/arabic%20roll.png" },
             { name: "Kebabish Roll", price: 400, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/kebabish%20roll.png" }
         ]},
-        "Special Pizza": { icon: "👑", items: [
-            { name: "Bone Fire", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/bonfire.png" },
-            { name: "Pepperoni", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/pepproni%20pizza.png" },
-            { name: "Malai Boti", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/malaiboti3.png" },
-            { name: "Shahi", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/shahi.png" },
-            { name: "Behari Kabab", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/bihari%20kebab%202.png" },
-            { name: "Fish", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/fish%20pizza.png" },
-            { name: "Master Special", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/special.png" },
-            { name: "Nawabi", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/nawabi.png" },
-            { name: "Mughlai", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/mughlai.png" },
-            { name: "Hot Malai Boti", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/redhot.png" },
-            { name: "Creamy Tikka", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/creamy%20tikka.png" }
-        ]},
-        "Regular Pizza": { icon: "🍕", items: [
-            { name: "Chicken Fajita", price: {S:650, M:1150, L:1650, XL:1850}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/fajita.png" },
-            { name: "Hot & Spicy", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/hot%20and%20spicy.png" },
-            { name: "Chicken Tikka", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tikka%20pizza.png" },
-            { name: "Crispy Chicken", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crispy%20chicken.png" },
-            { name: "Chicken Tandori", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tandori.png" },
-            { name: "Vegetable Pizza", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/vegitable.png" },
-            { name: "BBQ", price: {S:650, M:1150, L:1650, XL:1850}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tikka%20pizza.png" },
-            { name: "Chicken Supreme", price: {S:650, M:1150, L:1650, XL:1850}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/supreme.png" },
-            { name: "Kebabish", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/kebabish%20pizza.png" },
-        ]},
-        "Extreme Premium Pan": { icon: "💎", items: [
-            { name: "Rich Kabab", price: { M: 1790, L: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/rich%20kebab.png" },
-            { name: "Peri Peri", price: { M: 1790, L: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/peri%20peri%20premium.png" },
-        ]},
-        "Deep Dish": { icon: "🥘", items: [
-            {name: "Malai Boti", price: {M:1790, L:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Deep%20Dish.png"}, 
-            {name: "Peri Peri", price: {M:1790, L:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Deep%20Dish.png"}
-        ]},
-        "Beef Lover": { icon: "🥩", items: [
-            { name: "Beef Veggie", price: { S: 750, M: 1450, L: 1850, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/beef%20vigge.png" },
-            { name: "Beef Cheese", price: { S: 750, M: 1450, L: 1850, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/beef%20cheese.png" },
-            { name: "Beef Pepperoni", price: { S: 750, M: 1450, L: 1850, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/beef%20pepperoni.png" }
-        ]},
-        "Stuffed Crust": { icon: "🥨", items: [
-            { name: "Kabab Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
-            { name: "Crown Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crown%20crust.png" },
-            { name: "Cheese Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
-            { name: "Chicken Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
+      "Hot Deals 🔥": { icon: "🔥", items: [
+            { id: 1, name: "Deal No.1 (Special Burger + Fries + Drink)", price: 590, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d1.png" },
+            { id: 2, name: "Deal No.2 (Zinger + Fries + Drink)", price: 550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d2.png" },
+            { id: 3, name: "Deal No.3 (Patty Burger + Fries + Drink)", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d3.png" },
+            { id: 4, name: "Deal No.4 (Zinger + Drink)", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d4.png" },
+            { id: 5, name: "Deal No.5 (Zinger Burger + Zinger Roll + 2 Drink)", price: 900, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d5.png" },
+            { id: 6, name: "Deal No.6 (10 Hot Wings + Drink)", price: 720, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d6.png" },
+            { id: 7, name: "Deal No.7 (10 Hot Wings + 2 Zingers + 1 Ltr)", price: 1550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d7.png" },
+            { id: 8, name: "Deal No.8 (Small Pizza + 2 Zingers + 1 Ltr)", price: 1550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d11.png" },
+            { id: 9, name: "Deal No.9 (10 Hot Wings + 10 Nuggets + 1 Ltr)", price: 1350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d9.png" },
+            { id: 10, name: "Deal No.10 (Small Pizza + 10 Hot Wing + 1 Ltr)", price: 1350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d10.png" },
+            { id: 11, name: "Deal No.11 (Small Pizza + Zinger + 1 Ltr)", price: 1130, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d8.png" }, 
+            { id: 12, name: "Deal No.12 (Small Pizza + Zinger + 5 Wings + 1 Ltr)", price: 1500, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d12.png" },
+            { id: 13, name: "Deal No.13 (Large Pizza + 1.5 Ltr Drink)", price: 1750, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d13.png" }, 
+            { id: 14, name: "Deal No.14 (Medium Pizza + 1 Ltr Drink)", price: 1190, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d13.png" }, 
+            { id: 15, name: "Deal No.15 (2 Small Pizza + 1 Ltr Drink)", price: 1300, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" }, 
+            { id: 16, name: "Deal No.16 (2 Medium Pizza + 1.5 Ltr Drink)", price: 2290, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" }, 
+            { id: 17, name: "Deal No.17 (2 Large Pizza + 1.5 Ltr Drink)", price: 3250, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" }, 
+            { id: 18, name: "Deal No.18 (1 Large + 1 Medium + 1.5 Ltr)", price: 2790, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" }, 
+            { id: 19, name: "Deal No.19 (2 Small + 10 Wings + 5 Nuggets + 1.5 Ltr)", price: 2390, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d19.png" },
+            { id: 20, name: "Deal No.20 (1 Large + 2 Zingers + Fries + 1.5 Ltr)", price: 2490, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d20.png" },
+            { id: 21, name: "Deal No.21 (4 Zingers + 1.5 Ltr Drink)", price: 1690, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d21.png" },
         ]},
         "Sighnature Box": { icon: "🎁", items: [
-            { name: "Master Platter (6 Oven Baked Wings + 4 Spin Wrap + Fries + Dip + 345ml)", price: 1150, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/platter.png" },
-            { name: "Duo Box (2 Zinger + 2 Pcs Albaik + Fries + 2 Dip)", price: 1499, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Duo%20Box.png" },
-            { name: "Wow Box (4 Pcs Albaik + Fries + 1 Bun + 2 Dip)", price: 1250, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/wow%20box.png" },
-            { name: "Boneless Box (5 Strips + 5 Hotshot + Fries + Dip)", price: 899, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/boneless.png" },
-            { name: "Hunger Box (Crown Small + 5 Hotshot + Fries + Dip)", price: 1199, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/hunger.png" },
+            { name: "Master Platter", price: 1150, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/platter.png" },
+            { name: "Duo Box", price: 1499, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Duo%20Box.png" },
+            { name: "Wow Box", price: 1250, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/wow%20box.png" },
+            { name: "Boneless Box", price: 899, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/boneless.png" },
+            { name: "Hunger Box", price: 1199, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/hunger.png" },
         ]},
         "Pasta": { icon: "🍝", items: [
             {name: "Alfredo Pasta", price: {Half: 500, Full: 900}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/alferdo.png" },
@@ -272,18 +313,12 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
             {name: "Arabic Wrap", price: 350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/arabic%20roll.png"}, 
             {name: "Kebabish Wrap", price: 350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/kebabish%20wrap.png"},
         ]},
-        "Bar Menu (Beverages)": { icon: "🥤", items: [
+        "Beverages": { icon: "🥤", items: [
             { name: "345ml Buddy", price: 80, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/345ml.png" },
             { name: "Next Buddy", price: 70, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/345ml%20nxt.png" },
             { name: "Coke 500ml", price: 120, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/500ml.png" },
             { name: "Coke 1 Liter", price: 170, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/1.5l.png" },
-            { name: "Sprite 1 Liter", price: 170, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/sprite1.png" },
-            { name: "Next Cola 1 Liter", price: 130, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/next1.png" },
             { name: "Coke 1.5L", price: 220, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/1.5l.png" },
-            { name: "Sprite 1.5L", price: 220, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/sprite1.png" },
-            { name: "Next Cola 1.5L Liter", price: 170, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/next1.png" },
-            { name: "Water Small", price: 60, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/small%20water.png" },
-            { name: "Water Large", price: 100, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/large%20water.png" }
         ]}
     };
 
@@ -291,7 +326,6 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
     let selectedItem = null;
     let currentModalQty = 1;
 
-    // RUNS AUTOMATICALLY ON LOAD TO REMEMBER DETAILS
     window.onload = () => {
         const saved = JSON.parse(localStorage.getItem('pizzaMasterCustomerInfo') || '{}');
         if (saved.name) document.getElementById('c-name').value = saved.name;
@@ -299,14 +333,19 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         if (saved.address) document.getElementById('c-loc').value = saved.address;
     };
 
+    // UPGRADED SCROLL SPY LOGIC
     window.onscroll = () => {
-        let sections = document.querySelectorAll('h2[id^="section-"]');
+        let sections = document.querySelectorAll('.category-heading');
+        let scrollPos = window.pageYOffset || document.documentElement.scrollTop;
         sections.forEach(section => {
-            if (window.pageYOffset >= section.offsetTop - 150) {
-                const id = section.id.replace('section-', '');
+            if (scrollPos >= section.offsetTop - 190) {
+                const catName = section.getAttribute('data-cat');
                 document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
-                const tab = document.getElementById(`tab-${id}`);
-                if(tab) tab.classList.add('active');
+                const activeTab = document.getElementById(`tab-${catName}`);
+                if(activeTab) {
+                    activeTab.classList.add('active');
+                    activeTab.parentElement.scrollTo({ left: activeTab.offsetLeft - 40, behavior: 'smooth' });
+                }
             }
         });
     };
@@ -315,10 +354,12 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         document.getElementById('gateway').style.display = 'none';
         document.getElementById('main-app').style.display = 'block';
         renderItems();
-        setTimeout(() => {
-            const target = document.getElementById(`section-${category}`);
-            if (target) window.scrollTo({ top: target.offsetTop - 140, behavior: 'smooth' });
-        }, 100);
+        setTimeout(() => scrollToCategory(category), 100);
+    }
+
+    function scrollToCategory(cat) {
+        const target = document.querySelector(`.category-heading[data-cat="${cat}"]`);
+        if (target) window.scrollTo({ top: target.offsetTop - 180, behavior: 'smooth' });
     }
 
     function renderItems() {
@@ -330,26 +371,37 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
             tab.className = 'cat-tab';
             tab.id = `tab-${cat}`;
             tab.innerHTML = cat;
-            tab.onclick = () => window.scrollTo({ top: document.getElementById(`section-${cat}`).offsetTop - 140, behavior: 'smooth' });
+            tab.onclick = () => scrollToCategory(cat);
             tabs.appendChild(tab);
+
             const heading = document.createElement('h2');
-            heading.id = `section-${cat}`;
-            heading.style = "grid-column: 1 / -1; margin: 20px 0; color: var(--red); border-left: 5px solid var(--orange); padding-left:10px;";
+            heading.className = 'category-heading';
+            heading.setAttribute('data-cat', cat);
+            heading.style = "grid-column: 1 / -1; margin: 20px 0; color: var(--red); border-left: 5px solid var(--orange); padding-left:10px; font-size:18px;";
             heading.innerText = cat;
             grid.appendChild(heading);
+
             menuData[cat].items.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerHTML = `<img src="${item.img}" class="card-img"><div class="card-info"><b>${item.name}</b><br><span class="card-price">Rs ${typeof item.price === 'object' ? Object.values(item.price)[0] : item.price}</span><br><button class="add-btn" style="padding:5px; margin-top:5px;" onclick='openItem(${JSON.stringify(item)})'>ADD</button></div>`;
+                card.innerHTML = `
+                    <img src="${item.img}" class="card-img">
+                    <div class="card-info">
+                        <div class="card-name">${item.name}</div>
+                        <span class="card-price">Rs ${typeof item.price === 'object' ? Object.values(item.price)[0] : item.price}</span><br>
+                        <button class="add-btn" style="padding:5px; margin-top:5px;" onclick='openItem(${JSON.stringify(item)})'>ADD</button>
+                    </div>`;
                 grid.appendChild(card);
             });
         });
     }
 
     function openItem(item) {
-        selectedItem = item; currentModalQty = 1;
+        selectedItem = item; 
+        currentModalQty = 1;
         document.getElementById('m-name').innerText = item.name;
         document.getElementById('m-qty-val').innerText = currentModalQty;
+        document.getElementById('m-note').value = "";
         const area = document.getElementById('size-selector-area');
         area.innerHTML = '';
         if (typeof item.price === 'object') {
@@ -366,16 +418,29 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         document.getElementById('m-price-preview').innerText = `Rs ${p * currentModalQty}`;
     }
 
-    function changeModalQty(a) { currentModalQty = Math.max(1, currentModalQty + a); document.getElementById('m-qty-val').innerText = currentModalQty; updateModalPrice(); }
+    function changeModalQty(a) { 
+        currentModalQty = Math.max(1, currentModalQty + a); 
+        document.getElementById('m-qty-val').innerText = currentModalQty; 
+        updateModalPrice(); 
+    }
 
     function addToCart() {
         let p = 0, sz = "";
         if (typeof selectedItem.price === 'object') {
             const sel = document.querySelector('input[name="msize"]:checked');
-            p = parseInt(sel.getAttribute('data-p')); sz = " ("+sel.value+")";
+            p = parseInt(sel.getAttribute('data-p')); 
+            sz = " ("+sel.value+")";
         } else { p = selectedItem.price; }
-        cart.push({ name: selectedItem.name + sz, price: p, qty: currentModalQty, note: document.getElementById('m-note').value, total: p * currentModalQty });
-        closeModals(); updateCart();
+        
+        cart.push({ 
+            name: selectedItem.name + sz, 
+            price: p, 
+            qty: currentModalQty, 
+            note: document.getElementById('m-note').value, 
+            total: p * currentModalQty 
+        });
+        closeModals(); 
+        updateCart();
     }
 
     function updateCart() {
@@ -386,87 +451,114 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         document.getElementById('cart-total').innerText = "Rs " + total;
     }
 
-    function renderSummary() {
-        const summaryEl = document.getElementById('summary');
-        if (cart.length === 0) { summaryEl.innerHTML = "Your cart is empty."; return; }
-        summaryEl.innerHTML = cart.map((item, idx) => `
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid #f5f5f5; padding-bottom:8px;">
-                <div style="flex-grow:1;">
-                    <div style="font-size:14px; font-weight:bold; color:#333;">${item.name}</div>
-                    <div style="color:var(--orange); font-weight:bold; font-size:13px;">Rs ${item.price * item.qty}</div>
-                    ${item.note ? `<small style="color:#800000; display:block;">Note: ${item.note}</small>` : ''}
-                </div>
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <div style="display:flex; align-items:center; background:#eee; border-radius:8px;">
-                        <button onclick="changeQty(${idx}, -1)" style="border:none; padding:5px 10px; cursor:pointer;">-</button>
-                        <span style="font-weight:bold; width:20px; text-align:center;">${item.qty}</span>
-                        <button onclick="changeQty(${idx}, 1)" style="border:none; padding:5px 10px; cursor:pointer;">+</button>
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCart();
+        openCheckout();
+    }
+
+    function updateCartItemQty(index, change) {
+        cart[index].qty = Math.max(1, cart[index].qty + change);
+        cart[index].total = cart[index].qty * cart[index].price;
+        updateCart();
+        openCheckout();
+    }
+
+    function openCheckout() {
+        if (cart.length === 0) { closeModals(); return; }
+        const sum = document.getElementById('summary');
+        sum.innerHTML = cart.map((i, index) => `
+            <div style="border-bottom:1px solid #f0f0f0; padding:10px 0;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div style="text-align:left;">
+                        <strong>${i.name}</strong><br>
+                        <small>${i.note ? 'Note: ' + i.note : ''}</small><br>
+                        <span style="color:var(--orange)">Rs ${i.total}</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <button onclick="updateCartItemQty(${index}, -1)" style="width:25px; height:25px; border-radius:50%; border:1px solid #ccc;">-</button>
+                        <span>${i.qty}</span>
+                        <button onclick="updateCartItemQty(${index}, 1)" style="width:25px; height:25px; border-radius:50%; border:1px solid #ccc;">+</button>
+                        <button onclick="removeFromCart(${index})" style="color:red; background:none; border:none; margin-left:5px;">✕</button>
                     </div>
                 </div>
             </div>
         `).join('');
+        document.getElementById('checkout-modal').style.display = 'flex';
     }
-
-    function changeQty(idx, delta) {
-        cart[idx].qty += delta;
-        if (cart[idx].qty <= 0) cart.splice(idx, 1);
-        else cart[idx].total = cart[idx].price * cart[idx].qty;
-        updateCart(); renderSummary();
-        if (cart.length === 0) closeModals();
-    }
-
-    function openCheckout() { renderSummary(); document.getElementById('checkout-modal').style.display = 'flex'; }
 
     function toggleAddressField() {
-        document.getElementById('address-wrapper').style.display = document.getElementById('c-type').value === 'Delivery' ? 'block' : 'none';
+        const type = document.getElementById('c-type').value;
+        document.getElementById('address-wrapper').style.display = type === 'Delivery' ? 'block' : 'none';
+    }
+
+    function closeModals() {
+        document.querySelectorAll('.overlay').forEach(m => m.style.display = 'none');
     }
 
     function sendOrder() {
-        const n = document.getElementById('c-name').value.trim();
-        const l = document.getElementById('c-loc').value.trim();
-        const p = document.getElementById('c-phone').value.trim();
+        const name = document.getElementById('c-name').value;
+        const phone = document.getElementById('c-phone').value;
         const type = document.getElementById('c-type').value;
+        const loc = document.getElementById('c-loc').value;
 
-        if(!n || !p || (type === "Delivery" && !l)) return alert("Please fill all details!");
+        if (!name || !phone || (type === 'Delivery' && !loc)) {
+            alert("Please fill all required details");
+            return;
+        }
 
-        localStorage.setItem('pizzaMasterCustomerInfo', JSON.stringify({ name: n, phone: p, address: l }));
+        // Save for next time
+        localStorage.setItem('pizzaMasterCustomerInfo', JSON.stringify({ name, phone, address: loc }));
 
-        let typeIcon = type === "Delivery" ? "🚚" : (type === "Takeaway" ? "🛍️" : "🍽️");
-        let msg = "🍕 *PIZZA MASTER | NEW ORDER*\n--------------------------\n";
-        msg += "👤 *CUSTOMER DETAILS*\n*Name:* " + n + "\n*Phone:* " + p + "\n*Type:* " + typeIcon + " " + type + "\n";
-        if(type === "Delivery") msg += "*Address:* " + l + "\n";
-        msg += "\n🛒 *ORDER ITEMS*\n--------------------------\n";
+        let bill = `*NEW ORDER - PIZZA MASTER*\n`;
+        bill += `--------------------------\n`;
+        bill += `*Customer:* ${name}\n`;
+        bill += `*Phone:* ${phone}\n`;
+        bill += `*Type:* ${type}\n`;
+        if(type === 'Delivery') bill += `*Loc:* ${loc}\n`;
+        bill += `--------------------------\n`;
+        
         cart.forEach(i => {
-            msg += "• " + i.qty + "x " + i.name + " = Rs " + (i.price * i.qty) + "\n";
-            if(i.note) msg += " └ _Note: " + i.note + "_\n";
+            bill += `• ${i.qty}x ${i.name} = Rs ${i.total}\n`;
+            if(i.note) bill += `  _Note: ${i.note}_\n`;
         });
-        msg += "--------------------------\n💰 *BILL TOTAL: " + document.getElementById('cart-total').innerText + "*\n--------------------------\n\n👨‍🍳 *Thanks for being part of the Pizza Master family!*";
 
-        // Save to History before clearing
-        const hist = JSON.parse(localStorage.getItem('pizzaMasterHistory') || '[]');
-        hist.push({ date: new Date().toLocaleString(), total: document.getElementById('cart-total').innerText });
-        localStorage.setItem('pizzaMasterHistory', JSON.stringify(hist.slice(-5)));
+        const total = cart.reduce((s, i) => s + i.total, 0);
+        bill += `--------------------------\n`;
+        bill += `*TOTAL BILL: Rs ${total}*\n`;
+        
+        // Save to history
+        let history = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+        history.unshift({ date: new Date().toLocaleString(), total: total, items: cart.length });
+        localStorage.setItem('orderHistory', JSON.stringify(history.slice(0, 10))); // Keep last 10
 
-        window.open("https://wa.me/923156838383?text=" + encodeURIComponent(msg), '_blank');
-        cart = []; updateCart();
-        document.getElementById('checkout-modal').style.display = 'none';
+        window.open(`https://wa.me/923156838383?text=${encodeURIComponent(bill)}`);
         document.getElementById('success-modal').style.display = 'flex';
     }
 
     function openHistory() {
-        const hist = JSON.parse(localStorage.getItem('pizzaMasterHistory') || '[]');
-        if(hist.length === 0) return alert("No order history found.");
-        alert("Last Orders:\n" + hist.map(h => h.date + " - " + h.total).join("\n"));
-    }
-
-    function filterItems() {
-        const q = document.getElementById('menuSearch').value.toLowerCase();
-        document.querySelectorAll('.card').forEach(c => {
-            c.style.display = c.innerText.toLowerCase().includes(q) ? 'flex' : 'none';
+        const history = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+        let html = history.length === 0 ? '<p>No previous orders found.</p>' : '';
+        history.forEach(h => {
+            html += `<div style="text-align:left; border-bottom:1px solid #eee; padding:10px;">
+                        <small>${h.date}</small><br>
+                        <b>${h.items} Items - Rs ${h.total}</b>
+                     </div>`;
         });
+        
+        // Using checkout modal to display history for simplicity
+        const sum = document.getElementById('summary');
+        sum.innerHTML = `<h3>Recent Orders</h3>` + html;
+        document.getElementById('checkout-modal').style.display = 'flex';
+        // Hide order fields when viewing history
+        document.querySelectorAll('#checkout-modal input, #checkout-modal select, #checkout-modal textarea, #checkout-modal .add-btn').forEach(el => el.style.display = 'none');
+        // Add a button to return to cart if needed
+        const backBtn = document.createElement('button');
+        backBtn.innerText = "Close History";
+        backBtn.className = "add-btn";
+        backBtn.onclick = () => { location.reload(); };
+        sum.appendChild(backBtn);
     }
-
-    function closeModals() { document.querySelectorAll('.overlay').forEach(o => o.style.display = 'none'); }
 </script>
 </body>
 </html>
