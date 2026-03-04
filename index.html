@@ -177,28 +177,39 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
     <div class="modal">
         <div style="font-size: 50px;">✅</div>
         <h2>Order Sent!</h2>
-        <p>Opening WhatsApp...</p>
+        <p>Your order has been forwarded to WhatsApp. Our team will contact you shortly to confirm.</p>
         <button class="add-btn" onclick="location.reload()">OK</button>
     </div>
 </div>
 
 <script>
    const menuData = {
-	"Stuffed Crust": { icon: "🥨", items: [
-            { name: "Kabab Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
-            { name: "Crown Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crown%20crust.png" },
-            { name: "Cheese Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
-            { name: "Chicken Crust", price: {S:790, M:1490, L:1890, XL:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }, 
-        ]},
-	 "Deep Dish": { icon: "🥘", items: [
-            {name: "Malai Boti", price: {M:1790, L:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Deep%20Dish.png"}, 
-            {name: "Peri Peri", price: {M:1790, L:2290}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Deep%20Dish.png"}
-        ]},
-	"Extreme Premium Pan": { icon: "💎", items: [
+    "Stuffed Crust 🥨": {
+        icon: "🥨",
+        items: [
+            { name: "Kabab Crust", price: { S: 790, M: 1490, L: 1890, XL: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" },
+            { name: "Crown Crust", price: { S: 790, M: 1490, L: 1890, XL: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crown%20crust.png" },
+            { name: "Cheese Crust", price: { S: 790, M: 1490, L: 1890, XL: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" },
+            { name: "Chicken Crust", price: { S: 790, M: 1490, L: 1890, XL: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crust%20pizza.png" }
+        ]
+    },
+    "Deep Dish 🥘": {
+        icon: "🥘",
+        items: [
+            { name: "Malai Boti", price: { M: 1790, L: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Deep%20Dish.png" },
+            { name: "Peri Peri", price: { M: 1790, L: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Deep%20Dish.png" }
+        ]
+    },
+    "Extreme Premium Pan 💎": {
+        icon: "💎",
+        items: [
             { name: "Rich Kabab", price: { M: 1790, L: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/rich%20kebab.png" },
-            { name: "Peri Peri", price: { M: 1790, L: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/peri%20peri%20premium.png" },
-        ]},	
-	"Special Pizza": { icon: "👑", items: [
+            { name: "Peri Peri", price: { M: 1790, L: 2290 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/peri%20peri%20premium.png" }
+        ]
+    },
+    "Special Pizza 👑": {
+        icon: "👑",
+        items: [
             { name: "Bone Fire", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/bonfire.png" },
             { name: "Pepperoni", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/pepproni%20pizza.png" },
             { name: "Malai Boti", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/malaiboti3.png" },
@@ -210,41 +221,62 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
             { name: "Mughlai", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/mughlai.png" },
             { name: "Hot Malai Boti", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/redhot.png" },
             { name: "Creamy Tikka", price: { S: 700, M: 1250, L: 1750, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/creamy%20tikka.png" }
-        ]},
-	 "Regular Pizza": { icon: "🍕", items: [
-            { name: "Chicken Fajita", price: {S:650, M:1150, L:1650, XL:1850}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/fajita.png" },
+        ]
+    },
+    "Regular Pizza 🍕": {
+        icon: "🍕",
+        items: [
+            { name: "Chicken Fajita", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/fajita.png" },
             { name: "Hot & Spicy", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/hot%20and%20spicy.png" },
             { name: "Chicken Tikka", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tikka%20pizza.png" },
             { name: "Crispy Chicken", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crispy%20chicken.png" },
             { name: "Chicken Tandori", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tandori.png" },
             { name: "Vegetable Pizza", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/vegitable.png" },
-            { name: "BBQ", price: {S:650, M:1150, L:1650, XL:1850}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tikka%20pizza.png" },
-            { name: "Chicken Supreme", price: {S:650, M:1150, L:1650, XL:1850}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/supreme.png" },
-            { name: "Kebabish", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/kebabish%20pizza.png" },
-	 ]},
-        "Beef Lover": { icon: "🥩", items: [
+            { name: "BBQ", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tikka%20pizza.png" },
+            { name: "Chicken Supreme", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/supreme.png" },
+            { name: "Kebabish", price: { S: 650, M: 1150, L: 1650, XL: 1850 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/kebabish%20pizza.png" }
+        ]
+    },
+    "Beef Lover 🥩": {
+        icon: "🥩",
+        items: [
             { name: "Beef Veggie", price: { S: 750, M: 1450, L: 1850, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/beef%20vigge.png" },
             { name: "Beef Cheese", price: { S: 750, M: 1450, L: 1850, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/beef%20cheese.png" },
             { name: "Beef Pepperoni", price: { S: 750, M: 1450, L: 1850, XL: 2150 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/beef%20pepperoni.png" }
-        ]},
-        "Fried Chicken": { icon: "🍗", items: [
-            { name: "Chicken Strips", price: {5: 400, 10: 750}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Strip.png" },
+        ]
+    },
+    "Fried Chicken 🍗": {
+        icon: "🍗",
+        items: [
+            { name: "Oven Baked Wings", price: { 5: 400, 10: 750 }, img: "https://i.postimg.cc/Y98rXDYD/Chat-GPT-Image-Feb-13-2026-03-23-13-AM.png" },
+            { name: "Peri-Peri Wings", price: { 5: 400, 10: 750 }, img: "https://i.postimg.cc/Dz2RCv6n/Chat-GPT-Image-Feb-13-2026-03-27-44-AM.png" },
+            { name: "Hot Wings", price: { 5: 390, 10: 690 }, img: "https://i.postimg.cc/fRBhQSJX/Chat-GPT-Image-Feb-13-2026-03-31-45-AM.png" },
+            { name: "Butter Wings", price: { 5: 400, 10: 750 }, img: "https://i.postimg.cc/T3P4m73n/Chat-GPT-Image-Feb-13-2026-03-35-32-AM.png" },
+            { name: "Hot Shots", price: { 5: 320, 10: 600 }, img: "https://i.postimg.cc/kMfN8n62/Chat-GPT-Image-Feb-13-2026-03-39-36-AM.png" },
+            { name: "Chicken Strips", price: { 5: 400, 10: 750 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Strip.png" },
             { name: "8 Pcs Sweet Chilli Wings", price: 600, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/sweet.png" },
             { name: "10 Buffalo Wings", price: 750, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/buffalo.png" },
             { name: "AlBaik Broast", price: 690, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/albaik.png" },
             { name: "Finger Fish", price: 850, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/fish.png" },
-            { name: "Nuggets", price: {5: 320, 10: 590}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/nuggets.png" },
-            { name: "Al Baik Nuggets", price: {5: 450, 10: 800}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/albaik%20nuggets.png" }
-        ]},
-        "Fries": { icon: "🍟", items: [
-            { name: "Plain Fries", price: {Reg: 200, Medium: 290, Large: 390}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/fries.png" },  
-            { name: "Cheese Loaded Fries", price: 590, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/loaded%20fries.png" }, 
-            { name: "Chicken Cheese Fries", price: 690, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/chicken%20cheese%20fries.png" },
-            { name: "Masala Fries", price: 500, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/masla%20fries.png" },
-            { name: "Pizza Fries", price: 750, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/pizza%20fries.png" },
-            { name: "Chunky Fries", price: 590, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/chunky%20fries.png" },
-        ]},
-        "Burger": { icon: "🍔", items: [
+            { name: "Nuggets", price: { 5: 320, 10: 590 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/nuggets.png" },
+            { name: "Al Baik Nuggets", price: { 5: 450, 10: 800 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/albaik%20nuggets.png" }
+        ]
+    },
+    "Fries 🍟": {
+        icon: "🍟",
+        items: [
+            { name: "Plain Fries", price: { Reg: 200, Medium: 290, Large: 390 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/fries.png" },
+            { name: "Curly Fries + Dip", price: { Half: 300, Full: 500 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/curly%20fries.png" },
+            { name: "Cheese Loaded Fries", price: { Half: 350, Full: 590 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/loaded%20fries.png" },
+            { name: "Chicken Cheese Fries", price: { Half: 400, Full: 690 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/chicken%20cheese%20fries.png" },
+            { name: "Masala Fries", price: { Half: 300, Full: 500 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/masla%20fries.png" },
+            { name: "Pizza Fries", price: { Half: 450, Full: 750 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/pizza%20fries.png" },
+            { name: "Chunky Fries", price: { Half: 350, Full: 590 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/chunky%20fries.png" }
+        ]
+    },
+    "Burger 🍔": {
+        icon: "🍔",
+        items: [
             { name: "Chicken Patty Burger", price: 320, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/patty%20burger.png" },
             { name: "Zinger Burger", price: 400, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/zinger%20burger.png" },
             { name: "Zinger Cheese Burger", price: 480, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/zinger%20cheese.png" },
@@ -259,8 +291,11 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
             { name: "Double Beef Lacha Burger", price: 850, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/double%20Beef%20Lacha%20Burger.png" },
             { name: "Zingster Lacha Burger", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/zingster.png" },
             { name: "Tower Burger", price: 650, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tower%20burger.png" }
-        ]},
-        "Paratha Rolls": { icon: "🌯", items: [
+        ]
+    },
+    "Paratha Rolls 🌯": {
+        icon: "🌯",
+        items: [
             { name: "Master Special Roll", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/special%20roll.png" },
             { name: "BBQ Cheese Roll", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/bbq%20cheese%20roll.png" },
             { name: "Chicken Cheese Roll", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/chicken%20cheese%20roll.png" },
@@ -268,8 +303,11 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
             { name: "Zinger Cheese Roll", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/zinger%20cheese%20roll.png" },
             { name: "Arabic Roll", price: 350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/arabic%20roll.png" },
             { name: "Kebabish Roll", price: 400, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/kebabish%20roll.png" }
-        ]},
-      "Hot Deals 🔥": { icon: "🔥", items: [
+        ]
+    },
+    "Hot Deals 🔥": {
+        icon: "🔥",
+        items: [
             { id: 1, name: "Deal No.1 (Special Burger + Fries + Drink)", price: 590, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d1.png" },
             { id: 2, name: "Deal No.2 (Zinger + Fries + Drink)", price: 550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d2.png" },
             { id: 3, name: "Deal No.3 (Patty Burger + Fries + Drink)", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d3.png" },
@@ -280,48 +318,97 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
             { id: 8, name: "Deal No.8 (Small Pizza + 2 Zingers + 1 Ltr)", price: 1550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d11.png" },
             { id: 9, name: "Deal No.9 (10 Hot Wings + 10 Nuggets + 1 Ltr)", price: 1350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d9.png" },
             { id: 10, name: "Deal No.10 (Small Pizza + 10 Hot Wing + 1 Ltr)", price: 1350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d10.png" },
-            { id: 11, name: "Deal No.11 (Small Pizza + Zinger + 1 Ltr)", price: 1130, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d8.png" }, 
+            { id: 11, name: "Deal No.11 (Small Pizza + Zinger + 1 Ltr)", price: 1130, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d8.png" },
             { id: 12, name: "Deal No.12 (Small Pizza + Zinger + 5 Wings + 1 Ltr)", price: 1500, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d12.png" },
-            { id: 13, name: "Deal No.13 (Large Pizza + 1.5 Ltr Drink)", price: 1750, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d13.png" }, 
-            { id: 14, name: "Deal No.14 (Medium Pizza + 1 Ltr Drink)", price: 1190, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d13.png" }, 
-            { id: 15, name: "Deal No.15 (2 Small Pizza + 1 Ltr Drink)", price: 1300, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" }, 
-            { id: 16, name: "Deal No.16 (2 Medium Pizza + 1.5 Ltr Drink)", price: 2290, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" }, 
-            { id: 17, name: "Deal No.17 (2 Large Pizza + 1.5 Ltr Drink)", price: 3250, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" }, 
-            { id: 18, name: "Deal No.18 (1 Large + 1 Medium + 1.5 Ltr)", price: 2790, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" }, 
+            { id: 13, name: "Deal No.13 (Large Pizza + 1.5 Ltr Drink)", price: 1750, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d13.png" },
+            { id: 14, name: "Deal No.14 (Medium Pizza + 1 Ltr Drink)", price: 1190, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d13.png" },
+            { id: 15, name: "Deal No.15 (2 Small Pizza + 1 Ltr Drink)", price: 1300, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" },
+            { id: 16, name: "Deal No.16 (2 Medium Pizza + 1.5 Ltr Drink)", price: 2290, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" },
+            { id: 17, name: "Deal No.17 (2 Large Pizza + 1.5 Ltr Drink)", price: 3250, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" },
+            { id: 18, name: "Deal No.18 (1 Large + 1 Medium + 1.5 Ltr)", price: 2790, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d15.png" },
             { id: 19, name: "Deal No.19 (2 Small + 10 Wings + 5 Nuggets + 1.5 Ltr)", price: 2390, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d19.png" },
             { id: 20, name: "Deal No.20 (1 Large + 2 Zingers + Fries + 1.5 Ltr)", price: 2490, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d20.png" },
-            { id: 21, name: "Deal No.21 (4 Zingers + 1.5 Ltr Drink)", price: 1690, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d21.png" },
-        ]},
-        "Sighnature Box": { icon: "🎁", items: [
+            { id: 21, name: "Deal No.21 (4 Zingers + 1.5 Ltr Drink)", price: 1690, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/d21.png" }
+        ]
+    },
+    "Sighnature Box 🎁": {
+        icon: "🎁",
+        items: [
             { name: "Master Platter", price: 1150, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/platter.png" },
             { name: "Duo Box", price: 1499, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Duo%20Box.png" },
             { name: "Wow Box", price: 1250, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/wow%20box.png" },
             { name: "Boneless Box", price: 899, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/boneless.png" },
-            { name: "Hunger Box", price: 1199, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/hunger.png" },
-        ]},
-        "Pasta": { icon: "🍝", items: [
-            {name: "Alfredo Pasta", price: {Half: 500, Full: 900}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/alferdo.png" },
-            {name: "Special Pasta", price: {Half: 450, Full: 800}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/special%20pasta.png" },
-            {name: "Flaming Pasta", price: {Half: 450, Full: 800}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/flaming.png" },
-            {name: "Creamy Pasta", price: {Half: 450, Full: 800}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/creamy.png" },
-            {name: "Crunchy Pasta", price: {Half: 450, Full: 800}, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crunchy.png" },
-        ]},
-        "Wraps": { icon: "🌯", items: [
-            {name: "Maxican Wrap", price: 350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Maxican%20wrap.png"}, 
-            {name: "Bihari Wrap", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/bihari%20wrap1.png"},
-            {name: "Spin Wrap", price: 550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/spinwrap.png"},
-            {name: "Wrapta Strip Wrap", price: 500, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/wrapta.png"},
-            {name: "Arabic Wrap", price: 350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/arabic%20roll.png"}, 
-            {name: "Kebabish Wrap", price: 350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/kebabish%20wrap.png"},
-        ]},
-        "Beverages": { icon: "🥤", items: [
+            { name: "Hunger Box", price: 1199, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/hunger.png" }
+        ]
+    },
+    "Rice 🍚": {
+        icon: "🍚",
+        items: [
+            { name: "Rice with Host Shot", price: 400, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/hotshotrice.png" },
+            { name: "Rice with Kebab", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/kebabrice.png" },
+            { name: "Rice with Fish", price: 600, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/fishrice.png" }
+        ]
+    },
+    "Pasta 🍝": {
+        icon: "🍝",
+        items: [
+            { name: "Alfredo Pasta", price: { Half: 500, Full: 900 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/alferdo.png" },
+            { name: "Special Pasta", price: { Half: 450, Full: 800 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/special%20pasta.png" },
+            { name: "Flaming Pasta", price: { Half: 450, Full: 800 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/flaming.png" },
+            { name: "Creamy Pasta", price: { Half: 450, Full: 800 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/creamy.png" },
+            { name: "Crunchy Pasta", price: { Half: 450, Full: 800 }, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/crunchy.png" }
+        ]
+    },
+    "Wraps 🌯": {
+        icon: "🌯",
+        items: [
+            { name: "Maxican Wrap", price: 350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Maxican%20wrap.png" },
+            { name: "Bihari Wrap", price: 450, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/bihari%20wrap1.png" },
+            { name: "Spin Wrap", price: 550, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/spinwrap.png" },
+            { name: "Wrapta Strip Wrap", price: 500, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/wrapta.png" },
+            { name: "Arabic Wrap", price: 350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/arabic%20roll.png" },
+            { name: "Kebabish Wrap", price: 350, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/kebabish%20wrap.png" }
+        ]
+    },
+"Bites 🥙": {
+        icon: "🥙",
+        items: [
+        { name: "Kebab Bites", price: 640, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Kebab%20Bites.png" },
+        { name: "Calzon Bites", price: 840, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Calzon%20Bites.png" },
+        { name: "Choco Bites", price: 640, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Choco%20Bites.png" },
+        { name: "Kebab 5 Pcs", price: 580, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Kebab.png" },
+        { name: "Turkish Beef Donner", price: 390, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Donner.png" },
+        { name: "Turkish Chicken Donner", price: 590, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Donner.png" }
+    ]
+    },
+    "Ice Cream 🍦": {
+        icon: "🍦",
+        items: [
+            { name: "Kulfa", price: 400, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Kulfa.png" },
+        { name: "Pista", price: 400, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/pista.png" },
+        { name: "Vanilla", price: 400, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/Vinella.png" },
+        { name: "Mango", price: 400, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/mango.png" },
+        { name: "Tutti Frutti", price: 400, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/tutti%20frutti.png" },
+        { name: "Chocolate", price: 400, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/choco.png" },
+    ]
+    },
+    "Bar Menu (Beverages) 🥤": {
+        icon: "🥤",
+        items: [
             { name: "345ml Buddy", price: 80, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/345ml.png" },
             { name: "Next Buddy", price: 70, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/345ml%20nxt.png" },
             { name: "Coke 500ml", price: 120, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/500ml.png" },
             { name: "Coke 1 Liter", price: 170, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/1.5l.png" },
+            { name: "Sprite 1 Liter", price: 170, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/sprite1.png" },
+            { name: "Next Cola 1 Liter", price: 130, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/next1.png" },
             { name: "Coke 1.5L", price: 220, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/1.5l.png" },
-        ]}
-    };
+            { name: "Sprite 1.5L", price: 220, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/sprite1.png" },
+            { name: "Next Cola 1.5L Liter", price: 170, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/next1.png" },
+            { name: "Water Small", price: 60, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/small%20water.png" },
+            { name: "Water Large", price: 100, img: "https://raw.githubusercontent.com/ImAbbasi/my-assets/main/large%20water.png" }
+        ]
+    }
+};
 
     let cart = [];
     let selectedItem = null;
@@ -363,6 +450,42 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         if (target) window.scrollTo({ top: target.offsetTop - 180, behavior: 'smooth' });
     }
 
+function filterItems() {
+    const query = document.getElementById('menuSearch').value.toLowerCase();
+    const cards = document.querySelectorAll('.card');
+    const headings = document.querySelectorAll('.category-heading');
+    let hasResults = false;
+
+    // 1. Filter the item cards
+    cards.forEach(card => {
+        const name = card.querySelector('.card-name').innerText.toLowerCase();
+        if (name.includes(query)) {
+            card.style.display = 'flex';
+            hasResults = true;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    // 2. Hide/Show category headings based on if they have visible items
+    headings.forEach(heading => {
+        let next = heading.nextElementSibling;
+        let hasVisibleItems = false;
+        
+        // Look at all cards following this heading until the next heading
+        while (next && !next.classList.contains('category-heading')) {
+            if (next.classList.contains('card') && next.style.display !== 'none') {
+                hasVisibleItems = true;
+                break;
+            }
+            next = next.nextElementSibling;
+        }
+        heading.style.display = hasVisibleItems ? 'block' : 'none';
+    });
+
+    // 3. Show "No results" message if nothing found
+    document.getElementById('no-results').style.display = hasResults ? 'none' : 'block';
+}
     function renderItems() {
         const grid = document.getElementById('items-grid');
         const tabs = document.getElementById('cat-tabs');
