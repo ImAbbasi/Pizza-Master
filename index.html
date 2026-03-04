@@ -17,7 +17,6 @@
 }
 * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; outline:none; }
 body { font-family:'Segoe UI',Roboto,sans-serif; background:var(--bg); margin:0; overflow-x:hidden; }
-
 /* HEADER STICKY */
 header {
     background: var(--red);
@@ -33,49 +32,45 @@ header {
 }
 .header-logo-text { font-size: 24px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; font-family: 'Arial Black', sans-serif; }
 .header-logo-text span { color: var(--orange); }
-
 /* SEARCH STICKY */
-.search-container { 
-    background:white; 
-    padding:10px 15px; 
-    position:sticky; 
-    top:62px; /* Adjusted to sit under header */
-    z-index: 1004; 
-    border-bottom:1px solid #eee; 
-    display: flex; 
+.search-container {
+    background:white;
+    padding:10px 15px;
+    position:sticky;
+    top:62px;
+    z-index: 1004;
+    border-bottom:1px solid #eee;
+    display: flex;
     gap: 10px;
 }
 .search-bar { flex-grow: 1; padding:12px 15px; border-radius:12px; border:1px solid #ddd; background:#f9f9f9; font-size:14px; }
-
 /* CATEGORY SWIMLANE STICKY */
-.category-scroll { 
-    display:flex; 
-    overflow-x:auto; 
-    background:white; 
-    white-space:nowrap; 
-    border-bottom:1px solid #ddd; 
-    padding:12px 5px; 
-    position:sticky; 
-    top:125px; /* Adjusted to sit under search */
-    z-index:1003; 
-    scrollbar-width: none; /* Hide scrollbar Firefox */
+.category-scroll {
+    display:flex;
+    overflow-x:auto;
+    background:white;
+    white-space:nowrap;
+    border-bottom:1px solid #ddd;
+    padding:12px 5px;
+    position:sticky;
+    top:125px;
+    z-index:1003;
+    scrollbar-width: none;
 }
-.category-scroll::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome/Safari */
-
-.cat-tab { 
-    padding:8px 20px; 
-    margin:0 5px; 
-    border-radius:20px; 
-    font-size:13px; 
-    font-weight:700; 
-    color:#666; 
-    background:#f0f0f0; 
-    cursor:pointer; 
+.category-scroll::-webkit-scrollbar { display: none; }
+.cat-tab {
+    padding:8px 20px;
+    margin:0 5px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:700;
+    color:#666;
+    background:#f0f0f0;
+    cursor:pointer;
     transition: 0.3s;
     flex: 0 0 auto;
 }
 .cat-tab.active { background:var(--red); color:white; transform: scale(1.05); }
-
 /* GATEWAY & GRID */
 #gateway { position:fixed; top:0; left:0; width:100%; height:100%; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:2000; text-align:center; color:white; }
 .logo-3d-main { width:220px; margin-bottom:20px; animation:logoFloat 3s ease-in-out infinite; }
@@ -84,15 +79,17 @@ header {
 .logo-big span { color:var(--orange); }
 .gate-btn { width:85%; max-width:300px; padding:18px; border-radius:50px; border:none; font-weight:800; cursor:pointer; margin-bottom:15px; transition:0.3s; }
 #main-app { display:none; }
-
 .container { padding:15px; max-width:600px; margin:auto; padding-bottom:120px; }
 .grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
 .card { background:white; border-radius:15px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.05); text-align:center; border:1px solid #eee; display:flex; flex-direction:column; }
 .card-img { width:100%; height:110px; object-fit:cover; }
 .card-info { padding:10px; flex-grow:1; }
 .card-name { font-weight:800; font-size:11px; margin-bottom:5px; color:#333; height:35px; overflow:hidden; }
-.card-price { color:var(--orange); font-weight:900; font-size:12px; }
-
+.card-price { 
+    color:var(--orange); 
+    font-weight:900; 
+    font-size:13px;          /* slightly larger for better visibility */
+}
 /* CART & MODALS */
 #cart-bar { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); width:90%; max-width:400px; background:var(--red); color:white; padding:12px 20px; border-radius:50px; display:none; justify-content:space-between; align-items:center; z-index:1100; border: 2px solid var(--orange); }
 .checkout-btn { background:var(--orange); padding:8px 18px; border-radius:20px; font-weight:900; cursor:pointer; }
@@ -104,20 +101,18 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
 </style>
 </head>
 <body>
-
 <div id="gateway">
     <img src="https://raw.githubusercontent.com/ImAbbasi/my-assets/main/logo%203d.png" class="logo-3d-main">
     <div class="logo-big">PIZZA <span>MASTER</span></div>
-    
+   
     <button class="gate-btn" style="background:white; color:black;" onclick="enterApp('Stuffed Crust')">BROWSE MENU</button>
     <button class="gate-btn" style="background:var(--red); color:white;" onclick="enterApp('Hot Deals 🔥')">🔥 HOT DEALS</button>
-    
-    
+   
+   
     <a href="https://www.facebook.com/PizzaMasterLodhran" target="_blank" class="fb-btn" style="width:85%; max-width:300px; border-radius:50px; margin-top:10px;">
         Follow us on Facebook
     </a>
 </div>
-
 <div id="main-app">
     <header>
         <div class="header-logo-text">PIZZA<span>MASTER</span></div>
@@ -136,7 +131,6 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         <div class="checkout-btn" onclick="openCheckout()">CHECKOUT →</div>
     </div>
 </div>
-
 <div id="item-modal" class="overlay">
     <div class="modal">
         <h3 id="m-name" style="color:var(--red); margin:0 0 5px 0;"></h3>
@@ -152,7 +146,6 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         <button onclick="closeModals()" style="background:none; border:none; width:100%; margin-top:10px; color:gray;">Cancel</button>
     </div>
 </div>
-
 <div id="checkout-modal" class="overlay">
     <div class="modal">
         <h3 style="margin-top:0;">Order Summary</h3>
@@ -172,7 +165,6 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
         <button onclick="closeModals()" style="background:none; border:none; width:100%; margin-top:15px; color:gray;">Back</button>
     </div>
 </div>
-
 <div id="success-modal" class="overlay">
     <div class="modal">
         <div style="font-size: 50px;">✅</div>
@@ -183,7 +175,7 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
 </div>
 
 <script>
-   const menuData = {
+const menuData = {
     "Stuffed Crust 🥨": {
         icon: "🥨",
         items: [
@@ -410,45 +402,80 @@ input, select, textarea { width:100%; padding:12px; margin:8px 0; border-radius:
     }
 };
 
-    let cart = [];
-    let selectedItem = null;
-    let currentModalQty = 1;
+let cart = [];
+let selectedItem = null;
+let currentModalQty = 1;
 
-    window.onload = () => {
-        const saved = JSON.parse(localStorage.getItem('pizzaMasterCustomerInfo') || '{}');
-        if (saved.name) document.getElementById('c-name').value = saved.name;
-        if (saved.phone) document.getElementById('c-phone').value = saved.phone;
-        if (saved.address) document.getElementById('c-loc').value = saved.address;
-    };
+window.onload = () => {
+    const saved = JSON.parse(localStorage.getItem('pizzaMasterCustomerInfo') || '{}');
+    if (saved.name) document.getElementById('c-name').value = saved.name;
+    if (saved.phone) document.getElementById('c-phone').value = saved.phone;
+    if (saved.address) document.getElementById('c-loc').value = saved.address;
+};
 
-    // UPGRADED SCROLL SPY LOGIC
-    window.onscroll = () => {
-        let sections = document.querySelectorAll('.category-heading');
-        let scrollPos = window.pageYOffset || document.documentElement.scrollTop;
-        sections.forEach(section => {
-            if (scrollPos >= section.offsetTop - 190) {
-                const catName = section.getAttribute('data-cat');
-                document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
-                const activeTab = document.getElementById(`tab-${catName}`);
-                if(activeTab) {
-                    activeTab.classList.add('active');
-                    activeTab.parentElement.scrollTo({ left: activeTab.offsetLeft - 40, behavior: 'smooth' });
-                }
+window.onscroll = () => {
+    const headerHeight = document.querySelector('header').offsetHeight;
+    const searchHeight = document.querySelector('.search-container').offsetHeight;
+    const catHeight = document.querySelector('.category-scroll').offsetHeight;
+    const offset = headerHeight + searchHeight + catHeight + 20;
+    const sections = document.querySelectorAll('.category-heading');
+    const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+    sections.forEach(section => {
+        if (scrollPos >= section.offsetTop - offset) {
+            const catName = section.getAttribute('data-cat');
+            document.querySelectorAll('.cat-tab')
+                .forEach(t => t.classList.remove('active'));
+            const activeTab = document.getElementById(`tab-${catName}`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+                activeTab.parentElement.scrollTo({
+                    left: activeTab.offsetLeft - 40,
+                    behavior: 'smooth'
+                });
             }
-        });
-    };
+        }
+    });
+};
 
-    function enterApp(category) {
-        document.getElementById('gateway').style.display = 'none';
-        document.getElementById('main-app').style.display = 'block';
-        renderItems();
-        setTimeout(() => scrollToCategory(category), 100);
+function enterApp(category) {
+    document.getElementById('gateway').style.display = 'none';
+    document.getElementById('main-app').style.display = 'block';
+    renderItems();
+    setTimeout(() => scrollToCategory(category), 100);
+}
+
+function scrollToCategory(cat) {
+    const target = document.querySelector(`.category-heading[data-cat="${cat}"]`);
+    if (target) window.scrollTo({ top: target.offsetTop - 180, behavior: 'smooth' });
+}
+
+function updateActiveTabAfterFilter() {
+    const visibleHeadings = Array.from(document.querySelectorAll('.category-heading'))
+        .filter(h => h.style.display !== 'none');
+
+    if (visibleHeadings.length === 0) {
+        document.querySelectorAll('.cat-tab.active')
+            .forEach(t => t.classList.remove('active'));
+        return;
     }
 
-    function scrollToCategory(cat) {
-        const target = document.querySelector(`.category-heading[data-cat="${cat}"]`);
-        if (target) window.scrollTo({ top: target.offsetTop - 180, behavior: 'smooth' });
+    const firstVisible = visibleHeadings[0];
+    const catName = firstVisible.getAttribute('data-cat');
+
+    document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+    const activeTab = document.getElementById(`tab-${catName}`);
+    if (activeTab) {
+        activeTab.classList.add('active');
+        
+        const scrollContainer = document.getElementById('cat-tabs');
+        if (scrollContainer) {
+            scrollContainer.scrollTo({
+                left: activeTab.offsetLeft - 40,
+                behavior: 'smooth'
+            });
+        }
     }
+}
 
 function filterItems() {
     const query = document.getElementById('menuSearch').value.toLowerCase();
@@ -456,7 +483,6 @@ function filterItems() {
     const headings = document.querySelectorAll('.category-heading');
     let hasResults = false;
 
-    // 1. Filter the item cards
     cards.forEach(card => {
         const name = card.querySelector('.card-name').innerText.toLowerCase();
         if (name.includes(query)) {
@@ -467,12 +493,10 @@ function filterItems() {
         }
     });
 
-    // 2. Hide/Show category headings based on if they have visible items
     headings.forEach(heading => {
         let next = heading.nextElementSibling;
         let hasVisibleItems = false;
-        
-        // Look at all cards following this heading until the next heading
+      
         while (next && !next.classList.contains('category-heading')) {
             if (next.classList.contains('card') && next.style.display !== 'none') {
                 hasVisibleItems = true;
@@ -483,182 +507,206 @@ function filterItems() {
         heading.style.display = hasVisibleItems ? 'block' : 'none';
     });
 
-    // 3. Show "No results" message if nothing found
     document.getElementById('no-results').style.display = hasResults ? 'none' : 'block';
+    
+    updateActiveTabAfterFilter();
 }
-    function renderItems() {
-        const grid = document.getElementById('items-grid');
-        const tabs = document.getElementById('cat-tabs');
-        grid.innerHTML = ''; tabs.innerHTML = '';
-        Object.keys(menuData).forEach(cat => {
-            const tab = document.createElement('div');
-            tab.className = 'cat-tab';
-            tab.id = `tab-${cat}`;
-            tab.innerHTML = cat;
-            tab.onclick = () => scrollToCategory(cat);
-            tabs.appendChild(tab);
 
-            const heading = document.createElement('h2');
-            heading.className = 'category-heading';
-            heading.setAttribute('data-cat', cat);
-            heading.style = "grid-column: 1 / -1; margin: 20px 0; color: var(--red); border-left: 5px solid var(--orange); padding-left:10px; font-size:18px;";
-            heading.innerText = cat;
-            grid.appendChild(heading);
+function renderItems() {
+    const grid = document.getElementById('items-grid');
+    const tabs = document.getElementById('cat-tabs');
+    grid.innerHTML = '';
+    tabs.innerHTML = '';
 
-            menuData[cat].items.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <img src="${item.img}" class="card-img">
-                    <div class="card-info">
-                        <div class="card-name">${item.name}</div>
-                        <span class="card-price">Rs ${typeof item.price === 'object' ? Object.values(item.price)[0] : item.price}</span><br>
-                        <button class="add-btn" style="padding:5px; margin-top:5px;" onclick='openItem(${JSON.stringify(item)})'>ADD</button>
-                    </div>`;
-                grid.appendChild(card);
-            });
+    Object.keys(menuData).forEach(cat => {
+        const tab = document.createElement('div');
+        tab.className = 'cat-tab';
+        tab.id = `tab-${cat}`;
+        tab.innerText = cat;
+        tab.onclick = () => scrollToCategory(cat);
+        tabs.appendChild(tab);
+
+        const heading = document.createElement('h2');
+        heading.className = 'category-heading';
+        heading.setAttribute('data-cat', cat);
+        heading.style.cssText = `
+            grid-column: 1 / -1;
+            margin: 20px 0;
+            color: var(--red);
+            border-left: 5px solid var(--orange);
+            padding-left: 10px;
+            font-size: 18px;
+        `;
+        heading.innerText = cat;
+        grid.appendChild(heading);
+
+        menuData[cat].items.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            const safeItem = JSON.stringify(item).replace(/"/g, '&quot;');
+
+            // Improved price display: "from Rs XXX" when multiple prices exist
+            const displayPrice = typeof item.price === 'object'
+                ? `from Rs ${Math.min(...Object.values(item.price))}`
+                : `Rs ${item.price}`;
+
+            card.innerHTML = `
+                <img src="${item.img}" class="card-img">
+                <div class="card-info">
+                    <div class="card-name">${item.name}</div>
+                    <span class="card-price">${displayPrice}</span><br>
+                    <button class="add-btn"
+                        style="padding:5px; margin-top:5px;"
+                        onclick="openItem(${safeItem})">
+                        ADD
+                    </button>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    });
+
+    const firstTab = document.querySelector('.cat-tab');
+    if (firstTab) {
+        firstTab.classList.add('active');
+    }
+}
+
+// The rest of your functions remain unchanged
+function openItem(item) {
+    selectedItem = item;
+    currentModalQty = 1;
+    document.getElementById('m-name').innerText = item.name;
+    document.getElementById('m-qty-val').innerText = currentModalQty;
+    document.getElementById('m-note').value = "";
+    const area = document.getElementById('size-selector-area');
+    area.innerHTML = '';
+    if (typeof item.price === 'object') {
+        Object.entries(item.price).forEach(([s, p], i) => {
+            area.innerHTML += `<label><input type="radio" name="msize" value="${s}" data-p="${p}" ${i==0?'checked':''} onchange="updateModalPrice()"> ${s} - Rs ${p}</label><br>`;
         });
     }
+    updateModalPrice();
+    document.getElementById('item-modal').style.display = 'flex';
+}
 
-    function openItem(item) {
-        selectedItem = item; 
-        currentModalQty = 1;
-        document.getElementById('m-name').innerText = item.name;
-        document.getElementById('m-qty-val').innerText = currentModalQty;
-        document.getElementById('m-note').value = "";
-        const area = document.getElementById('size-selector-area');
-        area.innerHTML = '';
-        if (typeof item.price === 'object') {
-            Object.entries(item.price).forEach(([s, p], i) => {
-                area.innerHTML += `<label><input type="radio" name="msize" value="${s}" data-p="${p}" ${i==0?'checked':''} onchange="updateModalPrice()"> ${s} - Rs ${p}</label><br>`;
-            });
-        }
-        updateModalPrice();
-        document.getElementById('item-modal').style.display = 'flex';
-    }
+function updateModalPrice() {
+    let p = typeof selectedItem.price === 'object' ? parseInt(document.querySelector('input[name="msize"]:checked').getAttribute('data-p')) : selectedItem.price;
+    document.getElementById('m-price-preview').innerText = `Rs ${p * currentModalQty}`;
+}
 
-    function updateModalPrice() {
-        let p = typeof selectedItem.price === 'object' ? parseInt(document.querySelector('input[name="msize"]:checked').getAttribute('data-p')) : selectedItem.price;
-        document.getElementById('m-price-preview').innerText = `Rs ${p * currentModalQty}`;
-    }
+function changeModalQty(a) {
+    currentModalQty = Math.max(1, currentModalQty + a);
+    document.getElementById('m-qty-val').innerText = currentModalQty;
+    updateModalPrice();
+}
 
-    function changeModalQty(a) { 
-        currentModalQty = Math.max(1, currentModalQty + a); 
-        document.getElementById('m-qty-val').innerText = currentModalQty; 
-        updateModalPrice(); 
-    }
+function addToCart() {
+    let p = 0, sz = "";
+    if (typeof selectedItem.price === 'object') {
+        const sel = document.querySelector('input[name="msize"]:checked');
+        p = parseInt(sel.getAttribute('data-p'));
+        sz = " ("+sel.value+")";
+    } else { p = selectedItem.price; }
+   
+    cart.push({
+        name: selectedItem.name + sz,
+        price: p,
+        qty: currentModalQty,
+        note: document.getElementById('m-note').value,
+        total: p * currentModalQty
+    });
+    closeModals();
+    updateCart();
+}
 
-    function addToCart() {
-        let p = 0, sz = "";
-        if (typeof selectedItem.price === 'object') {
-            const sel = document.querySelector('input[name="msize"]:checked');
-            p = parseInt(sel.getAttribute('data-p')); 
-            sz = " ("+sel.value+")";
-        } else { p = selectedItem.price; }
-        
-        cart.push({ 
-            name: selectedItem.name + sz, 
-            price: p, 
-            qty: currentModalQty, 
-            note: document.getElementById('m-note').value, 
-            total: p * currentModalQty 
-        });
-        closeModals(); 
-        updateCart();
-    }
+function updateCart() {
+    const count = cart.reduce((s, i) => s + i.qty, 0);
+    const total = cart.reduce((s, i) => s + i.total, 0);
+    document.getElementById('cart-bar').style.display = count > 0 ? 'flex' : 'none';
+    document.getElementById('cart-count').innerText = count + " Items";
+    document.getElementById('cart-total').innerText = "Rs " + total;
+}
 
-    function updateCart() {
-        const count = cart.reduce((s, i) => s + i.qty, 0);
-        const total = cart.reduce((s, i) => s + i.total, 0);
-        document.getElementById('cart-bar').style.display = count > 0 ? 'flex' : 'none';
-        document.getElementById('cart-count').innerText = count + " Items";
-        document.getElementById('cart-total').innerText = "Rs " + total;
-    }
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCart();
+    openCheckout();
+}
 
-    function removeFromCart(index) {
-        cart.splice(index, 1);
-        updateCart();
-        openCheckout();
-    }
+function updateCartItemQty(index, change) {
+    cart[index].qty = Math.max(1, cart[index].qty + change);
+    cart[index].total = cart[index].qty * cart[index].price;
+    updateCart();
+    openCheckout();
+}
 
-    function updateCartItemQty(index, change) {
-        cart[index].qty = Math.max(1, cart[index].qty + change);
-        cart[index].total = cart[index].qty * cart[index].price;
-        updateCart();
-        openCheckout();
-    }
-
-    function openCheckout() {
-        if (cart.length === 0) { closeModals(); return; }
-        const sum = document.getElementById('summary');
-        sum.innerHTML = cart.map((i, index) => `
-            <div style="border-bottom:1px solid #f0f0f0; padding:10px 0;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div style="text-align:left;">
-                        <strong>${i.name}</strong><br>
-                        <small>${i.note ? 'Note: ' + i.note : ''}</small><br>
-                        <span style="color:var(--orange)">Rs ${i.total}</span>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <button onclick="updateCartItemQty(${index}, -1)" style="width:25px; height:25px; border-radius:50%; border:1px solid #ccc;">-</button>
-                        <span>${i.qty}</span>
-                        <button onclick="updateCartItemQty(${index}, 1)" style="width:25px; height:25px; border-radius:50%; border:1px solid #ccc;">+</button>
-                        <button onclick="removeFromCart(${index})" style="color:red; background:none; border:none; margin-left:5px;">✕</button>
-                    </div>
+function openCheckout() {
+    if (cart.length === 0) { closeModals(); return; }
+    const sum = document.getElementById('summary');
+    sum.innerHTML = cart.map((i, index) => `
+        <div style="border-bottom:1px solid #f0f0f0; padding:10px 0;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="text-align:left;">
+                    <strong>${i.name}</strong><br>
+                    <small>${i.note ? 'Note: ' + i.note : ''}</small><br>
+                    <span style="color:var(--orange)">Rs ${i.total}</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <button onclick="updateCartItemQty(${index}, -1)" style="width:25px; height:25px; border-radius:50%; border:1px solid #ccc;">-</button>
+                    <span>${i.qty}</span>
+                    <button onclick="updateCartItemQty(${index}, 1)" style="width:25px; height:25px; border-radius:50%; border:1px solid #ccc;">+</button>
+                    <button onclick="removeFromCart(${index})" style="color:red; background:none; border:none; margin-left:5px;">✕</button>
                 </div>
             </div>
-        `).join('');
-        document.getElementById('checkout-modal').style.display = 'flex';
-    }
+        </div>
+    `).join('');
+    document.getElementById('checkout-modal').style.display = 'flex';
+}
 
-    function toggleAddressField() {
-        const type = document.getElementById('c-type').value;
-        document.getElementById('address-wrapper').style.display = type === 'Delivery' ? 'block' : 'none';
-    }
+function toggleAddressField() {
+    const type = document.getElementById('c-type').value;
+    document.getElementById('address-wrapper').style.display = type === 'Delivery' ? 'block' : 'none';
+}
 
-    function closeModals() {
-        document.querySelectorAll('.overlay').forEach(m => m.style.display = 'none');
-    }
+function closeModals() {
+    document.querySelectorAll('.overlay').forEach(m => m.style.display = 'none');
+}
 
-    function sendOrder() {
+function sendOrder() {
     const n = document.getElementById('c-name').value.trim();
     const l = document.getElementById('c-loc').value.trim();
     const p = document.getElementById('c-phone').value.trim();
     const type = document.getElementById('c-type').value;
 
-    // 1. Validation
     if(!n || !p || (type === "Delivery" && !l)) {
         return alert("Please fill all details!");
     }
 
-    // 2. Save Customer Info for next time
     localStorage.setItem('pizzaMasterCustomerInfo', JSON.stringify({
         name: n,
         phone: p,
         address: type === "Delivery" ? l : ''
     }));
 
-    // 3. Build WhatsApp Message
     let typeIcon = type === "Delivery" ? "🚚" : (type === "Takeaway" ? "🛍️" : "🍽️");
     let msg = "🍕 *PIZZA MASTER | NEW ORDER*\n--------------------------\n";
     msg += "👤 *CUSTOMER DETAILS*\n*Name:* " + n + "\n*Phone:* " + p + "\n*Type:* " + typeIcon + " " + type + "\n";
     if(type === "Delivery") msg += "*Address:* " + l + "\n";
     msg += "\n🛒 *ORDER ITEMS*\n--------------------------\n";
-    
+   
     cart.forEach(i => {
         msg += "• " + i.qty + "x " + i.name + " = Rs " + (i.price * i.qty) + "\n";
         if(i.note) msg += " └ _Note: " + i.note + "_\n";
     });
-    
+   
     msg += "--------------------------\n💰 *BILL TOTAL: " + document.getElementById('cart-total').innerText + "*\n--------------------------\n\n👨‍🍳 *Thanks for being part of the Pizza Master family!*";
 
-    // 4. Visual Feedback
     const orderBtn = document.querySelector('#checkout-modal .add-btn');
     const originalBtnText = orderBtn.innerText;
     orderBtn.innerText = "Processing...";
     orderBtn.disabled = true;
 
-    // 5. Save to Order History
     const newOrder = {
         id: Date.now(),
         date: new Date().toLocaleString('en-PK', { dateStyle: 'medium', timeStyle: 'short' }),
@@ -667,48 +715,66 @@ function filterItems() {
         total: document.getElementById('cart-total').innerText,
         items: cart.map(item => ({ name: item.name, qty: item.qty }))
     };
-
     let history = JSON.parse(localStorage.getItem('pizzaMasterHistory') || '[]');
-    history.unshift(newOrder); // Add new order to top of list
-    localStorage.setItem('pizzaMasterHistory', JSON.stringify(history.slice(0, 10))); // Keep last 10 orders
+    history.unshift(newOrder);
+    localStorage.setItem('pizzaMasterHistory', JSON.stringify(history.slice(0, 10)));
 
-    // 6. Launch WhatsApp & Reset
     setTimeout(() => {
         window.open("https://wa.me/923156838383?text=" + encodeURIComponent(msg), '_blank');
-        
-        // Show success modal
         closeModals();
         document.getElementById('success-modal').style.display = 'flex';
-        
-        // Reset button for UI consistency
+      
+        cart = [];
+        updateCart();
         orderBtn.innerText = originalBtnText;
         orderBtn.disabled = false;
     }, 800);
 }
 
-    function openHistory() {
-        const history = JSON.parse(localStorage.getItem('orderHistory') || '[]');
-        let html = history.length === 0 ? '<p>No previous orders found.</p>' : '';
-        history.forEach(h => {
-            html += `<div style="text-align:left; border-bottom:1px solid #eee; padding:10px;">
-                        <small>${h.date}</small><br>
-                        <b>${h.items} Items - Rs ${h.total}</b>
-                     </div>`;
-        });
-        
-        // Using checkout modal to display history for simplicity
-        const sum = document.getElementById('summary');
-        sum.innerHTML = `<h3>Recent Orders</h3>` + html;
-        document.getElementById('checkout-modal').style.display = 'flex';
-        // Hide order fields when viewing history
-        document.querySelectorAll('#checkout-modal input, #checkout-modal select, #checkout-modal textarea, #checkout-modal .add-btn').forEach(el => el.style.display = 'none');
-        // Add a button to return to cart if needed
-        const backBtn = document.createElement('button');
-        backBtn.innerText = "Close History";
-        backBtn.className = "add-btn";
-        backBtn.onclick = () => { location.reload(); };
-        sum.appendChild(backBtn);
-    }
+function openHistory() {
+    const history = JSON.parse(localStorage.getItem('pizzaMasterHistory') || '[]');
+    let html = history.length === 0 ? '<p>No previous orders found.</p>' : '';
+    history.forEach(h => {
+        html += `
+            <div style="text-align:left; border-bottom:1px solid #eee; padding:10px;">
+                <small>${h.date}</small><br>
+                <b>${h.items.length} Items - ${h.total}</b>
+                <ul style="margin:5px 0 0 15px; padding:0;">
+                    ${h.items.map(i => `<li>${i.qty}x ${i.name}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    });
+       
+    const sum = document.getElementById('summary');
+    sum.innerHTML = `<h3>Recent Orders</h3>` + html;
+    document.getElementById('checkout-modal').style.display = 'flex';
+
+    document.querySelectorAll(
+        '#checkout-modal input, #checkout-modal select, #checkout-modal textarea'
+    ).forEach(el => el.style.display = 'none');
+
+    const oldBtn = document.getElementById('history-back-btn');
+    if (oldBtn) oldBtn.remove();
+
+    const backBtn = document.createElement('button');
+    backBtn.innerText = "Close History";
+    backBtn.className = "add-btn";
+    backBtn.id = "history-back-btn";
+    backBtn.style.marginTop = "15px";
+
+    backBtn.onclick = () => {
+        closeModals();
+        document.querySelectorAll(
+            '#checkout-modal input, #checkout-modal select, #checkout-modal textarea'
+        ).forEach(el => el.style.display = '');
+        if (cart.length > 0) {
+            openCheckout();
+        }
+    };
+
+    sum.appendChild(backBtn);
+}
 </script>
 </body>
 </html>
